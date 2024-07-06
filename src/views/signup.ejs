@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./partials/headTags.ejs") %>
+       <link rel="stylesheet" href="/public/cssFiles/signupPage.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>SIGNUP TO LISTEN!!</h2>
+        <div class="logo">
+            <img src="/public/appImages/logo.jpeg" alt="DTunes Logo">
+        </div>
+        <form action="/auth/signup" method="POST">
+            <div class="formElement">
+                <div class="label">
+                    <label for="userName">User Name</label>
+                </div>
+                <input type="text" name="userName" id="userName" required>
+            </div>
+            <div class="formElement">
+                <div class="label">
+                    <label for="password">Password</label>
+                </div>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div class="formElement">
+                <div class="label">
+                    <label for="email">Email</label>
+                </div>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="formButton">
+                <button type="submit">Submit</button>
+            </div>
+
+        </form>
+        <div class="redirect">Already Have an Account ?<a href="/auth/signin">signin</a></div>
+    </div>
+</body>
+
+</html>

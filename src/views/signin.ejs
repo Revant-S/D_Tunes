@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./partials/headTags.ejs") %>
+       <link rel="stylesheet" href="/public/cssFiles/signupPage.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="/public/appImages/logo.jpeg" alt="DTunes Logo">
+        </div>
+        <form action="/auth/signin" method="POST">
+            <div class="formElement">
+                <div class="label">
+                    <label for="email">Email</label>
+                </div>
+                <input type="email" name="email" id="email" required>
+            </div>
+
+            <div class="formElement">
+                <div class="label">
+                    <label for="password">Password</label>
+                </div>
+                <input type="password" name="password" id="password" required>
+            </div>
+           
+            <div class="formButton">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+        <div class="redirect">Dont Have an Account ?<a href="/auth/signup">signup</a></div>
+    </div>
+</body>
+
+</html>
