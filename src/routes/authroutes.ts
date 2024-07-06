@@ -8,9 +8,4 @@ router.get("/signin" , authController.getSigninPage)
 router.post("/signup", authController.signup)
 router.post("/signin", authController.signin)
 
-
-
-
-
-
 export default router
