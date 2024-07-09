@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { IUserMethods, IUserModel, UserModel } from "../TsTypes/userdbtypes";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
+import config  from "config";
 const userSchema = new mongoose.Schema<IUserModel, UserModel, IUserMethods>({
     userName : {
         type : String,
@@ -46,7 +47,7 @@ userSchema.methods.getAuthToken = function getAuthToken() :string {
         _id : this._id,
         role : this.role,
     }
-    const token = jwt.sign(payload , "THESECRETKEY")
+    const token = jwt.sign(payload , config.get("jwtKey"))
     return token
 }
 

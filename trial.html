@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DTunes</title>
+  <link rel="stylesheet" href="/public/cssFiles/home.css">
+</head>
+
+<body>
+  <div class="wholePage">
+    <nav>
+      <div class="top-section">
+        <div class="imagePlace">
+          <div class="profileImage">
+            <img id="profile" src="/public/profileImages/defaultProfile.png" alt="D-Tunes">
+          </div>
+        </div>
+        <div class="upperDiv">
+          <ul>
+            <li>
+              <div class="innerDiv">
+                <div class="imgDiv">
+                  <img class="iconSvg" src="/public/appImages/musicalbumsvg.svg" alt="">
+                </div>
+                <div class="nameDiv">My Library</div>
+              </div>
+            </li>
+            <li>
+              <div class="innerDiv">
+                <div class="imgDiv">
+                  <img class="iconSvg" src="/public/appImages/recomendation.svg" alt="">
+                </div>
+                <div class="nameDiv">Recommended</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="lowerDiv">
+        <ul>
+          <li>
+            <div class="innerDiv">
+              <div class="imgDiv">
+                <img class="iconSvg" src="/public/appImages/settings.svg" alt="">
+              </div>
+              <div class="nameDiv">Settings</div>
+            </div>
+          </li>
+          <li>
+            <div class="innerDiv">
+              <div class="imgDiv">
+                <img class="iconSvg" src="/public/appImages/logout-svgrepo-com.svg" alt="">
+              </div>
+              <div class="nameDiv">Logout</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="workspace">
+      <div class="searchBar">
+        <i class="searchIcon">
+        </i>
+        <input type="text" placeholder="Search" id="searchBar">
+      </div>
+
+      <div class="recomendations">
+        <div class="heading">
+          <h3>Trendings</h3>
+        </div>
+        <div class="recomendationList">
+          <!-- Cards Are Added Here -->
+      </div>
+      <audio id="player" src="./public/appImages/demo.mp3"></audio>
+      <div class="playerDiv">
+        <input type="range" id="rangeIn">
+        <div class="options">
+          <div class="back menuElements"><img src="/public/appImages/rewind-10-seconds-svgrepo-com.svg" alt=""></div>
+          <div class="pause menuElements"><img src="/public/appImages/play.svg" alt=""></div>
+          <div class="forward menuElements"><img src="/public/appImages/forward-10-seconds-svgrepo-com.svg" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./public/jsFunctions/home.js"  type="module">
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+{
+    "client_id" : "DTunes_client_id",
+    "client_secret" : "DTunes_client_secret",
+    "DbConnectionString" : "DTunes_DbConnectionString",
+    "jwtKey" : "DTunesJWTKey"
+}
