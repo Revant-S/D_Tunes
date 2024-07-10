@@ -29,8 +29,6 @@ export async function appToTrackCollections(useFullArray: IUseFulObject[]) {
     })
 }
 export async function getTracks(req: Request, res: Response) {
-
-
     return res.send(data)
     const acess_Token = await getToken()
 

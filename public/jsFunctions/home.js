@@ -179,14 +179,26 @@ async function getdata() {
         },
       }
     );
+    
     return response.data;
   } catch (error) {
-    console.log(error.message);
+    if (error.response && error.response.status === 401) {
+      // Handle unauthorized access
+      const redirectUrl = error.response.data.redirect;
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else {
+        console.log("Unauthorized access");
+      }
+    } else {
+      console.log(error.message);
+    }
   }
-}
+ }
 
 async function populaterecommendationList() {
   const List = await getdata();
+  console.log(List);
   List.forEach((element, index) => {
     appendToRecommendationList(element, index);
   });
