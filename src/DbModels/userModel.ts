@@ -23,11 +23,25 @@ const userSchema = new mongoose.Schema<IUserModel, UserModel, IUserMethods>({
         default : "NormalUser"
     },
     likedSongs : {
-        type : [String],
+        type : [{
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "Track"
+        }],
         default : []
     },
+    dislikedSongs: {
+        type : [{
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "Track"
+        }],
+        default : []
+    },
+
     musicPublished : {
-        type : [String],
+        type : [{
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "Track"
+        }],
         default : []
     },
     friends : {

@@ -1,13 +1,14 @@
-import mongoose, {Model} from "mongoose";
+import  {Model, Types} from "mongoose";
 
 export interface IUserModel{
     userName : string,
     emailId : string,
     password : string,
     role : "Artist" | "NormalUser",
-    musicPublished : string[],
-    likedSongs:string[],
-    friends : mongoose.Schema.Types.ObjectId[]
+    musicPublished : Types.ObjectId[],
+    likedSongs:Types.ObjectId[],
+    dislikedSongs : Types.ObjectId[]
+    friends : Types.ObjectId[]
 }
 
 

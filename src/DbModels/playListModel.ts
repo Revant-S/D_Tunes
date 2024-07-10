@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { IPlayListModel } from "../TsTypes/Musicdbtypes";
 
 
-const playListSchema = new mongoose.Schema<IPlayListModel>({
+
+const playListSchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

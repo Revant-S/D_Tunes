@@ -1,0 +1,50 @@
+import { Request, Response } from "express";
+import Track from "../DbModels/tracksModel";
+import { UserRequest } from "../Middlewares/aurhMiddlewares";
+import User from "../DbModels/userModel";
+import { Types } from "mongoose";
+
+export interface userPayload{
+    _id : Types.ObjectId,
+    role : "NormalUser" | "Artist",
+    iat : number
+}
+
+
+
+export async function updateLike(req: Request, res: Response) {
+    let amt:number = req.body.data
+    const findUser = await User.findById((((req as UserRequest).userToken as userPayload)._id))
+    const trackId: string = req.params.trackId;
+    if (!trackId) return res.send("No Id Found")
+    const findTrackInDb = await Track.findOne({id : trackId})
+    if (!findTrackInDb) return res.send("Track Not in db");
+    if (amt > 0) {
+        //user has liked the song
+        if (findUser?.likedSongs.includes(findTrackInDb._id)) {
+            amt = -1 
+            findUser.likedSongs.splice(findUser.likedSongs.indexOf(findTrackInDb._id),1)
+        }else {
+            findUser?.likedSongs.push(findTrackInDb._id)
+            amt =1
+        }
+        if (findUser?.dislikedSongs.includes(findTrackInDb._id)) findUser.dislikedSongs.splice(findUser.dislikedSongs.indexOf(findTrackInDb._id),1);
+        (findTrackInDb.likes as number)+=amt;
+
+    }else{
+        // user disliked the song
+        if (findUser?.dislikedSongs.includes(findTrackInDb._id)) {
+            amt = -1 
+            await findUser.dislikedSongs.splice(findUser.likedSongs.indexOf(findTrackInDb._id),1)
+        }else {
+            amt = 1
+            await findUser?.dislikedSongs.push(findTrackInDb._id)
+        }
+        if (findUser?.likedSongs.includes(findTrackInDb._id)) findUser.likedSongs.splice(findUser.likedSongs.indexOf(findTrackInDb._id),1);
+        (findTrackInDb.dislikes as number)+=amt;
+    }
+    
+    await findTrackInDb.save()
+    await findUser?.save()
+    res.send({trackUpdated : findTrackInDb , amt })
+}

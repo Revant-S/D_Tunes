@@ -11,8 +11,6 @@ interface TokenResponse {
 
 
 export async function getToken(): Promise<string> {
-    console.log("getting the acessToken......");
-
     const auth = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
     const response = await axios.post<TokenResponse>('https://accounts.spotify.com/api/token',
         new URLSearchParams({

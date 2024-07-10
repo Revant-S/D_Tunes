@@ -237,3 +237,40 @@ li {
 .CardnameDiv h3{
     text-align: center;
 }
+.likeDislikeBtn{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.likeBtn , .disLikeBtn{
+    position: absolute;
+    height: 50%;
+    top: 4vh;
+    aspect-ratio: 1/1;
+
+}
+
+.likeBtn img  , .disLikeBtn img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    transition: 0.7s;
+}
+
+.disLikeBtn{
+    left: 10vw;
+}
+.likeBtn{
+    left: 5vw;
+}
+ 
+.likeBtn img:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.disLikeBtn img:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+
+}
