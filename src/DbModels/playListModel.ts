@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
 
 
-
 const playListSchema = new mongoose.Schema({
+    playListName : {
+        type : String,
+        required : true
+    },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
     trackList: {
-        type: [String]
+        type: [{type : mongoose.Schema.Types.ObjectId , ref : "Track"}],
+        default : []
     },
     status: {
         type: String,
@@ -25,9 +29,12 @@ const playListSchema = new mongoose.Schema({
     dislikes: {
         type: Number,
         default: 0
+    },
+    thumbNailPath : {
+        type : String,
+        default : "/public/appImages/headphone.jpeg"
     }
-}
-)
+})
 
 const PlayList = mongoose.model("PlayList", playListSchema)
 

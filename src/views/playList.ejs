@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./partials/headTags.ejs") %>
+        <link rel="stylesheet" href="/public/cssFiles/home.css">
+        <link rel="stylesheet" href="/public/cssFiles/playListPage.css">
+        <link rel="stylesheet" href="/public/cssFiles/playListDialog.css">
+</head>
+
+<body>
+    <div class="wholePage">
+        <%- include("./partials/createPlayListDiaglog.ejs")%>
+        <aside class="sidebar">
+            <%- include("./partials/sideBar.ejs")%>
+        </aside>
+        <main class="workspace">
+            <div class="playListSpace">
+                <div class="createPlaylist">
+                    CREATE PLAYLIST
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/public/jsFunctions/playList.js"></script>
+</body>
+    
+</html>

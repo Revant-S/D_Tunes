@@ -1,0 +1,17 @@
+
+<dialog id="createPlayListDialog">
+    <div class="th">
+        <img src="/public/appImages/headphone.jpeg"  id="ThumbNailImage" >
+    </div>
+    <form action="/playlists/createPlayList" method="post" enctype="multipart/form-data" id="createPlayListForm">
+        <label for="Thumbnail"> Thumbnail Image</label>
+        <input type="file" name="Thumbnail" id="Thumbnail">
+        <label for="Name">Name OF The playList</label>
+        <input type="text" id="Name" name="playListName" required placeholder="My PlayList">
+        <select name="Acess" id="playListAcess">
+            <option value="Private">Private</option>
+            <option value="Public"> Public</option>
+        </select>
+        <button type="submit" id = "createPlayListBtn">Create</button>
+    </form>
+</dialog>
