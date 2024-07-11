@@ -1,0 +1,142 @@
+/* General popup styling */
+#showPlayListsNames[open] {
+    position: absolute;
+    top: 25%;
+    left: 45%;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: none;
+    border-radius: 2vw;
+    padding: 5%;
+    max-width: 60%;
+    z-index: 8;
+    box-shadow: 0 1vw 1.5vw rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+h2{
+    text-align: center;
+    padding: 2%;
+    margin-bottom:5% ;
+}
+
+
+#showPlayListsNames::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#showPlayListsNames form {
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+}
+
+/* Checkbox space styling */
+.checkBoxSpace {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 3%;
+}
+
+.adjustDivInput {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2a2a2a;
+    border-radius: 1vw;
+    padding: 2vh 3vw;
+    transition: background-color 0.3s ease;
+    margin-bottom: 1vh;
+}
+
+.adjustDivInput:hover {
+    background-color: #3a3a3a;
+}
+
+.checkBoxSpace label {
+    cursor: pointer;
+    flex-grow: 1;
+    margin-right: 2vw;
+}
+
+.checkBoxSpace input[type="checkbox"] {
+    appearance: none;
+    width: 2vw;
+    height: 2vw;
+    min-width: 20px;
+    min-height: 20px;
+    border: 0.2vw solid #4a4a4a;
+    border-radius: 0.4vw;
+    background-color: #3a3a3a;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.checkBoxSpace input[type="checkbox"]:checked {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.checkBoxSpace input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-size: 1vw;
+}
+
+/* Button styling */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 2vh 3vw;
+    border-radius: 1vw;
+    cursor: pointer;
+    font-size: 2.5vh;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+form button[type="submit"] {
+    align-self: flex-end;
+}
+
+/* Create new playlist button styling */
+.createNewPlayListBtn {
+    margin-top: 5vh;
+    border-top: 0.3vh solid #4a4a4a;
+    padding-top: 3vh;
+    display: flex;
+    justify-content: center;
+}
+
+.createNewPlayListBtn button {
+    background-color: #3498db;
+    font-size: 2.5vh;
+    padding: 2vh 4vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.createNewPlayListBtn button:hover {
+    background-color: #2980b9;
+}
+
+.createNewPlayListBtn .plus-sign {
+    font-size: 3.5vh;
+    margin-right: 1vw;
+    font-weight: bold;
+}

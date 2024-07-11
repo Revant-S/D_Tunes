@@ -5,7 +5,8 @@
     box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
     height: 100%;
     font-size: 16px;
     font-family: Arial, sans-serif;
@@ -18,7 +19,7 @@ body, html {
 
 
 nav {
-    width: 25%; 
+    width: 25%;
     min-width: 250px;
     max-width: 255px;
     height: 100%;
@@ -28,7 +29,8 @@ nav {
     color: white;
 }
 
-.top-section, .lowerDiv {
+.top-section,
+.lowerDiv {
     margin-bottom: 4vh;
 }
 
@@ -43,7 +45,8 @@ nav {
     border-radius: 50%;
 }
 
-.upperDiv ul, .lowerDiv ul {
+.upperDiv ul,
+.lowerDiv ul {
     list-style-type: none;
 }
 
@@ -57,9 +60,11 @@ nav {
     width: 20%;
     margin-right: 5%;
 }
-.imgDiv img{
+
+.imgDiv img {
     width: 100%;
 }
+
 .iconSvg {
     width: 100%;
     max-width: 24px;
@@ -112,26 +117,29 @@ nav {
 
 .recomendationList {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     flex-wrap: wrap;
     gap: 3vw;
     transition: 1s;
 }
-.recomendationElement{
+
+.recomendationElement {
     width: 18vw;
     position: relative;
 }
 
-.recomendationElement img{
+.recomendationElement img {
     height: 100%;
     width: 100%;
     object-fit: contain;
     transition: 1s;
 }
-.recomendationElement img:hover{
+
+.recomendationElement img:hover {
     transform: scale(1.2);
 }
-.recomendationElement h3{
+
+.recomendationElement h3 {
     position: absolute;
     backdrop-filter: blur(5px);
     z-index: 3;
@@ -143,11 +151,15 @@ nav {
 
 
 .playerDiv {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     position: fixed;
     bottom: 1%;
     width: 78%;
     height: 10vh;
-    background-color: rgb(114, 229, 229,0.6);
+    background-color: rgb(114, 229, 229, 0.6);
 }
 
 #rangeIn {
@@ -156,17 +168,16 @@ nav {
 }
 
 .options {
-    position: absolute;
-    bottom: 5%;
     display: flex;
-    left: 25vw;
     justify-content: center;
     align-items: center;
     width: fit-content;
+    margin-bottom:2% ;
 }
 
 .menuElements {
     margin: 0 3vw;
+    z-index: 3;
 }
 
 .menuElements img {
@@ -174,23 +185,33 @@ nav {
     height: 2.5vw;
     min-width: 24px;
     min-height: 24px;
+    transition: 0.8s;
 }
-.navImages:hover{
+.menuElements img:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.navImages:hover {
     cursor: pointer;
 }
-.innerDiv:hover{
+
+.innerDiv:hover {
     cursor: pointer;
 }
+
 .likeDislikeBtn {
     display: flex;
     margin-left: auto;
 }
 
-.likeBtn, .disLikeBtn {
+.likeBtn,
+.disLikeBtn {
     margin-left: 1.5vw;
 }
 
-.likeBtn img, .disLikeBtn img {
+.likeBtn img,
+.disLikeBtn img {
     width: 2vw;
     height: 2vw;
     min-width: 20px;

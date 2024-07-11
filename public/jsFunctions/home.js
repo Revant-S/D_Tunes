@@ -1,3 +1,7 @@
+// import axios from "axios";
+
+// import axios from "axios";
+
 export class TrackCard {
   constructor({ card, id, likes, dislikes, likeUserResponse }) {
     this.card = card;
@@ -37,8 +41,68 @@ const back = document.querySelector(".back");
 const pause = document.querySelector(".pause");
 const likeBtn = document.getElementById("likeBtnId");
 const disLikeBtnId = document.getElementById("disLikeBtnId");
+const AddToPlayListOption = document.querySelector(".AddToPlayListOption");
+
+//PlayListr
+const showPlayListsNames = document.getElementById("showPlayListsNames");
+const addToPlayListsBtn = document.getElementById("addToPlayListsBtn");
+const addPlayListForm = document.getElementById("addPlayListForm");
+
 let songPlaying = null;
 let cardObjects = {};
+
+// PlayList dialog js
+async function showPlayListPopup() {
+  const response = await axios.get(
+    "http://localhost:5000/playlists/getPlayListNames"
+  );
+  console.log(response.data);
+  showPlayListsNames.showModal();
+  response.data.forEach((element) => {
+    const label = document.createElement("label");
+    label.title = "playList";
+    label.innerText = element.playListName;
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.name = "playListName";
+    const adjustDivINput = document.createElement("div");
+    input.value = element._id;
+    adjustDivINput.appendChild(label);
+    adjustDivINput.appendChild(input);
+    showPlayListsNames
+      .querySelector(".checkBoxSpace")
+      .appendChild(adjustDivINput);
+  });
+  const newInput = document.createElement("input");
+  newInput.name = "SongToBeAdded";
+  newInput.value = JSON.stringify(cardObjects[songPlaying.parentNode.id]);
+  newInput.hidden = true;
+  // const input3 = document.createElement("input")
+  // input3.value = "100"
+  // input3.hidden = true;
+  // input3.name = "playListName"
+  // adjustDivINput.appendChild(input3)
+  showPlayListsNames.querySelector(".checkBoxSpace").appendChild(newInput);
+  console.log(response.data);
+  console.log(cardObjects);
+}
+async function AddToPlayLists(e) {
+  e.preventDefault();
+  const formData = new FormData(addPlayListForm);
+  const params = new URLSearchParams(formData);
+
+  const response = await axios.put(
+    "http://localhost:5000/playlists/updatePlayLists",
+    params.toString(),
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }
+  );
+  console.log(response);
+}
+addToPlayListsBtn.addEventListener("click", AddToPlayLists);
 
 function updateLikeIcon(amt, updateLike) {
   if (updateLike) {
@@ -66,7 +130,7 @@ function updateIcon(to) {
     iconToBeUpdated.src = "/public/appImages/pause.svg";
     return;
   }
-  iconToBeUpdated.src = "/public/appImages/play.svg";
+  iconToBeUpdated.src = "/public/appImages/PlayListr.svg";
 }
 function forwardOrBackward(seconds) {
   if (!songPlaying) {
@@ -92,7 +156,6 @@ function playSongOnCard(e) {
   clickedAudio.play();
   updateIcon("pause");
   rangeIn.value = 0;
-
   rangeIn.max = clickedAudio.duration;
 }
 
@@ -114,13 +177,14 @@ function pausePlayFn() {
     return;
   }
   if (songPlaying.paused) {
-    songPlaying.play();
+    songPlaying.PlayListr();
     updateIcon("pause");
     return;
   }
-  updateIcon("play");
+  updateIcon("PlayListr");
   songPlaying.pause();
 }
+
 async function handleLike(e) {
   if (!songPlaying) return;
   await cardObjects[songPlaying.parentNode.id].like(1);
@@ -167,6 +231,11 @@ function appendToRecommendationList(obj, index) {
   });
   likeBtn.addEventListener("click", handleLike);
   disLikeBtnId.addEventListener("click", handleDislike);
+  console.log(AddToPlayListOption);
+  AddToPlayListOption.querySelector("img").addEventListener(
+    "click",
+    showPlayListPopup
+  );
 }
 
 async function getdata() {
@@ -179,7 +248,7 @@ async function getdata() {
         },
       }
     );
-    
+
     return response.data;
   } catch (error) {
     if (error.response && error.response.status === 401) {
@@ -194,7 +263,7 @@ async function getdata() {
       console.log(error.message);
     }
   }
- }
+}
 
 async function populaterecommendationList() {
   const List = await getdata();
