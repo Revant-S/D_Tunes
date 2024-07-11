@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { UserRequest } from "../Middlewares/aurhMiddlewares";
-
 import User from "../DbModels/userModel";
 import { userPayload } from "./trackControllers";
 import PlayList from "../DbModels/playListModel";
@@ -58,8 +57,6 @@ export async function updatePlayLists(req: Request, res: Response) {
     console.log(typeof req.body.playListName);
     
     const songCard = JSON.parse(req.body.SongToBeAdded);
-
-    // return res.send("UnderDevelopment")
     console.log(req.body);
     
     const body: playListBody = req.body

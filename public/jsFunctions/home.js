@@ -56,8 +56,9 @@ async function showPlayListPopup() {
   const response = await axios.get(
     "http://localhost:5000/playlists/getPlayListNames"
   );
-  console.log(response.data);
+
   showPlayListsNames.showModal();
+  // adjustDivINput.innerHTML = ""
   response.data.forEach((element) => {
     const label = document.createElement("label");
     label.title = "playList";
@@ -77,11 +78,6 @@ async function showPlayListPopup() {
   newInput.name = "SongToBeAdded";
   newInput.value = JSON.stringify(cardObjects[songPlaying.parentNode.id]);
   newInput.hidden = true;
-  // const input3 = document.createElement("input")
-  // input3.value = "100"
-  // input3.hidden = true;
-  // input3.name = "playListName"
-  // adjustDivINput.appendChild(input3)
   showPlayListsNames.querySelector(".checkBoxSpace").appendChild(newInput);
   console.log(response.data);
   console.log(cardObjects);
@@ -90,7 +86,7 @@ async function AddToPlayLists(e) {
   e.preventDefault();
   const formData = new FormData(addPlayListForm);
   const params = new URLSearchParams(formData);
-
+  showPlayListsNames.close();
   const response = await axios.put(
     "http://localhost:5000/playlists/updatePlayLists",
     params.toString(),
@@ -100,7 +96,7 @@ async function AddToPlayLists(e) {
       },
     }
   );
-  console.log(response);
+  showPlayListsNames.querySelector(".checkBoxSpace").innerHTML = "";
 }
 addToPlayListsBtn.addEventListener("click", AddToPlayLists);
 
