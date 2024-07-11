@@ -186,92 +186,11 @@ async function handleDislike(e) {
   await cardObjects[songPlaying.parentNode.id].dislike(1);
 }
 
-function appendToRecommendationList(obj, index) {
-  const audioPlayer = new Audio(obj.track);
-  audioPlayer.addEventListener("timeupdate", updateRange);
-  const card = document.createElement("div");
-  const img = document.createElement("img");
-  img.src = obj.images;
-  const nameDiv = document.createElement("div");
-  const h3Tag = document.createElement("h3");
-  h3Tag.innerText = obj.TrackName;
-  nameDiv.appendChild(h3Tag);
-  nameDiv.classList.add("CardnameDiv");
-  card.appendChild(img);
-  card.appendChild(nameDiv);
-  card.appendChild(audioPlayer);
-  card.id = `card-${index}`;
-  card.classList.add("recomendationElement");
-  img.addEventListener("click", playSongOnCard);
-  const cardObj = new TrackCard({
-    card: `card-${index}`,
-    id: obj.id,
-    likes: obj.likes ?? 0,
-    dislikes: obj.dislikes ?? 0,
-    likeUserResponse: obj.likeUserResponse,
-  });
-  cardObjects[`card-${index}`] = cardObj;
-  recomendationList.appendChild(card);
-
-  rangeIn.addEventListener("change", updateSongTime);
-  pause.querySelector("img").addEventListener("click", pausePlayFn);
-  forward.addEventListener("click", () => {
-    forwardOrBackward(10);
-  });
-  back.addEventListener("click", () => {
-    forwardOrBackward(-10);
-  });
-  likeBtn.addEventListener("click", handleLike);
-  disLikeBtnId.addEventListener("click", handleDislike);
-  console.log(AddToPlayListOption);
-  AddToPlayListOption.querySelector("img").addEventListener(
-    "click",
-    showPlayListPopup
-  );
-}
-
-async function getdata() {
-  try {
-    const response = await axios.get(
-      "http://localhost:5000/getTracks/getAllTracks",
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    return response.data;
-  } catch (error) {
-    if (error.response && error.response.status === 401) {
-      // Handle unauthorized access
-      const redirectUrl = error.response.data.redirect;
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-      } else {
-        console.log("Unauthorized access");
-      }
-    } else {
-      console.log(error.message);
-    }
-  }
-}
-
-async function populaterecommendationList() {
-  const List = await getdata();
-  console.log(List);
-  List.forEach((element, index) => {
-    appendToRecommendationList(element, index);
-  });
-}
-document.addEventListener('DOMContentLoaded', () => {
-  const images = document.querySelectorAll('.recomendationElement img');
-  images.forEach(img => {
-    img.addEventListener('click', playSongOnCard);
+document.addEventListener("DOMContentLoaded", () => {
+  const images = document.querySelectorAll(".recomendationElement img");
+  images.forEach((img) => {
+    img.addEventListener("click", playSongOnCard);
   });
 });
 
 
-
-
-populaterecommendationList();

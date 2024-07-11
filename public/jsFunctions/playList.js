@@ -1,4 +1,3 @@
-// const { default: axios } = require("axios");
 const createPlayListDiv = document.querySelector(".createPlaylist")
 const createPlaylistDivDialog = document.getElementById("createPlayListDialog")
 const submitButton = document.getElementById("createPlayListBtn");
@@ -6,6 +5,7 @@ const createPlayListForm = document.getElementById("createPlayListForm")
 const workspace = document.querySelector(".workspace")
 const playListSpace = document.querySelector(".playListSpace")
 let playLists = {}
+
 class PlayListCard{
     static numberOfPlayLists = 0
     constructor({playListDetails}){
@@ -17,8 +17,9 @@ class PlayListCard{
 
 async function getAllTracks(e) {
     const playListId = playLists[e.target.parentNode.id].playListDetails.id
-    const response = await axios.get(`http://localhost:5000/playlists/getPlayList/${playListId}`);
-    console.log(response);
+    // const response = await axios.get(`http://localhost:5000/playlists/getPlayList/${playListId}`);
+    // console.log(response.data);
+    window.location.href = `/playlists/playListPage/${playListId}`
 }
 
 
@@ -35,8 +36,7 @@ function createPlayListCard(data) {
     playListImage.src = data.thumbNailURL;
     playListDiv.appendChild(playListImage)
     playListImage.addEventListener("click" , getAllTracks)
-    playListSpace.appendChild(playListDiv)
-
+    workspace.appendChild(playListDiv)
 }
 
 function showAddPlatListOptions(e) {
@@ -54,9 +54,24 @@ async function createPlayList(event) {
             'Content-Type': 'multipart/form-data'
         }
     });
+    console.log(response.data);
     createPlayListCard(response.data)
 }
-function pageConstructor() {
+async function pageConstructor() {
+    const allPlayListCards = document.querySelectorAll(".playListCard")
+    allPlayListCards.forEach((card)=>{
+        const playListDetails = {
+            id : card.dataset.playlistid,
+            playListName : card.querySelector("h3").innerText,
+            thumbNailURL : card.querySelector("img").src
+        }
+        const obj = new PlayListCard({playListDetails})
+        playLists[`playList-${PlayListCard.numberOfPlayLists}`] = obj;
+        card.id = `playList-${PlayListCard.numberOfPlayLists}`
+    })
+    allPlayListCards.forEach(card =>{
+        card.querySelector("img").addEventListener("click" ,getAllTracks )
+    })
     createPlayListDiv.addEventListener("click", showAddPlatListOptions);
     submitButton.addEventListener("click" , createPlayList)
 }

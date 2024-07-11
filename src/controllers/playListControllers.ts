@@ -12,14 +12,12 @@ export interface playListBody {
     playListName: Types.ObjectId[],
     SongToBeAdded: string
 }
-
-
-
-
 export async function getPlayLists(req: Request, res: Response) {
-    res.render("playList")
+    const playLists = await PlayList.find({$or : [{createdBy : ((req as UserRequest).userToken as userPayload)._id},{status : "Public"}]})
+    res.render("playList" , {
+        playLists 
+    })
 }
-
 export async function createPlayList(req: Request, res: Response) {
     const user = (req as UserRequest).userToken
     const UserInDb = await User.findById((user as userPayload)._id)
@@ -35,24 +33,15 @@ export async function createPlayList(req: Request, res: Response) {
         playListName: newPlayList.playListName
     })
 }
-
-
 export async function getTracksOfPlayList(req: Request, res: Response) {
     const playList = await PlayList.findById(req.params.playListId, { trackList: 1, _id: 0 });
     if (!playList) return res.json({ found: false, playlist: {} });
-    const populatedPlayList = playList.populate("trackList")
-    res.json({
-        found: true,
-        playList: populatedPlayList
-    })
+    res.redirect(`/playlists/playListPage/${req.params.playListId}`)
 }
-
-
 export async function getPlayListNames(req: Request, res: Response) {
     const playLists = await PlayList.find({ createdBy: (((req as UserRequest).userToken as userPayload))._id }, { playListName: 1 })
     return res.send(playLists)
 }
-
 export async function updatePlayLists(req: Request, res: Response) {
     console.log(typeof req.body.playListName);
     
@@ -75,4 +64,16 @@ export async function updatePlayLists(req: Request, res: Response) {
 
     res.send({ sucess: true, msg: "Song Added to PlayList" })
 
+}
+export async function getPLayListPage(req : Request , res : Response) {
+    const playList = req.params.id;
+    const playListData = await PlayList.findById(playList);
+    if (!playListData) return res.send("Play List Not Found")
+    const populatedPlayList =  await playListData.populate({
+        path :"trackList",
+        select : "imageUrl , likes , dislikes , url"
+    })
+    res.render("playListPage" , {
+        populatedPlayList: populatedPlayList.trackList
+    })
 }

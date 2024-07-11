@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DTunes</title>
+  <link rel="stylesheet" href="/public/cssFiles/home.css">
+  <link rel="stylesheet" href="/public/cssFiles/showPlayListModal.css">
+</head>
+
+<body>
+  <div class="wholePage">
+    <%- include("./partials/playListNames.ejs") %>
+    <%- include("./partials/sideBar.ejs") %>
+      <div class="workspace">
+        <!-- <div class="searchBar">
+          <i class="searchIcon">
+          </i>
+          <input type="text" placeholder="Search" id="searchBar">
+        </div> -->
+
+        <div class="recomendations">
+          <div class="heading">
+            <h3></h3>
+          </div>
+          <div class="recomendationList">
+            <!-- Cards Are Added Here -->
+             <% locals.populatedPlayList.forEach((element, index) => { %>
+                <div class="recomendationElement" id="<%= `card-${index}` %>">
+                    <div class="CardnameDiv">
+                        <h3><%= element.trackName %></h3>
+                    </div>
+                    <img src="<%= element.imageUrl %>">
+                    <audio src="<%= element.url%>"></audio>
+              </div>
+             <% }) %>
+          </div>
+        </div>
+        <%- include("./partials/player.ejs")  %>
+      </div>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src="/public/jsFunctions/playListPage.js">
+      </script>
+</body>
+
+</html>
