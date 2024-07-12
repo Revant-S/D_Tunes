@@ -17,8 +17,6 @@ class PlayListCard{
 
 async function getAllTracks(e) {
     const playListId = playLists[e.target.parentNode.id].playListDetails.id
-    // const response = await axios.get(`http://localhost:5000/playlists/getPlayList/${playListId}`);
-    // console.log(response.data);
     window.location.href = `/playlists/playListPage/${playListId}`
 }
 

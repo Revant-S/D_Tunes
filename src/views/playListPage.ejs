@@ -28,7 +28,7 @@
             <!-- Cards Are Added Here -->
              <% locals.populatedPlayList.forEach((element, index) => { %>
                 <div class="recomendationElement" id="<%= `card-${index}` %>">
-                    <div class="CardnameDiv">
+                    <div class="CardnameDiv" data-likedByUser="<%= JSON.stringify(element) %>">
                         <h3><%= element.trackName %></h3>
                     </div>
                     <img src="<%= element.imageUrl %>">

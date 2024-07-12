@@ -1,10 +1,20 @@
 class TrackCard {
-  constructor({ card, id, likes, dislikes, likeUserResponse }) {
+  constructor({
+    card,
+    id,
+    likes,
+    dislikes,
+    likedByUser,
+    name,
+    disLikedByUser,
+  }) {
     this.card = card;
     this.id = id;
     this.likes = likes;
     this.dislikes = dislikes;
-    this.likeUserResponse = likeUserResponse;
+    this.likedByUser = likedByUser;
+    this.disLikedByUser = disLikedByUser;
+    this.name = name;
   }
 
   async like() {
@@ -29,7 +39,6 @@ class TrackCard {
     return response.data;
   }
 }
-
 const recomendationList = document.querySelector(".recomendationList");
 const rangeIn = document.getElementById("rangeIn");
 const forward = document.querySelector(".forward");
@@ -38,23 +47,19 @@ const pause = document.querySelector(".pause");
 const likeBtn = document.getElementById("likeBtnId");
 const disLikeBtnId = document.getElementById("disLikeBtnId");
 const AddToPlayListOption = document.querySelector(".AddToPlayListOption");
-
-//PlayListr
+const searchBar = document.getElementById("searchBar");
 const showPlayListsNames = document.getElementById("showPlayListsNames");
 const addToPlayListsBtn = document.getElementById("addToPlayListsBtn");
 const addPlayListForm = document.getElementById("addPlayListForm");
-
 let songPlaying = null;
 let cardObjects = {};
-
-// PlayList dialog js
+let cardElements = {};
 async function showPlayListPopup() {
   const response = await axios.get(
     "http://localhost:5000/playlists/getPlayListNames"
   );
 
   showPlayListsNames.showModal();
-  // adjustDivINput.innerHTML = ""
   response.data.forEach((element) => {
     const label = document.createElement("label");
     label.title = "playList";
@@ -106,8 +111,6 @@ function updateLikeIcon(amt, updateLike) {
     likeBtn.src = "/public/appImages/like-svgrepo-com(1).svg";
     return;
   }
-  // else update dislike
-
   if (amt > 0) {
     disLikeBtnId.src = "/public/appImages/dislikedF.svg";
     likeBtn.src = "/public/appImages/like-svgrepo-com(1).svg";
@@ -136,13 +139,23 @@ function forwardOrBackward(seconds) {
   }
   songPlaying.currentTime += seconds;
 }
-
 function playSongOnCard(e) {
   const clickedAudio = e.target.parentNode.querySelector("audio");
-  const cardId = e.target.parentNode.id;
-  console.log(songPlaying);
+  const cardId = e.target.parentNode.id
   if (songPlaying) {
     songPlaying.pause();
+  }
+  const cardObj = cardObjects[cardId]
+  if (cardObj.likedByUser)  {
+    likeBtn.src = "/public/appImages/like-svgrepo-com.svg";
+  }
+  else{
+    likeBtn.src = "/public/appImages/like-svgrepo-com(1).svg";
+  }
+  if (cardObj.disLikedByUser) {
+    disLikeBtnId.src = "/public/appImages/dislikedF.svg"; 
+  }else{
+    disLikeBtnId.src = "/public/appImages/dislikeE.svg";
   }
   songPlaying = clickedAudio;
   clickedAudio.play();
@@ -150,7 +163,6 @@ function playSongOnCard(e) {
   rangeIn.value = 0;
   rangeIn.max = clickedAudio.duration;
 }
-
 function updateRange(e) {
   if (!songPlaying) {
     return;
@@ -163,20 +175,18 @@ function updateSongTime() {
   }
   songPlaying.currentTime = rangeIn.value;
 }
-
 function pausePlayFn() {
   if (!songPlaying) {
     return;
   }
   if (songPlaying.paused) {
-    songPlaying.PlayListr();
+    songPlaying.play();
     updateIcon("pause");
     return;
   }
   updateIcon("PlayListr");
   songPlaying.pause();
 }
-
 async function handleLike(e) {
   if (!songPlaying) return;
   await cardObjects[songPlaying.parentNode.id].like(1);
@@ -185,7 +195,6 @@ async function handleDislike(e) {
   if (!songPlaying) return;
   await cardObjects[songPlaying.parentNode.id].dislike(1);
 }
-
 function appendToRecommendationList(obj, index) {
   const audioPlayer = new Audio(obj.track);
   audioPlayer.addEventListener("timeupdate", updateRange);
@@ -208,11 +217,14 @@ function appendToRecommendationList(obj, index) {
     id: obj.id,
     likes: obj.likes ?? 0,
     dislikes: obj.dislikes ?? 0,
-    likeUserResponse: obj.likeUserResponse,
+    name: obj.TrackName,
+    likedByUser : obj.likedByUser,
+    disLikedByUser : obj.dislikedByUser
   });
-  cardObjects[`card-${index}`] = cardObj;
-  recomendationList.appendChild(card);
 
+  cardObjects[`card-${index}`] = cardObj;
+  cardElements[`card-${index}`] = card;
+  recomendationList.appendChild(card);
   rangeIn.addEventListener("change", updateSongTime);
   pause.querySelector("img").addEventListener("click", pausePlayFn);
   forward.addEventListener("click", () => {
@@ -229,7 +241,6 @@ function appendToRecommendationList(obj, index) {
     showPlayListPopup
   );
 }
-
 async function getdata() {
   try {
     const response = await axios.get(
@@ -240,11 +251,9 @@ async function getdata() {
         },
       }
     );
-
     return response.data;
   } catch (error) {
     if (error.response && error.response.status === 401) {
-      // Handle unauthorized access
       const redirectUrl = error.response.data.redirect;
       if (redirectUrl) {
         window.location.href = redirectUrl;
@@ -256,22 +265,41 @@ async function getdata() {
     }
   }
 }
-
 async function populaterecommendationList() {
   const List = await getdata();
+  console.log("HERE IS THE LIST");
   console.log(List);
   List.forEach((element, index) => {
     appendToRecommendationList(element, index);
   });
 }
-document.addEventListener('DOMContentLoaded', () => {
-  const images = document.querySelectorAll('.recomendationElement img');
-  images.forEach(img => {
-    img.addEventListener('click', playSongOnCard);
+document.addEventListener("DOMContentLoaded", () => {
+  const images = document.querySelectorAll(".recomendationElement img");
+  images.forEach((img) => {
+    img.addEventListener("click", playSongOnCard);
   });
 });
-
-
-
-
+let showList = [];
+function showFilteredLists() {
+  recomendationList.innerHTML = "";
+  let toShow = [];
+  showList.forEach((element) => {
+    toShow.push(cardElements[element]);
+  });
+  toShow.forEach((element) => {
+    recomendationList.appendChild(element);
+  });
+}
+searchBar.addEventListener("input", (e) => {
+  showList = [];
+  for (const key in cardObjects) {
+    const cardElement = cardObjects[key];
+    console.log(e.target.value.toLowerCase());
+    if (cardElement.name.toLowerCase().includes(e.target.value.toLowerCase())) {
+      showList.push(key);
+      showFilteredLists();
+      console.log(showList);
+    }
+  }
+});
 populaterecommendationList();

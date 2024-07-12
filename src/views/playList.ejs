@@ -28,13 +28,13 @@
                 </div>
                 <% locals.playLists.forEach(element=> { %>
                     <div class="playListCard" data-playListId="<%= element._id %>">
-                        <h3>
+                        <h3 data-="">
                             <%= element.playListName %>
                         </h3>
                         <img src="<%= element.thumbNailPath %>">
                     </div>
                     <% }) %>
-                    
+
             </main>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

@@ -45,6 +45,12 @@ nav {
     border-radius: 50%;
 }
 
+
+.profileImage img:hover {
+    cursor: pointer;
+}
+
+
 .upperDiv ul,
 .lowerDiv ul {
     list-style-type: none;
@@ -105,7 +111,7 @@ nav {
 }
 
 .recomendations {
-
+    margin-top: 10vh;
     flex-grow: 1;
     overflow-y: auto;
 }

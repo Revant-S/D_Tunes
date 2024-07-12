@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DTunes</title>
   <link rel="stylesheet" href="/public/cssFiles/home.css">
+  <style>
+
+  </style>
 </head>
 
 <body>
@@ -64,7 +67,10 @@
         <i class="searchIcon">
         </i>
         <input type="text" placeholder="Search" id="searchBar">
+
       </div>
+
+     
 
       <div class="recomendations">
         <div class="heading">
@@ -72,25 +78,28 @@
         </div>
         <div class="recomendationList">
           <!-- Cards Are Added Here -->
-      </div>
-      <audio id="player" src="./public/appImages/demo.mp3"></audio>
-      <div class="playerDiv">
-        <input type="range" id="rangeIn">
-        <div class="options">
-          <div class="back menuElements"><img src="/public/appImages/rewind-10-seconds-svgrepo-com.svg" alt=""></div>
-          <div class="pause menuElements"><img src="/public/appImages/play.svg" alt=""></div>
-          <div class="forward menuElements"><img src="/public/appImages/forward-10-seconds-svgrepo-com.svg" alt=""></div>
-          <div class="likeDislikeBtn">
-            <div class="likeBtn"><img src="/public/appImages/like-svgrepo-com(1).svg" alt="" id="likeBtnId" class="notLiked"></div>
-            <div class="disLikeBtn"><img src="/public/appImages/dislikeE.svg" alt="" id="disLikeBtnId" class="notLiked"></div>
+        </div>
+        <audio id="player" src="./public/appImages/demo.mp3"></audio>
+        <div class="playerDiv">
+          <input type="range" id="rangeIn">
+          <div class="options">
+            <div class="back menuElements"><img src="/public/appImages/rewind-10-seconds-svgrepo-com.svg" alt=""></div>
+            <div class="pause menuElements"><img src="/public/appImages/play.svg" alt=""></div>
+            <div class="forward menuElements"><img src="/public/appImages/forward-10-seconds-svgrepo-com.svg" alt="">
+            </div>
+            <div class="likeDislikeBtn">
+              <div class="likeBtn"><img src="/public/appImages/like-svgrepo-com(1).svg" alt="" id="likeBtnId"
+                  class="notLiked"></div>
+              <div class="disLikeBtn"><img src="/public/appImages/dislikeE.svg" alt="" id="disLikeBtnId"
+                  class="notLiked"></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="./public/jsFunctions/home.js"  type="module">
-</script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./public/jsFunctions/home.js" type="module">
+    </script>
 
 </body>
 

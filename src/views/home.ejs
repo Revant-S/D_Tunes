@@ -7,6 +7,7 @@
   <title>DTunes</title>
   <link rel="stylesheet" href="/public/cssFiles/home.css">
   <link rel="stylesheet" href="/public/cssFiles/showPlayListModal.css">
+  <link rel="stylesheet" href="/public/cssFiles/toggleSwitch.css">
 </head>
 
 <body>
@@ -14,12 +15,8 @@
     <%- include("./partials/playListNames.ejs") %>
     <%- include("./partials/sideBar.ejs") %>
       <div class="workspace">
-        <div class="searchBar">
-          <i class="searchIcon">
-          </i>
-          <input type="text" placeholder="Search" id="searchBar">
-        </div>
-
+        <%- include("./partials/searchBar.ejs") %>
+        <%- include("./partials/toggleSwitch.ejs") %>
         <div class="recomendations">
           <div class="heading">
             <h3>Trendings</h3>
@@ -33,6 +30,7 @@
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <script src="./public/jsFunctions/home.js" type="module">
       </script>
+      <script src="/public/jsFunctions/utilityFunctions/sideBarRedirections.js"></script>
 </body>
 
 </html>

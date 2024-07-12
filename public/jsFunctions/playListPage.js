@@ -1,10 +1,11 @@
 class TrackCard {
-  constructor({ card, id, likes, dislikes, likeUserResponse }) {
+  constructor({ card, id, likes, dislikes, likedByUser,disLikedByUser }) {
     this.card = card;
     this.id = id;
     this.likes = likes;
     this.dislikes = dislikes;
-    this.likeUserResponse = likeUserResponse;
+    this.likedByUser = likedByUser
+    this.disLikedByUser = disLikedByUser
   }
 
   async like() {
@@ -30,6 +31,8 @@ class TrackCard {
   }
 }
 
+
+let cardObjects = {}
 const recomendationList = document.querySelector(".recomendationList");
 const rangeIn = document.getElementById("rangeIn");
 const forward = document.querySelector(".forward");
@@ -45,7 +48,7 @@ const addToPlayListsBtn = document.getElementById("addToPlayListsBtn");
 const addPlayListForm = document.getElementById("addPlayListForm");
 
 let songPlaying = null;
-let cardObjects = {};
+
 
 // PlayList dialog js
 async function showPlayListPopup() {
@@ -140,9 +143,19 @@ function forwardOrBackward(seconds) {
 function playSongOnCard(e) {
   const clickedAudio = e.target.parentNode.querySelector("audio");
   const cardId = e.target.parentNode.id;
-  console.log(songPlaying);
   if (songPlaying) {
     songPlaying.pause();
+  }
+  const cardObj = cardObjects[cardId];
+  if (cardObj.likedByUser) {
+    likeBtn.src = "/public/appImages/like-svgrepo-com.svg";
+  } else {
+    likeBtn.src = "/public/appImages/like-svgrepo-com(1).svg";
+  }
+  if (cardObj.disLikedByUser) {
+    disLikeBtnId.src = "/public/appImages/dislikedF.svg";
+  } else {
+    disLikeBtnId.src = "/public/appImages/dislikeE.svg";
   }
   songPlaying = clickedAudio;
   clickedAudio.play();
@@ -150,7 +163,6 @@ function playSongOnCard(e) {
   rangeIn.value = 0;
   rangeIn.max = clickedAudio.duration;
 }
-
 function updateRange(e) {
   if (!songPlaying) {
     return;
@@ -193,4 +205,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+function createCradObjects() {
+  document.querySelectorAll(".recomendationElement").forEach((element , index) => {
+    const cardnameDiv = element.querySelector(".CardnameDiv");
+    const likedByUserString = cardnameDiv.getAttribute("data-likedByUser");
+    const likedByUserObj = JSON.parse(likedByUserString);
+    const cardObjELement = new TrackCard({card : `card-${index}`,
+      likedByUser : likedByUserObj.likedByUser,
+      disLikedByUser : likedByUserObj.dislikedByUser
+    });
+    cardObjects[`card-${index}`] = cardObjELement; 
 
+  });
+}
+console.log(cardObjects);
+createCradObjects();

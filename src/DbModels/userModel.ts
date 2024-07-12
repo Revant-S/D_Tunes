@@ -47,11 +47,21 @@ const userSchema = new mongoose.Schema<IUserModel, UserModel, IUserMethods>({
     friends : {
         type : [{type : mongoose.Schema.Types.ObjectId , ref : "User"}],
         default : []
-    }
+    },
+    friendRequestToMe : {
+        type : [{type : mongoose.Schema.Types.ObjectId , ref : "User"}],
+        default : []
+    },
+    friendRequestMade : {
+        type : [{type : mongoose.Schema.Types.ObjectId , ref : "User"}],
+        default : []
+    },
+
 })
 
 
 userSchema.pre("save",async function () {
+    if (!this.isModified('password')) return  ;
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password , salt)
 })

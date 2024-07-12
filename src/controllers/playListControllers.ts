@@ -6,12 +6,29 @@ import PlayList from "../DbModels/playListModel";
 import { FileRequest } from "../Middlewares/uploadService";
 import Track from "../DbModels/tracksModel";
 import { Types } from "mongoose";
+// import { IPlayList, PlayListModel } from "../TsTypes/playListTypes";
+// import { url } from "inspector";
 
 
 export interface playListBody {
     playListName: Types.ObjectId[],
     SongToBeAdded: string
 }
+// export interface PopulatedTrackList{
+//     imageUrl : string,
+//     likes : number,
+//     dislikes : number,
+//     url : string,
+//     _id : Types.ObjectId
+// }
+
+
+// export type PopulatedPlayList = PopulatedPlayListElement[]
+// export interface PlayListToSend extends PopulatedPlayList{
+//     likedByUser : boolean,
+//     dislikedByUser : boolean
+// }
+
 export async function getPlayLists(req: Request, res: Response) {
     const playLists = await PlayList.find({$or : [{createdBy : ((req as UserRequest).userToken as userPayload)._id},{status : "Public"}]})
     res.render("playList" , {
@@ -66,14 +83,39 @@ export async function updatePlayLists(req: Request, res: Response) {
 
 }
 export async function getPLayListPage(req : Request , res : Response) {
-    const playList = req.params.id;
-    const playListData = await PlayList.findById(playList);
+    const playListId = req.params.id;
+    const playListData :any = await PlayList.findById(playListId); // USED ANY TYPE RECTIFY IT
     if (!playListData) return res.send("Play List Not Found")
-    const populatedPlayList =  await playListData.populate({
+    const populatedPlayList  =  await playListData.populate({
         path :"trackList",
-        select : "imageUrl , likes , dislikes , url"
+        select : "imageUrl , likes , dislikes , url , _id , trackName"
     })
+    console.log(populatedPlayList);
+    
+    const user = await User.findById(((req as UserRequest).userToken as userPayload)._id);
+    // console.log(user);
+    const likedSongs = user?.likedSongs;
+    const dislikedSongs = user?.dislikedSongs
+    let playListToRender: any = [];  
+    populatedPlayList.trackList.forEach(async (element : any) => {  // Used ANY RECTIFY IT
+        let likedByUser = false;
+        let dislikedByUser = false;
+        if(likedSongs?.includes(element._id))likedByUser = true;
+        if(dislikedSongs?.includes(element._id))dislikedByUser = true;
+        // console.log(element);
+        
+        const obj  = {
+            url : element.url,
+            imageUrl : element.imageUrl,
+            trackName : element.trackName,
+            likedByUser, dislikedByUser
+        }
+        playListToRender.push(obj)
+        
+    });
+    // console.log(playListToRender);
+    
     res.render("playListPage" , {
-        populatedPlayList: populatedPlayList.trackList
+        populatedPlayList: playListToRender
     })
 }

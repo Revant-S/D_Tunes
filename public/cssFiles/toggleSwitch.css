@@ -1,0 +1,46 @@
+.CheckBox {
+    position: absolute;
+    top: 10vh;
+    display: flex;
+    width: 7vw;
+    height: 7vh;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    z-index: 12;
+  }
+  
+  #check {
+    height: 100%;
+    width: 8vw;
+    background-color: #ccc;
+    border-radius: 100px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+  }
+  
+  #check::before {
+    content: "Tracks";
+    position: absolute;
+    background-color: white;
+    height: 80%;
+    width: 40%;
+    border-radius: 50%;
+    left: 5%;
+    transition: 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em; 
+  }
+  
+  #checkbox:checked + #check {
+    background-color: blue;
+  }
+  
+  #checkbox:checked + #check::before {
+    content: "User";
+    left: 55%;
+  }

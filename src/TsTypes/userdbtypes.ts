@@ -9,6 +9,8 @@ export interface IUserModel{
     likedSongs:Types.ObjectId[],
     dislikedSongs : Types.ObjectId[]
     friends : Types.ObjectId[]
+    friendRequestToMe : Types.ObjectId[]
+    friendRequestMade : Types.ObjectId[]
 }
 
 

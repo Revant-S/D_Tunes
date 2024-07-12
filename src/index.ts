@@ -4,12 +4,13 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/authroutes"
 import path from "path";
 import cors from "cors"
-
+import userRoutes from "./routes/userRoutes"
 import trackRoutes from "./routes/trackRoutes"
 import config from "config"
 import { authorizeUser } from "./Middlewares/aurhMiddlewares"
 import cookieParser from 'cookie-parser';
 import playListRoutes from "./routes/playListRoutes"
+import { getLatestToken } from './Middlewares/sportifyAcessTokenMiddleware';
 const app = express();
 
 app.use(cors({
@@ -24,8 +25,10 @@ app.use("/auth", authRoutes)
 app.use("/public", express.static(path.resolve('public')));
 app.use("/playlists", authorizeUser)
 app.use("/playlists", playListRoutes)
-app.use("/getTracks", authorizeUser)
+app.use("/getTracks", [authorizeUser , getLatestToken])
 app.use("/getTracks", trackRoutes)
+app.use("/user" ,authorizeUser)
+app.use("/user" ,userRoutes)
 
 async function connectToDb() {
     try {
@@ -45,5 +48,5 @@ app.get("/home", (req, res) => {
     res.render("home")
 })
 
-
-app.listen(5000, () => console.log("server is up and running"))
+const port = config.get("PORT") || 3000
+app.listen(port, () => console.log(`Server is listening on ${port}`))
