@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const playListControllers_1 = require("../controllers/playListControllers");
+const uploadService_1 = require("../Middlewares/uploadService");
+const router = (0, express_1.Router)();
+router.get("/getAllPlayLists", playListControllers_1.getPlayLists);
+router.post("/createPlayList", uploadService_1.upload.single("Thumbnail"), playListControllers_1.createPlayList);
+router.get("/getPlayList/:playListId", playListControllers_1.getTracksOfPlayList);
+router.get("/getPlayListNames", playListControllers_1.getPlayListNames);
+router.put("/updatePlayLists", playListControllers_1.updatePlayLists);
+router.get("/playListPage/:id", playListControllers_1.getPLayListPage);
+exports.default = router;

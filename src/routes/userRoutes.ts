@@ -7,6 +7,6 @@ router.get("/myprofile", getUserProfile)
 router.get("/myfriends", getMyFriends)
 router.post("/sendfriendRequest", makeFriendRequest)
 router.post("/acceptFriendRequest", acceptFriendRequest)
-
+router.get("/viewProfile")
 
 export default router

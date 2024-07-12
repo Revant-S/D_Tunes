@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const userControllers_1 = require("../controllers/userControllers");
+const router = (0, express_1.Router)();
+router.get("/myprofile", userControllers_1.getUserProfile);
+router.get("/myfriends", userControllers_1.getMyFriends);
+router.post("/sendfriendRequest", userControllers_1.makeFriendRequest);
+router.post("/acceptFriendRequest", userControllers_1.acceptFriendRequest);
+router.get("/viewProfile");
+exports.default = router;

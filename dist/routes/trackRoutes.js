@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const TrackMethods_1 = require("../externalApiInteraction/TrackMethods");
+const trackControllers_1 = require("../controllers/trackControllers");
+const router = (0, express_1.Router)();
+router.get("/getAllTracks", TrackMethods_1.getTracks);
+router.get("/getTrack/:trackId");
+router.post("/uploadSong");
+router.post("/like/:trackId", trackControllers_1.updateLike);
+exports.default = router;

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a; /* Dark background color */
+    color: #fff; /* White text color */
+}
+
+.profile {
+    max-width: 80vw; /* 80% of viewport width */
+    margin: 20px auto;
+    background-color: #333; /* Darker background for profile */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4); /* Box shadow for depth */
+}
+
+.profile h1 {
+    font-size: 2.5vh; /* 2.5% of viewport height */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(25vw, 1fr)); /* Responsive grid columns */
+    gap: 20px;
+}
+
+.profile-info div {
+    padding: 10px;
+    border: 1px solid #555; /* Slightly lighter border */
+    border-radius: 6px;
+    background-color: #444; /* Darker background for sections */
+}
+
+.profile-info label {
+    font-weight: bold;
+}
+
+.profile-info ul {
+    padding: 0;
+    margin: 5px 0 0 0;
+}
+
+.profile-info li {
+    list-style-type: none;
+    margin-bottom: 5px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="profile">
+        <h1>User Profile</h1>
+        <div class="profile-info">
+            <div>
+                <label>Username:</label>
+                <span id="username">JohnDoe</span>
+            </div>
+            <div>
+                <label>Email:</label>
+                <span id="email">johndoe@example.com</span>
+            </div>
+            <div>
+                <label>Role:</label>
+                <span id="role">NormalUser</span>
+            </div>
+            <div>
+                <label>Liked Songs:</label>
+                <ul id="liked-songs">
+                    <li>Song 1</li>
+                    <li>Song 2</li>
+                    <!-- Repeat for each liked song -->
+                </ul>
+            </div>
+            <div>
+                <label>Disliked Songs:</label>
+                <ul id="disliked-songs">
+                    <li>Song A</li>
+                    <li>Song B</li>
+                    <!-- Repeat for each disliked song -->
+                </ul>
+            </div>
+            <div>
+                <label>Published Music:</label>
+                <ul id="published-music">
+                    <li>Track X</li>
+                    <li>Track Y</li>
+                    <!-- Repeat for each published track -->
+                </ul>
+            </div>
+            <div>
+                <label>Friends:</label>
+                <ul id="friends">
+                    <li>Friend 1</li>
+                    <li>Friend 2</li>
+                    <!-- Repeat for each friend -->
+                </ul>
+            </div>
+            <div>
+                <label>Friend Requests Received:</label>
+                <ul id="friend-requests-received">
+                    <li>Request from User A</li>
+                    <li>Request from User B</li>
+                    <!-- Repeat for each request received -->
+                </ul>
+            </div>
+            <div>
+                <label>Friend Requests Sent:</label>
+                <ul id="friend-requests-sent">
+                    <li>Request to User X</li>
+                    <li>Request to User Y</li>
+                    <!-- Repeat for each request sent -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
