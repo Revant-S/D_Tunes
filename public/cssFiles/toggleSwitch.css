@@ -22,6 +22,7 @@
   }
   
   #check::before {
+    color: black;
     content: "Tracks";
     position: absolute;
     background-color: white;
@@ -41,6 +42,7 @@
   }
   
   #checkbox:checked + #check::before {
+    color: black;
     content: "User";
     left: 55%;
   }

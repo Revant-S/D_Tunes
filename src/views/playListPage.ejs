@@ -27,8 +27,8 @@
           <div class="recomendationList">
             <!-- Cards Are Added Here -->
              <% locals.populatedPlayList.forEach((element, index) => { %>
-                <div class="recomendationElement" id="<%= `card-${index}` %>">
-                    <div class="CardnameDiv" data-likedByUser="<%= JSON.stringify(element) %>">
+                <div class="recomendationElement" id="<%= `card-${index}`%>" data-completeSongInfo="<%= JSON.stringify(element) %>">
+                    <div class="CardnameDiv">
                         <h3><%= element.trackName %></h3>
                     </div>
                     <img src="<%= element.imageUrl %>">
@@ -42,6 +42,7 @@
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <script src="/public/jsFunctions/playListPage.js">
       </script>
+      <script src="/public/jsFunctions/utilityFunctions/sideBarRedirections.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/headTags.ejs") %>
+    <link rel="stylesheet" href="/public/cssFiles/otherUserProfile.css">
+</head>
+<body>
+    <!-- profileImageUrl	"/public/appImages/headphone.jpeg"
+userName	"Revant"
+emailId	"revant.sinha@gmail.com"
+role	"NormalUser"
+likedSongs	[]
+dislikedSongs	[]
+musicPublished	[]
+friends	[]
+__v	0 -->
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <img id="profile-image" src= "<%= locals.user.profileImageUrl %>" alt="Profile Picture">
+            <h1 id="user-name">
+                <%= locals.user.userName %>
+            </h1>
+            <p id="user-email">
+                <%= locals.user.emailId %>
+            </p>
+            <p id="user-role">
+                <%= locals.user.role %>
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>Friends</h2>
+            <div id="friends-container" class="item-container otherProfile" data-friendState="Friend">
+                <% locals.user.friends.forEach(friend => { %>
+                    <div class="item">
+                        <h3><%= friend.userName %></h3>
+                        <p><%= friend.emailId %></p>
+                        <p>Role: <%= friend.role %></p>
+                        <button class="RemoveFromFriendBtn" data-userId="<%=friend._id%>">Remove</button>
+                    </div>
+                <% }) %>
+            </div>
+            <h2>Friend Requests</h2>
+            <div id="friends-container" class="item-container otherProfile" data-friendState="Pending-Friend">
+                <% locals.user.friendRequestToMe.forEach(friend => { %>
+                    <div class="item">
+                        <h3><%= friend.userName %></h3>
+                        <p><%= friend.emailId %></p>
+                        <p>Role: <%= friend.role %></p>
+                        <button class="AcceptFriendRequestBtn" data-userId="<%=friend._id%>">Accept</button>
+                        <button class="RejectFriendRequestBtn" data-userId="<%=friend._id%>">Reject</button>
+                    </div>
+                <% }) %>
+            </div>
+            <h2>Friend Requests Made</h2>
+            <div id="friends-container" class="item-container otherProfile" data-friendState="Request-Made">
+                <% locals.user.friendRequestMade.forEach(friend => { %>
+                    <div class="item">
+                        <h3><%= friend.userName %></h3>
+                        <p><%= friend.emailId %></p>
+                        <p>Role: <%= friend.role %></p>
+                        <button class="RemoveFriendRequestBtn" data-userId="<%=friend._id%>">Remove</button>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+       <% if (locals.user.role === "Artist") { %>
+        <div class="section">
+            <h2>Published Music</h2>
+            <div id="published-music-container" class="item-container"></div>
+        </div>
+       <% } %>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/public/jsFunctions/profilePage.js"></script>
+</body>
+</html>

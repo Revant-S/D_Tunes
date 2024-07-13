@@ -4,6 +4,6 @@ document.getElementById("ShowPlayList").addEventListener("click",(e)=>{
 
 document.getElementById("profile").addEventListener("click",(e)=>{
     console.log("clicked");
-    window.location.href = "/playlists/getAllPlayLists"
+    window.location.href = "/user/myprofile"
 })
 

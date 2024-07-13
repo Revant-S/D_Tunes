@@ -3,6 +3,7 @@ import { IUserMethods, IUserModel, UserModel } from "../TsTypes/userdbtypes";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import config  from "config";
+
 const userSchema = new mongoose.Schema<IUserModel, UserModel, IUserMethods>({
     userName : {
         type : String,
@@ -56,6 +57,10 @@ const userSchema = new mongoose.Schema<IUserModel, UserModel, IUserMethods>({
         type : [{type : mongoose.Schema.Types.ObjectId , ref : "User"}],
         default : []
     },
+    profileImageUrl :{
+        type : String,
+        default : "/public/appImages/headphone.jpeg"
+    }
 
 })
 

@@ -10,7 +10,8 @@ export interface IUserModel{
     dislikedSongs : Types.ObjectId[]
     friends : Types.ObjectId[]
     friendRequestToMe : Types.ObjectId[]
-    friendRequestMade : Types.ObjectId[]
+    friendRequestMade : Types.ObjectId[],
+    profileImageUrl : string
 }
 
 
