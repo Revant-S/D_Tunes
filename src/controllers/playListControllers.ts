@@ -6,31 +6,17 @@ import PlayList from "../DbModels/playListModel";
 import { FileRequest } from "../Middlewares/uploadService";
 import Track from "../DbModels/tracksModel";
 import { Types } from "mongoose";
-// import { IPlayList, PlayListModel } from "../TsTypes/playListTypes";
-// import { url } from "inspector";
 
 
 export interface playListBody {
     playListName: Types.ObjectId[],
     SongToBeAdded: string
 }
-// export interface PopulatedTrackList{
-//     imageUrl : string,
-//     likes : number,
-//     dislikes : number,
-//     url : string,
-//     _id : Types.ObjectId
-// }
-
-
-// export type PopulatedPlayList = PopulatedPlayListElement[]
-// export interface PlayListToSend extends PopulatedPlayList{
-//     likedByUser : boolean,
-//     dislikedByUser : boolean
-// }
 
 export async function getPlayLists(req: Request, res: Response) {
     const playLists = await PlayList.find({$or : [{createdBy : ((req as UserRequest).userToken as userPayload)._id},{status : "Public"}]})
+    console.log(playLists);
+    
     res.render("playList" , {
         playLists 
     })

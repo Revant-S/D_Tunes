@@ -3,6 +3,8 @@ import { signupBody } from "../TsTypes/bodyTypes";
 import User from "../DbModels/userModel";
 import bcrypt from "bcrypt"
 import { validateaAuthBody } from "../zodValidationLogic/bodyValidation";
+import { UserDocument } from "./userControllers";
+import PlayList from "../DbModels/playListModel";
 
 export function getSignupPage(req: Request, res: Response) {
     return res.render("signup")
@@ -10,6 +12,17 @@ export function getSignupPage(req: Request, res: Response) {
 
 export function getSigninPage(req: Request, res: Response) {
     return res.render("signin")
+}
+
+export async function createADefaultLikePlayList(user :UserDocument ) {
+    const newPlayList = await PlayList.create({
+        playListName : "Liked Songs",
+        createdBy : user._id,
+        trackList : [],
+        status : "Private",
+        genere : "Liked Songs"
+    })
+    return newPlayList
 }
 export async function signup(req: Request, res: Response) {
     const userBody: signupBody = req.body
@@ -30,6 +43,8 @@ export async function signup(req: Request, res: Response) {
         })
         const token = newUser.getAuthToken()
         res.cookie("token", token).redirect("/home")
+        await createADefaultLikePlayList(newUser)
+
     } catch (error) {
 
     }
