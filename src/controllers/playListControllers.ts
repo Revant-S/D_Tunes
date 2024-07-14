@@ -79,7 +79,6 @@ export async function getPLayListPage(req : Request , res : Response) {
     console.log(populatedPlayList);
     
     const user = await User.findById(((req as UserRequest).userToken as userPayload)._id);
-    // console.log(user);
     const likedSongs = user?.likedSongs;
     const dislikedSongs = user?.dislikedSongs
     let playListToRender: any = [];  
@@ -88,8 +87,6 @@ export async function getPLayListPage(req : Request , res : Response) {
         let dislikedByUser = false;
         if(likedSongs?.includes(element._id))likedByUser = true;
         if(dislikedSongs?.includes(element._id))dislikedByUser = true;
-        // console.log(element);
-        
         const obj  = {
             url : element.url,
             imageUrl : element.imageUrl,
@@ -99,8 +96,6 @@ export async function getPLayListPage(req : Request , res : Response) {
         playListToRender.push(obj)
         
     });
-    // console.log(playListToRender);
-    
     res.render("playListPage" , {
         populatedPlayList: playListToRender
     })
