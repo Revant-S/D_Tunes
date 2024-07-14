@@ -1,124 +1,167 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: #ffffff;
+* {
+    padding: 0;
     margin: 0;
-    padding: 20px;
-    line-height: 1.6;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
 }
 
 .profile-container {
-    max-width: 800px;
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 5vh 0;
 }
 
-.profile-header {
-    text-align: center;
-    margin-bottom: 30px;
+.upper-section {
+    margin-bottom: 5vh;
+}
+
+.main-details {
+    display: flex;
+    align-items: center;
+}
+
+.display-pic {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #profile-image {
-    width: 150px;
-    height: 150px;
+    width: 20vw;
+    height: 20vw;
+    max-width: 200px;
+    max-height: 200px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #4a4a4a;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.upper-section-info {
+    flex-grow: 1;
+    padding-left: 5%;
 }
 
 #user-name {
-    margin: 10px 0 5px;
-    font-size: 24px;
+    font-size: 3.5vw;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 1vh;
 }
 
-#user-email,
 #user-role {
-    margin: 5px 0;
-    color: #b3b3b3;
+    font-size: 1.8vw;
+    color: #a0a0a0;
+    margin-bottom: 1vh;
+}
+
+#user-email {
+    font-size: 1.6vw;
+    color: #a0a0a0;
+    margin-bottom: 2vh;
 }
 
 .friend-request-btn {
-    background-color: #4CAF50;
+    background-color: #e0e0e0;
+    color: #121212;
     border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 2px;
-    cursor: pointer;
+    padding: 1vh 2vw;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    font-size: 1.2vw;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .friend-request-btn:hover {
-    background-color: #45a049;
-}
-
-
-
-.friend-request-btn:active {
-    background-color: lightgreen;
-    color: #666666;
-    cursor: not-allowed;
+    background-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
 }
 
 .section {
-    margin-bottom: 30px;
+    margin-bottom: 5vh;
 }
 
 .section h2 {
-    border-bottom: 1px solid #333;
-    padding-bottom: 10px;
-    color: #b3b3b3;
+    font-size: 2.5vh;
+    color: #e0e0e0;
+    margin-bottom: 2vh;
+    font-weight: 600;
 }
 
 .item-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2vh;
 }
 
 .item {
-    background-color: #1e1e1e;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #1E1E1E;
+    border-radius: 0.5vw;
+    padding: 2vh;
+    transition: all 0.3s ease;
+}
+
+.item:hover {
+    transform: translateY(-0.5vh);
+    box-shadow: 0 0.5vh 1.5vh rgba(255, 255, 255, 0.1);
 }
 
 .item h3 {
-    margin: 0 0 5px 0;
+    font-size: 2.2vh;
     color: #ffffff;
+    margin-bottom: 1vh;
 }
 
 .item p {
-    margin: 0;
-    font-size: 0.9em;
-    color: #b3b3b3;
+    font-size: 1.6vh;
+    color: #a0a0a0;
+    margin-bottom: 0.5vh;
 }
 
-.AcceptFriendRequestBtn,
-.RejectFriendRequestBtn,
-.RemoveFriendRequestBtn,
-.RemoveFromFriendBtn {
-    margin-top: 2%;
-    border: 1px solid white;
-    background-color: #121212;
-    color: #ffffff;
-    width: 10vw;
-    height: 5vh;
-    border-radius: 50px;
-    transition: 0.6s;
-}
+@media (max-width: 768px) {
+    .main-details {
+        flex-direction: column;
+        text-align: center;
+    }
 
-.AcceptFriendRequestBtn:hover,
-.RejectFriendRequestBtn:hover,
-.RemoveFriendRequestBtn:hover,
-.RemoveFromFriendBtn:hover {
-    border: 1px solid black;
-    background-color: white;
-    color: black;
-    width: 10vw;
-    height: 5vh;
-    cursor: pointer;
+    .display-pic {
+        width: 100%;
+        margin-bottom: 3vh;
+    }
+
+    #profile-image {
+        width: 40vw;
+        height: 40vw;
+    }
+
+    .upper-section-info {
+        padding-left: 0;
+    }
+
+    #user-name {
+        font-size: 6vw;
+    }
+
+    #user-role,
+    #user-email {
+        font-size: 3.5vw;
+    }
+
+    .friend-request-btn {
+        font-size: 2.5vw;
+        padding: 1.5vh 3vw;
+    }
 }

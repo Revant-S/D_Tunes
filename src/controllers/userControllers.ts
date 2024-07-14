@@ -4,6 +4,7 @@ import { UserRequest } from "../Middlewares/aurhMiddlewares";
 import { userPayload } from "./trackControllers";
 import { Types } from "mongoose";
 import { IUserModel } from "../TsTypes/userdbtypes";
+import PlayList from "../DbModels/playListModel";
 
 export interface UserDocument extends IUserModel {
     _id: Types.ObjectId
@@ -72,8 +73,17 @@ export async function getUserProfile(req: Request, res: Response) {
     }, {
         path: "friendRequestMade", select: "userName , emailId , role , _id"
     }])
+    const playListsCreatedByUser = await PlayList.find({createdBy : user._id});
+    const privatePlaylists = playListsCreatedByUser.filter(playList =>playList.status==="Private");
+    const publicPlayLists = playListsCreatedByUser.filter(playList => playList.status === "Public");
+    console.log(playListsCreatedByUser);
+    
+    console.log(privatePlaylists);
+    console.log(publicPlayLists);
+    
+    
     res.render("myProfile", {
-        user: populatedUser
+        user: populatedUser,publicPlayLists , privatePlaylists
     })
 }
 

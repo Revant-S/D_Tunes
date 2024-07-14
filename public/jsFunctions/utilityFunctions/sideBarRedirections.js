@@ -3,7 +3,14 @@ document.getElementById("ShowPlayList").addEventListener("click",(e)=>{
 })
 
 document.getElementById("profile").addEventListener("click",(e)=>{
-    console.log("clicked");
+
     window.location.href = "/user/myprofile"
+})
+
+document.getElementById("Home").addEventListener("click",(e)=>{
+    if (window.location.href.includes("/home")) {
+        return
+    }
+    window.location.href = "/home"
 })
 
