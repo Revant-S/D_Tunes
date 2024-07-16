@@ -6,21 +6,24 @@
         <link rel="stylesheet" href="/public/cssFiles/home.css">
         <link rel="stylesheet" href="/public/cssFiles/playListPage.css">
         <link rel="stylesheet" href="/public/cssFiles/playListDialog.css">
+        <link rel="stylesheet" href="/public/cssFiles/sideBar.css">
         <style>
             .workspace {
                 display: grid;
                 grid-template-columns: repeat(5, 1fr);
+                grid-gap: 5%;
             }
+
         </style>
 </head>
 
 <body>
     <div class="wholePage">
         <%- include("./partials/createPlayListDiaglog.ejs")%>
-            <aside class="sidebar">
+
                 <%- include("./partials/sideBar.ejs")%>
-            </aside>
-            <main class="workspace">
+          
+            <div class="workspace">
                 <div class="playListSpace">
                     <div class="createPlaylist">
                         CREATE PLAYLIST
@@ -34,7 +37,7 @@
                         <img src="<%= element.thumbNailPath %>">
                     </div>
                     <% }) %>
-            </main>
+            </div>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/public/jsFunctions/playList.js"></script>

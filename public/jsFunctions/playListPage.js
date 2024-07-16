@@ -1,5 +1,3 @@
-// const { createBuilderStatusReporter } = require("typescript");
-
 class TrackCard {
   constructor({ card, id, likes, dislikes, likedByUser, disLikedByUser, name }) {
     this.card = card;
@@ -48,9 +46,10 @@ const allCards = document.querySelectorAll(".recomendationElement")
 const showPlayListsNames = document.getElementById("showPlayListsNames");
 const addToPlayListsBtn = document.getElementById("addToPlayListsBtn");
 const addPlayListForm = document.getElementById("addPlayListForm");
-
+let isSequentialPlayOn = false
 let songPlaying = null;
-
+const listOfaudioTags = document.querySelectorAll("audio")
+let playIngAudioIndex = 0;
 async function showPlayListPopup() {
   const response = await axios.get("http://localhost:5000/playlists/getPlayListNames");
   showPlayListsNames.showModal();
@@ -118,6 +117,7 @@ function playSongOnCard(e) {
     songPlaying.pause();
     songPlaying.removeEventListener('timeupdate', updateRange);
   }
+  //repeat this part
   const cardObj = cardObjects[cardId];
   likeBtn.src = cardObj.likedByUser ? "/public/appImages/like-svgrepo-com.svg" : "/public/appImages/like-svgrepo-com(1).svg";
   disLikeBtnId.src = cardObj.disLikedByUser ? "/public/appImages/dislikedF.svg" : "/public/appImages/dislikeE.svg";
@@ -130,8 +130,13 @@ function playSongOnCard(e) {
 }
 
 function updateRange() {
+  console.log("HELLO");
   if (!songPlaying) return;
   rangeIn.value = songPlaying.currentTime;
+  if (songPlaying.currentTime >= songPlaying.duration) {
+    playIngAudioIndex++;
+    playNextSong()
+  }
 }
 
 function updateSongTime() {
@@ -164,7 +169,31 @@ async function handleDislike() {
   updateLikeIcon(cardObj.dislikes, false);
 }
 
-
+function playNextSong() {
+  if (!isSequentialPlayOn)  {songPlaying = null, playIngAudioIndex = 0;  return;}
+  songPlaying = listOfaudioTags[playIngAudioIndex]
+  const cardRequired = cardObjects[`card-${playIngAudioIndex}`]
+  likeBtn.src = cardRequired.likedByUser ? "/public/appImages/like-svgrepo-com.svg" : "/public/appImages/like-svgrepo-com(1).svg";
+  disLikeBtnId.src = cardRequired.disLikedByUser ? "/public/appImages/dislikedF.svg" : "/public/appImages/dislikeE.svg";
+  listOfaudioTags[playIngAudioIndex].addEventListener('timeupdate', ()=>{
+    console.log("here");
+    updateRange()
+  });
+  pausePlayFn()
+}
+document.getElementById("checkbox").addEventListener("change", (e)=>{
+  if (e.target.checked) {
+    isSequentialPlayOn = true
+    songPlaying = listOfaudioTags[0]
+    listOfaudioTags[playIngAudioIndex].addEventListener('timeupdate', ()=>{
+      console.log("here");
+      updateRange()
+    });
+    pausePlayFn()
+    return
+  }
+  isSequentialPlayOn = false
+})
 document.addEventListener("DOMContentLoaded", () => {
   rangeIn.addEventListener("change", updateSongTime);
   forward.addEventListener('click', () => forwardOrBackward(10));
@@ -176,7 +205,11 @@ document.addEventListener("DOMContentLoaded", () => {
   addToPlayListsBtn.addEventListener('click', AddToPlayLists);
   allCards.forEach((card , index)=>{
     const fullInfo = JSON.parse(card.getAttribute("data-completeSongInfo"));
-    card.addEventListener("click" , playSongOnCard)
+    card.addEventListener("click" , (e)=>{
+      isSequentialPlayOn = false;
+      document.getElementById("checkbox").checked = false
+      playSongOnCard(e)
+    })
     const cardObj = new TrackCard({
       card : `card-${index}`,
       likedByUser : fullInfo.likedByUser,

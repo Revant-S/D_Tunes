@@ -13,4 +13,10 @@ document.getElementById("Home").addEventListener("click",(e)=>{
     }
     window.location.href = "/home"
 })
-
+document.getElementById("party-Mode").addEventListener("click" , (e)=>{
+    if (window.location.href.includes("/playLists")) {
+        window.location.href = "/partyMode"
+        return
+    }
+    window.location.href = "playLists/partyMode"
+})

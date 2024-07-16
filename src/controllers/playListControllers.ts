@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
-import { UserRequest } from "../Middlewares/aurhMiddlewares";
+import { UserRequest } from "../Middlewares/authMiddlewares";
 import User from "../DbModels/userModel";
 import { userPayload } from "./trackControllers";
 import PlayList from "../DbModels/playListModel";
 import { FileRequest } from "../Middlewares/uploadService";
 import Track from "../DbModels/tracksModel";
 import { Types } from "mongoose";
+import { getUser } from "./userControllers";
 
 
 export interface playListBody {
@@ -99,4 +100,69 @@ export async function getPLayListPage(req : Request , res : Response) {
     res.render("playListPage" , {
         populatedPlayList: playListToRender
     })
+}
+export async function partyModePage(req : Request , res : Response) {
+    const user = await getUser(req);
+    // console.log(user);
+    
+    if (!user) return res.send("You Dont Exist");
+    const playListsOfUser = await PlayList.find({createdBy : user._id});
+    console.log(playListsOfUser);
+    
+    res.render("partyMode" , {
+        playListsOfUser
+    })
+}
+
+
+export async function getTempPage(req: Request,res : Response) {
+    const user = await getUser(req);
+    if (!user) return res.send("No User Found");
+    const playLists: Types.ObjectId[] = req.body.data.playLists;
+    console.log(playLists);
+    
+    const selectedSongs = new Set();
+    const playListsInDb = await PlayList.find({_id : {$in : playLists}});
+    playListsInDb.forEach(playList =>{
+        playList.trackList.forEach(track =>{
+            selectedSongs.add(track)
+        })
+    })
+   const tracks = Array.from(selectedSongs);
+    const newPlayList = await PlayList.create({
+        createdBy : user._id,
+        trackList : tracks,
+        playListName : "User-Temp-PlayList"
+    })
+    res.json({
+        newPlayListId : newPlayList._id,
+    })
+}
+
+
+export async function partyModePageRedirect(req : Request , res : Response) {
+    const user = await getUser(req)
+    const populatedPlayList = await PlayList.findById(req.query.id).populate([
+        {path : "trackList",  select : "imageUrl , likes , dislikes , url , _id , trackName"}
+    ]);
+    const likedSongs = user?.likedSongs;
+    const dislikedSongs = user?.dislikedSongs
+    let playListToRender: any = [];  
+    populatedPlayList?.trackList.forEach(async (element : any) => {  // Used ANY RECTIFY IT
+        let likedByUser = false;
+        let dislikedByUser = false;
+        if(likedSongs?.includes(element._id))likedByUser = true;
+        if(dislikedSongs?.includes(element._id))dislikedByUser = true;
+        const obj  = {
+            url : element.url,
+            imageUrl : element.imageUrl,
+            trackName : element.trackName,
+            likedByUser, dislikedByUser
+        }
+        playListToRender.push(obj)
+        
+    });
+    res.render("playListPage" , {
+        populatedPlayList: playListToRender
+    }) 
 }

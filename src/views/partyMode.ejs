@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/public/cssFiles/partyMode.css">
+    <link rel="stylesheet" href="/public/cssFiles/sideBar.css">
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .wholePage {
+            display: flex;
+            align-items: stretch;
+            width: 100vw;
+            height: 100vh;
+            margin: 0px;
+        }
+
+        .page-container,
+        .main-content,
+        .party-mode {
+            width: 100%;
+            height: 100%;
+        }
+
+        .playList-stack {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 3%;
+            overflow: hidden;
+            border: none;
+            padding-left: 3%;
+            box-shadow: 4px 8px 8px;
+            height: 60vh;
+            padding-bottom: 5%;
+            padding-top: 5%;
+
+        }
+
+        .stackDiv {
+            background-color: white;
+            width: 98%;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: grey;
+
+
+        }
+
+        .stackDiv h2 {
+            color: black;
+
+            margin-top: 2%;
+        }
+
+        #removeBtn {
+            height: 5vh;
+            width: 8vw;
+            border-radius: 100px;
+            transition: 0.5s;
+            border: none;
+        }
+
+        #removeBtn:hover {
+            background-color: red;
+            color: white;
+        }
+
+        #Add-playlist:disabled {
+            background-color: grey;
+        }
+        #confirmationDiaglog[open]{
+            position: absolute;
+            top : 30%;
+            left : 20%;
+            z-index: 5;
+            backface-visibility: hidden;
+            height: 20vh;
+            width: 50vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-left: 3%;
+            background-color: gray;
+            gap: 5%;
+        }
+        #saveConfirmation{
+            color: rgb(125, 23, 23);
+        }
+        #confirmationDiaglog button{
+            height: 6vh;
+            width: 8vw;
+            font-size: x-large;
+            font-weight: 700;
+            background-color: rgb(57, 149, 57);
+            border: none;
+            transition: 0.5s;
+        }
+        #confirmationDiaglog button:hover{
+            background-color: rgb(74, 194, 74);
+        }
+    </style>
+    <%- include("./partials/headTags.ejs") %>
+</head>
+
+<body>
+    <div class="wholePage">
+        <dialog id="confirmationDiaglog">
+            <h1>Your Party PlayList is Ready</h1>
+            <div class="input">
+                <label for="saveConfirm" id="saveConfirmation">Do You Want To Save The PlayList</label>
+                <input type="checkbox" id="saveConfirm" name="confirm">
+            </div>
+            <div class="PartyPlayBtn">
+               <button>  Play</button>
+            </div>
+        </dialog>
+        <%- include("./partials/sideBar.ejs")%>
+
+
+            <div class="section party-mode">
+                <h2>Party Mode</h2>
+                <p>Create a temporary playlist by combining two of your playlists</p>
+                <div class="playlist-selectors">
+                    <div class="playlist-selector">
+                        <h3>Select The PlayLists</h3>
+                        <select id="playlist-select-1">
+                            <option value="">Select a playlist</option>
+                            <% locals.playListsOfUser.forEach(playlist=> { %>
+                                <option value="<%= playlist._id %>" class="playListOption">
+                                    <%= playlist.playListName %>
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                    <div class="playlist-selector">
+                        <h3>
+                            PlayList Stack
+                        </h3>
+                        <div class="playList-stack">
+
+                        </div>
+                    </div>
+                </div>
+                <button id="Add-playlist" class="party-mode-btn" disabled> Add </button>
+                <button id="create-party-playlist" class="party-mode-btn">Create Party Playlist</button>
+                <div id="party-playlist-result" class="party-playlist-result"></div>
+            </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/public/jsFunctions/utilityFunctions/sideBarRedirections.js"></script>
+    <script src="/public/jsFunctions/partyMode.js"></script>
+</body>
+
+</html>

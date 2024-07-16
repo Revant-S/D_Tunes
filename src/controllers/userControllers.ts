@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import User from "../DbModels/userModel";
-import { UserRequest } from "../Middlewares/aurhMiddlewares";
+import { UserRequest } from "../Middlewares/authMiddlewares";
 import { userPayload } from "./trackControllers";
 import { Types } from "mongoose";
 import { IUserModel } from "../TsTypes/userdbtypes";

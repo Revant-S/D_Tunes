@@ -7,42 +7,55 @@
   <title>DTunes</title>
   <link rel="stylesheet" href="/public/cssFiles/home.css">
   <link rel="stylesheet" href="/public/cssFiles/showPlayListModal.css">
+  <link rel="stylesheet" href="/public/cssFiles/sideBar.css">
+  <link rel="stylesheet" href="/public/cssFiles/toggleSwitch.css">
+  <style>
+    .CheckBox {
+      top: 5%;
+    }
+    #checkbox:checked+#check::before {
+      content: "";
+    }
+    #check::before {
+    content: "";
+  }
+  
+  </style>
 </head>
 
 <body>
   <div class="wholePage">
+    <% console.log("FROM EJS "); %>
+    <% console.log(locals.populatedPlayList); %>
     <%- include("./partials/playListNames.ejs") %>
-    <%- include("./partials/sideBar.ejs") %>
-      <div class="workspace">
-        <!-- <div class="searchBar">
-          <i class="searchIcon">
-          </i>
-          <input type="text" placeholder="Search" id="searchBar">
-        </div> -->
-
-        <div class="recomendations">
-          <div class="heading">
-            <h3></h3>
-          </div>
-          <div class="recomendationList">
-            <!-- Cards Are Added Here -->
-             <% locals.populatedPlayList.forEach((element, index) => { %>
-                <div class="recomendationElement" id="<%= `card-${index}`%>" data-completeSongInfo="<%= JSON.stringify(element) %>">
+      <%- include("./partials/sideBar.ejs") %>
+        <div class="workspace">
+          <%- include("./partials/toggleSwitch.ejs") %>
+            <div class="recomendations">
+              <div class="heading">
+                <h3></h3>
+              </div>
+              <div class="recomendationList">
+                <% locals.populatedPlayList.forEach((element, index)=> { %>
+                  <div class="recomendationElement" id="<%= `card-${index}`%>"
+                    data-completeSongInfo="<%= JSON.stringify(element) %>">
                     <div class="CardnameDiv">
-                        <h3><%= element.trackName %></h3>
+                      <h3>
+                        <%= element.trackName %>
+                      </h3>
                     </div>
                     <img src="<%= element.imageUrl %>">
                     <audio src="<%= element.url%>"></audio>
+                  </div>
+                  <% }) %>
               </div>
-             <% }) %>
-          </div>
+            </div>
+            <%- include("./partials/player.ejs") %>
         </div>
-        <%- include("./partials/player.ejs")  %>
-      </div>
-      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-      <script src="/public/jsFunctions/playListPage.js">
-      </script>
-      <script src="/public/jsFunctions/utilityFunctions/sideBarRedirections.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="/public/jsFunctions/playListPage.js">
+        </script>
+        <script src="/public/jsFunctions/utilityFunctions/sideBarRedirections.js"></script>
 </body>
 
 </html>

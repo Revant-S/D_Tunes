@@ -1,0 +1,74 @@
+.party-mode {
+    background-color: #2C2C2C;
+    padding: 3vh 3vw;
+}
+
+.party-mode h2 {
+    color: #E0E0E0;
+    font-size: 3vh;
+    margin-bottom: 2vh;
+}
+
+.party-mode p {
+    color: #A0A0A0;
+    font-size: 2vh;
+    margin-bottom: 3vh;
+}
+
+.playlist-selectors {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3vh;
+}
+
+.playlist-selector {
+    width: 48%;
+}
+
+.playlist-selector h3 {
+    color: #E0E0E0;
+    font-size: 2.2vh;
+    margin-bottom: 1vh;
+}
+
+.playlist-selector select {
+    width: 100%;
+    padding: 1vh 1vw;
+    background-color: #3C3C3C;
+    color: #E0E0E0;
+    border: none;
+    border-radius: 0.5vw;
+    font-size: 1.8vh;
+}
+
+.party-mode-btn {
+    background-color: #1DB954;
+    color: #FFFFFF;
+    border: none;
+    padding: 1.5vh 2vw;
+    font-size: 2vh;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.party-mode-btn:hover {
+    background-color: #1ED760;
+}
+
+.party-playlist-result {
+    margin-top: 3vh;
+    color: #E0E0E0;
+    font-size: 2vh;
+}
+
+@media (max-width: 768px) {
+    .playlist-selectors {
+        flex-direction: column;
+    }
+
+    .playlist-selector {
+        width: 100%;
+        margin-bottom: 2vh;
+    }
+}

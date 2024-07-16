@@ -7,7 +7,7 @@ import cors from "cors"
 import userRoutes from "./routes/userRoutes"
 import trackRoutes from "./routes/trackRoutes"
 import config from "config"
-import { authorizeUser } from "./Middlewares/aurhMiddlewares"
+import { authorizeUser } from "./Middlewares/authMiddlewares"
 import cookieParser from 'cookie-parser';
 import playListRoutes from "./routes/playListRoutes"
 import { getLatestToken } from './Middlewares/sportifyAcessTokenMiddleware';
