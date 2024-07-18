@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import { PlayListDocument, PlayListModel } from "../TsTypes/playListTypes";
 
 const playListSchema = new Schema<PlayListDocument>({
@@ -29,6 +29,10 @@ const playListSchema = new Schema<PlayListDocument>({
   dislikes: {
     type: Number,
     default: 0
+  },
+  requestsForMerge : {
+    type : [{type : Types.ObjectId , ref : "ReqPlayList"}],
+    default : []
   },
   thumbNailPath: {
     type: String,

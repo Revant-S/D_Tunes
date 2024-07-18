@@ -1,36 +1,58 @@
 class TrackCard {
-  constructor({ card, id, likes, dislikes, likedByUser, disLikedByUser, name }) {
+  constructor({
+    card,
+    id,
+    likes,
+    dislikes,
+    likedByUser,
+    name,
+    disLikedByUser,
+  }) {
     this.card = card;
     this.id = id;
-    this.likes = likes || 0;
-    this.dislikes = dislikes || 0;
-    this.likedByUser = likedByUser || false;
-    this.disLikedByUser = disLikedByUser || false;
+    this.likes = likes;
+    this.dislikes = dislikes;
+    this.likedByUser = likedByUser;
+    this.disLikedByUser = disLikedByUser;
     this.name = name;
   }
 
   async like() {
     const response = await axios.post(
       `http://localhost:5000/getTracks/like/${this.id}`,
-      { data: 1 }
+      {
+        data: 1,
+      }
     );
-    this.likedByUser = true;
-    this.disLikedByUser = false;
-    this.likes += 1;
+    if (response.data.amt >0) {
+      this.likedByUser = true
+      this.disLikedByUser = false
+    }else{
+      this.likedByUser = false
+    }
+    updateLikeIcon(response.data.amt, true);
     return response.data;
   }
 
   async dislike() {
+    console.log(this.id);
     const response = await axios.post(
       `http://localhost:5000/getTracks/like/${this.id}`,
-      { data: -1 }
+      {
+        data: -1,
+      }
     );
-    this.likedByUser = false;
-    this.disLikedByUser = true;
-    this.dislikes += 1;
+    if (response.data.amt >0) {
+      this.disLikedByUser = true
+      this.likedByUser = false
+    }else{
+      this.disLikedByUser = false
+    }
+    updateLikeIcon(response.data.amt, false);
     return response.data;
   }
 }
+
 
 let cardObjects = {};
 let cardElements = {};
@@ -91,12 +113,23 @@ async function AddToPlayLists(e) {
 
 function updateLikeIcon(amt, updateLike) {
   if (updateLike) {
-    likeBtn.src = amt > 0 ? "/public/appImages/like-svgrepo-com.svg" : "/public/appImages/like-svgrepo-com(1).svg";
-    disLikeBtnId.src = "/public/appImages/dislikeE.svg";
-  } else {
-    disLikeBtnId.src = amt > 0 ? "/public/appImages/dislikedF.svg" : "/public/appImages/dislikeE.svg";
+    if (amt > 0) {
+      console.log("HEREEEEEEEEEEEE");
+      likeBtn.src = "/public/appImages/like-svgrepo-com.svg";
+      disLikeBtnId.src = "/public/appImages/dislikeE.svg";
+      console.log(likeBtn.src);
+      return;
+    }
     likeBtn.src = "/public/appImages/like-svgrepo-com(1).svg";
+    return;
   }
+  if (amt > 0) {
+    disLikeBtnId.src = "/public/appImages/dislikedF.svg";
+    likeBtn.src = "/public/appImages/like-svgrepo-com(1).svg";
+    return;
+  }
+  disLikeBtnId.src = "/public/appImages/dislikeE.svg";
+  return;
 }
 
 function updateIcon(to) {
@@ -117,11 +150,12 @@ function playSongOnCard(e) {
     songPlaying.pause();
     songPlaying.removeEventListener('timeupdate', updateRange);
   }
-  //repeat this part
+  
   const cardObj = cardObjects[cardId];
   likeBtn.src = cardObj.likedByUser ? "/public/appImages/like-svgrepo-com.svg" : "/public/appImages/like-svgrepo-com(1).svg";
   disLikeBtnId.src = cardObj.disLikedByUser ? "/public/appImages/dislikedF.svg" : "/public/appImages/dislikeE.svg";
   songPlaying = clickedAudio;
+ 
   clickedAudio.play();
   clickedAudio.addEventListener('timeupdate', updateRange);
   updateIcon("pause");
@@ -159,14 +193,13 @@ async function handleLike() {
   if (!songPlaying) return;
   const cardObj = cardObjects[songPlaying.parentNode.id];
   const response = await cardObj.like();
-  updateLikeIcon(cardObj.likes, true);
+  // updateLikeIcon(cardObj.likes, true);
 }
 
 async function handleDislike() {
   if (!songPlaying) return;
   const cardObj = cardObjects[songPlaying.parentNode.id];
   const response = await cardObj.dislike();
-  updateLikeIcon(cardObj.dislikes, false);
 }
 
 function playNextSong() {
@@ -214,6 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card : `card-${index}`,
       likedByUser : fullInfo.likedByUser,
       disLikedByUser : fullInfo.dislikedByUser,
+      id : fullInfo.id,
 
     })
     cardObjects[`card-${index}`] =  cardObj

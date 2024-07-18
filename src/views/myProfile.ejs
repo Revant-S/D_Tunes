@@ -4,6 +4,19 @@
 <head>
     <%- include("./partials/headTags.ejs") %>
         <link rel="stylesheet" href="/public/cssFiles/myProfile.css">
+        <style>
+            .acceptMergeRequest{
+                width: 10vw;
+                height: 5vh;
+                border: none;
+                transition: 0.6s;
+            }
+            .acceptMergeRequest:hover{
+                background-color: green;
+                color: white;
+                
+            }
+        </style>
 </head>
 
 <body>
@@ -91,48 +104,113 @@
             </div>
             <% } %>
 
-            <% if (locals.publicPlayLists.length !== 0) { %>
-                <div class="section">
-                    <h2>Public Playlists</h2>
-                    <div id="public-playlists-container" class="item-container">
-                        <% locals.publicPlayLists.forEach(playlist => { %>
-                            <div class="playlist-item">
-                                <div class="playlist-thumbnail">
-                                    <img src="<%= playlist.thumbNailPath %>" alt="<%= playlist.playListName %> Thumbnail">
+                <% if (locals.publicPlayLists.length !==0) { %>
+                    <div class="section">
+                        <h2>Public Playlists</h2>
+                        <div id="public-playlists-container" class="item-container">
+                            <% locals.publicPlayLists.forEach(playlist=> { %>
+                                <div class="playlist-item">
+                                    <div class="playlist-thumbnail">
+                                        <img src="<%= playlist.thumbNailPath %>"
+                                            alt="<%= playlist.playListName %> Thumbnail">
+                                    </div>
+                                    <div class="playlist-info">
+                                        <h3 class="playlist-name">
+                                            <%= playlist.playListName %>
+                                        </h3>
+                                        <p class="playlist-genre">Genre: <%= playlist.genere %>
+                                        </p>
+                                        <p class="playlist-tracks">Tracks: <%= playlist.trackList.length %>
+                                        </p>
+                                        <p class="playlist-likes">Likes: <%= playlist.likes %>
+                                        </p>
+                                        <p class="playlist-dislikes">Dislikes: <%= playlist.dislikes %>
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="playlist-info">
-                                    <h3 class="playlist-name"><%= playlist.playListName %></h3>
-                                    <p class="playlist-genre">Genre: <%= playlist.genere %></p>
-                                    <p class="playlist-tracks">Tracks: <%= playlist.trackList.length %></p>
-                                    <p class="playlist-likes">Likes: <%= playlist.likes %></p>
-                                    <p class="playlist-dislikes">Dislikes: <%= playlist.dislikes %></p>
+                                <% }) %>
+                        </div>
+                    </div>
+                    <% } %>
+
+                        <% if (locals.privatePlaylists.length !==0) { %>
+
+                            <div class="section">
+                                <h2>Private Playlists</h2>
+                                <div id="private-playlists-container" class="item-container">
+                                    <% locals.privatePlaylists.forEach(playlist=> { %>
+                                        <div class="playlist-item">
+                                            <div class="playlist-thumbnail">
+                                                <img src="<%= playlist.thumbNailPath %>"
+                                                    alt="<%= playlist.playListName %> Thumbnail">
+                                            </div>
+                                            <div class="playlist-info">
+                                                <h3 class="playlist-name">
+                                                    <%= playlist.playListName %>
+                                                </h3>
+                                                <p class="playlist-genre">Genre: <%= playlist.genere %>
+                                                </p>
+                                                <p class="playlist-tracks">Tracks: <%= playlist.trackList.length %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <% }) %>
                                 </div>
                             </div>
-                        <% }) %>
+                            <% } %>
+<!--                 
+                            {
+                                _id: new ObjectId('66991823c79dc850461e3375'),
+                                requestMadeBy: {
+                                  _id: new ObjectId('669912ad65d0e1ecff6154fe'),
+                                  userName: 'friend2'
+                                },
+                                playListRequestedFor: {
+                                  _id: new ObjectId('6699133665d0e1ecff61553a'),
+                                  playListName: 'friend1PlayList',
+                                  createdBy: new ObjectId('6699129165d0e1ecff6154f7'),
+                                  trackList: [
+                                    new ObjectId('668e332b7233ab3cca5bcd7b'),
+                                    new ObjectId('668e332b7233ab3cca5bcd7e'),
+                                    new ObjectId('668e332b7233ab3cca5bcd82'),
+                                    new ObjectId('668e332b7233ab3cca5bcd7d'),
+                                    new ObjectId('668e332b7233ab3cca5bcd88')
+                                  ],
+                                  status: 'Public',
+                                  genere: 'UserDefined',
+                                  likes: 0,
+                                  dislikes: 0,
+                                  requestsForMerge: [ new ObjectId('66991823c79dc850461e3375') ],
+                                  thumbNailPath: '/public/uploads/1721307958112-bookmark-minus-solid-icon.svg',
+                                  __v: 1
+                                },
+                                requestStatus: 'Pending',
+                                __v: 0
+                              }         
+                 -->
+                 <% if (locals.requestsForMerges.length !==0) { %>
+                    <div class="section">
+                        <h2>Merge Requests</h2>
+                        <div id="public-playlists-container" class="item-container">
+                            <% locals.requestsForMerges.forEach(request=> { %>
+                                <div class="playlist-item">
+                                    <div class="playlist-info">
+                                        <h2 class="playlist-name">
+                                            <%= request.playListRequestedFor.playListName %>
+                                        </h1>
+                                        <p class="playlist-genre">Requested By : <a href=""> <%= request.requestMadeBy.userName %></a>
+                                        </p>
+                                    </div>
+                                    <button class="acceptMergeRequest" data-requestId="<%= request._id %>">
+                                        Accept 
+                                    </button>
+                                </div>
+                                <% }) %>
+                        </div>
                     </div>
-                </div>
-            <% } %>
+                    <% } %>
 
-            <% if (locals.privatePlaylists.length !== 0) { %>
-             
-<div class="section">
-    <h2>Private Playlists</h2>
-    <div id="private-playlists-container" class="item-container">
-        <% locals.privatePlaylists.forEach(playlist => { %>
-            <div class="playlist-item">
-                <div class="playlist-thumbnail">
-                    <img src="<%= playlist.thumbNailPath %>" alt="<%= playlist.playListName %> Thumbnail">
-                </div>
-                <div class="playlist-info">
-                    <h3 class="playlist-name"><%= playlist.playListName %></h3>
-                    <p class="playlist-genre">Genre: <%= playlist.genere %></p>
-                    <p class="playlist-tracks">Tracks: <%= playlist.trackList.length %></p>
-                </div>
-            </div>
-        <% }) %>
-    </div>
-</div>
-            <% } %>
+
     </div>
     </div>
 

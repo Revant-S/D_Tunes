@@ -5,7 +5,6 @@ const partyPlaylistResult = document.getElementById('party-playlist-result');
 const playListStack = document.querySelector(".playList-stack");
 const playListSelector = document.getElementById("playlist-select-1")
 const addBtn = document.getElementById("Add-playlist");
-const createPlayListBtn = document.getElementById("create-party-playlist");
 let selectedPlayList = null
 let playListArray = [];
 function stackElementGenerate({name, id }) {
@@ -74,7 +73,6 @@ async function createPlayList() {
             playLists : playListToSupply
         }
     })
-    console.log(response);
     partyPlayListId = response.data.newPlayListId
     confirmationDiaglog.showModal()
 }

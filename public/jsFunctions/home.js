@@ -24,6 +24,12 @@ class TrackCard {
         data: 1,
       }
     );
+    if (response.data.amt >0) {
+      this.likedByUser = true
+      this.disLikedByUser = false
+    }else{
+      this.likedByUser = false
+    }
     updateLikeIcon(response.data.amt, true);
     return response.data;
   }
@@ -35,6 +41,12 @@ class TrackCard {
         data: -1,
       }
     );
+    if (response.data.amt >0) {
+      this.disLikedByUser = true
+      this.likedByUser = false
+    }else{
+      this.disLikedByUser = false
+    }
     updateLikeIcon(response.data.amt, false);
     return response.data;
   }
@@ -146,6 +158,8 @@ function playSongOnCard(e) {
     songPlaying.pause();
   }
   const cardObj = cardObjects[cardId];
+  console.log("LOOK HERE !!!!!!!!!!");
+  console.log(cardObj);
   if (cardObj.likedByUser) {
     likeBtn.src = "/public/appImages/like-svgrepo-com.svg";
   } else {
@@ -249,8 +263,6 @@ async function getdata() {
         },
       }
     );
-    console.log("HELLO");
-    console.log(response);
     return response.data;
   } catch (error) {
     if (error.response && error.response.status === 401) {

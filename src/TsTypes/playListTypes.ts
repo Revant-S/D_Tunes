@@ -9,6 +9,7 @@ export interface IPlayList {
   likes?: number;
   dislikes?: number;
   thumbNailPath: string;
+  requestsForMerge : Types.ObjectId[]
 }
 
 export interface PlayListDocument extends IPlayList, Document {}

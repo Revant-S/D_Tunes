@@ -5,6 +5,9 @@ import { userPayload } from "./trackControllers";
 import { Types } from "mongoose";
 import { IUserModel } from "../TsTypes/userdbtypes";
 import PlayList from "../DbModels/playListModel";
+import ReqPlayList from "../DbModels/partyModeReqModel";
+import { IReqPlayListDocument } from "../TsTypes/MergeRequestsTypes";
+// import { reject } from "lodash";
 
 export interface UserDocument extends IUserModel {
     _id: Types.ObjectId
@@ -62,6 +65,28 @@ export async function acceptFriendRequest(req: Request, res: Response) {
     return res.send(`You Accepted the FriendRequest`);
 }
 
+// USED ONLY ANY TYPE IN THIS FUNCTION 
+export async function getMergeRequests(playListsCreatedByUser: any[]): Promise<IReqPlayListDocument[]> {
+    console.log("getting the MergeRequests");
+    let requestsForMerges: any[] = [];
+  
+    for (const playList of playListsCreatedByUser) {
+      const mergeRequests = playList.requestsForMerge;
+      for (const requestId of mergeRequests) {
+        const fullRequest = await ReqPlayList.findById(requestId);
+        if (!fullRequest) continue;
+        await fullRequest.populate([
+          { path: "requestMadeBy", select: "_id , userName ,emailId " },
+          { path: "playListRequestedFor" }
+        ]);
+        requestsForMerges.push(fullRequest);
+        console.log("IN FOR LOOP");
+        console.log(requestsForMerges);
+      }
+    }
+  
+    return requestsForMerges;
+  }
 
 export async function getUserProfile(req: Request, res: Response) {
     const user = await getUser(req);
@@ -73,17 +98,19 @@ export async function getUserProfile(req: Request, res: Response) {
     }, {
         path: "friendRequestMade", select: "userName , emailId , role , _id"
     }])
-    const playListsCreatedByUser = await PlayList.find({createdBy : user._id});
-    const privatePlaylists = playListsCreatedByUser.filter(playList =>playList.status==="Private");
+    const playListsCreatedByUser = await PlayList.find({ createdBy: user._id });
+    const privatePlaylists = playListsCreatedByUser.filter(playList => playList.status === "Private");
     const publicPlayLists = playListsCreatedByUser.filter(playList => playList.status === "Public");
-    console.log(playListsCreatedByUser);
-    
-    console.log(privatePlaylists);
-    console.log(publicPlayLists);
-    
+    const requestsForMerges :IReqPlayListDocument[]  = await getMergeRequests(playListsCreatedByUser);
+    console.log("Got the Merge Requests");
+    console.log(requestsForMerges);
     
     res.render("myProfile", {
-        user: populatedUser,publicPlayLists , privatePlaylists
+        user: populatedUser,
+        publicPlayLists,
+        privatePlaylists,
+        playListsCreatedByUser,
+        requestsForMerges
     })
 }
 
@@ -97,16 +124,29 @@ export async function getMyFriends(req: Request, res: Response) {
 
 }
 export async function getProfile(req: Request, res: Response) {
+    const currentUser = await getUser(req);
+    if (!currentUser) return res.send("You Dont exist")
     const emialId: string = req.params.emailId;
     const user = await User.findOne({ emailId: emialId }, {
         password: 0, friendRequestToMe: 0, friendRequestMade: 0
     })
+    if (!user) return res.send("User is not there with us")
+    const isFriend: boolean = (user.friends.includes(currentUser._id))
     if (!user) return res.json({ msg: "User Not Found" });
     const userPopulated = await user.populate([{
         "path": "friends", select: "userName , emailId , role , profileImageUrl, "
     }])
+    const playLists = await PlayList.find({
+        $and: [
+            { createdBy: user._id },
+            { status: "Public" }
+        ]
+    })
+
     return res.render("otherUserProfile", {
-        userPopulated
+        userPopulated,
+        playLists,
+        isFriend
     })
 }
 

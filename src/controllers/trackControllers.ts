@@ -43,11 +43,16 @@ export async function AddToTheLikedPlayList(id: Types.ObjectId, user: UserDocume
 
 export async function updateLike(req: Request, res: Response) {
     let amt: number = req.body.data
+    console.log("IR REACHED HERE");    
     const findUser = await User.findById((((req as UserRequest).userToken as userPayload)._id))
-    const trackId: string = req.params.trackId;
+    const trackId = req.params.trackId;
     if (!trackId) return res.send("No Id Found");
     if (!findUser) return res.send("You Dont exit !!!!");
+    console.log(trackId);
+    
     const findTrackInDb = await Track.findOne({ id: trackId })
+    console.log(findTrackInDb);
+    
     if (!findTrackInDb) return res.send("Track Not in db");
     if (amt > 0) {
         //user has liked the song

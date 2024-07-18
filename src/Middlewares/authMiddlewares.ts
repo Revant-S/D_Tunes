@@ -17,4 +17,4 @@ export function authorizeUser(req: Request, res: Response, next: NextFunction) {
     res.clearCookie("token");
     return res.status(401).json({ message: "Invalid token", redirect: "/auth/signin" });
   }
- }
+}

@@ -1,7 +1,9 @@
+// const { default: axios } = require("axios");
 const acceptBtn = document.querySelectorAll(".AcceptFriendRequestBtn");
 const rejectBtn = document.querySelectorAll(".RejectFriendRequestBtn");
 const removeBtn = document.querySelectorAll(".RemoveFriendRequestBtn");
 const RemoveFromFriendBtn = document.querySelectorAll(".RemoveFromFriendBtn");
+const acceptMergeRequest = document.querySelectorAll(".acceptMergeRequest");
 function applyEventListnerToBtns() {
     acceptBtn.forEach(btn =>{
         btn.addEventListener("click" , acceptFriendRequest)
@@ -14,7 +16,10 @@ function applyEventListnerToBtns() {
     })    
     RemoveFromFriendBtn.forEach(btn =>{
         btn.addEventListener("click" , removeFromFriend)
-    })    
+    });
+    acceptMergeRequest.forEach(btn =>{
+        btn.addEventListener("click" , acceptTheMerge)
+    });    
 }
 applyEventListnerToBtns();
 
@@ -50,4 +55,13 @@ async function removeFromFriend(e) {
     })
     console.log(response);
     alert(response.data);
+}
+
+async function acceptTheMerge(e) {
+    const requestId = e.target.getAttribute("data-requestId");
+    const response = await axios.put("http://localhost:5000/party/respondToRequest",{
+        Accepted : true,
+        id : requestId
+    })
+    alert(response.data)
 }

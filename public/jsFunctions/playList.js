@@ -12,7 +12,6 @@ class PlayListCard{
         this.playListDetails = playListDetails
         PlayListCard.numberOfPlayLists++;
     }
-    showAllSongs(){}
 }
 
 async function getAllTracks(e) {

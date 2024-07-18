@@ -3,6 +3,34 @@
 <head>
     <%- include("./partials/headTags.ejs") %>
     <link rel="stylesheet" href="/public/cssFiles/otherUserProfile.css">
+    <style>
+        .playList-container-public{
+            height: 15vh;
+            margin-top: 2%;
+            
+        }
+        .indivudual-playList{
+            padding: 1%;
+            border-radius: 10px;
+            width: 100%;
+            display: flex;
+            background-color: rgb(46, 46, 46);
+            justify-content: space-between;
+            box-shadow: 2px 2px 2px black;
+            
+        }
+        .indivudual-playList button {
+            padding: 1%;
+            border: none;
+            border-radius: 50px;
+            transition: 0.7s;
+        }
+        .indivudual-playList button:hover {
+            background-color: rgb(41, 195, 41);
+            color: aliceblue;
+            
+        }
+    </style>
 </head>
 <body>
     <div class="profile-container">
@@ -19,11 +47,13 @@
                         <h3 id="user-role"><%= locals.userPopulated.role %></h3>
                     </div>
                     <p id="user-email"><%= locals.userPopulated.emailId %></p>
-                    <div class="friendRequestBtn">
-                        <button id="friend-request-btn" class="friend-request-btn" data-userId="<%= locals.userPopulated._id %>">
-                            Send Friend Request
-                        </button>
-                    </div>
+                    <% if (!locals.isFriend) { %>
+                        <div class="friendRequestBtn">
+                            <button id="friend-request-btn" class="friend-request-btn" data-userId="<%= locals.userPopulated._id %>">
+                                Send Friend Request
+                            </button>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -40,7 +70,21 @@
                 <% }) %>
             </div>
         </div>
+  
+        <% if (locals.playLists && locals.isFriend) { %>
+            <h1>Public PlayLists</h1>
+         <div class="playList-container-public">
+            <% locals.playLists.forEach(element => { %>
+            <div class="indivudual-playList">
+                <h2 data-id="<%= element._id %>"><%= element.playListName %></h2>
+                <button class="requestBtn">
+                    Request To Merge
+                </button>
+            </div>
 
+            <% }) %>
+         </div>
+        <% } %>
         <% if (locals.userPopulated.role === "Artist") { %>
             <div class="section">
                 <h2>Published Music</h2>

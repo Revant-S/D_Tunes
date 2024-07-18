@@ -11,6 +11,7 @@ import { authorizeUser } from "./Middlewares/authMiddlewares"
 import cookieParser from 'cookie-parser';
 import playListRoutes from "./routes/playListRoutes"
 import { getLatestToken } from './Middlewares/sportifyAcessTokenMiddleware';
+import partyRoutes from "./routes/partyRoutes"
 const app = express();
 
 app.use(cors({
@@ -29,7 +30,8 @@ app.use("/getTracks", [authorizeUser , getLatestToken])
 app.use("/getTracks", trackRoutes)
 app.use("/user" ,authorizeUser)
 app.use("/user" ,userRoutes)
-
+app.use("/party" , authorizeUser)
+app.use("/party" , partyRoutes)
 async function connectToDb() {
     try {
         await mongoose.connect(config.get("DbConnectionString"))
