@@ -57,8 +57,7 @@ export async function getTracks(req: Request, res: Response) {
     //     useFullArray.push(useOIbj)
     // })
     // await appToTrackCollections(useFullArray)
-    console.log("GETTING THE TRACKS !!!!!!!!!!!!!");
-    
+
     const dataToSendArray = await Track.find({})
     const dataToSend:SendData[] = [];
     const userLikedSongs = (await User.findById(((req as UserRequest).userToken as userPayload)._id , {likedSongs :  1, dislikedSongs: 1 }))
@@ -81,8 +80,7 @@ export async function getTracks(req: Request, res: Response) {
         }
         dataToSend.push(useObj)
     })
-    console.log(dataToSend);
-    
+
     res.send(dataToSend)
     return
 }

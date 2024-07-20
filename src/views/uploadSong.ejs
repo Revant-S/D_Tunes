@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/cssFiles/aeristDash.css">
+    <style>
+        .wholePage {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+        }
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+        }
+        form {
+            background-color: rgb(46, 46, 46);
+            border-radius: 10%;
+            width: 80%;
+            max-width: 600px;
+            padding: 5%;
+            display: flex;
+            flex-direction: column;
+            gap: 2vh;
+        }
+        h1 {
+            margin: 2vh 0;
+            font-size: 3vh;
+        }
+        label {
+            font-size: 2vh;
+            margin-top: 2vh;
+        }
+        input[type="file"], input[type="text"] {
+            width: 40%;
+            padding: 1vh;
+            font-size: 1.8vh;
+        }
+        input[type="text"] {
+            margin-bottom: 2vh;
+            width: 100%;
+        }
+        #uploadBtn{
+            width: 10vw;
+            height: 6vh;
+            font-size: large;
+            border: none;
+            color: white;
+            background-color: green;
+            transition: 0.5s;
+        }
+        #uploadBtn:hover{
+            background-color: rgb(40, 217, 40);
+        }
+    </style>
+</head>
+<body>
+    <div class="wholePage">
+        <%- include("./partials/artistNav.ejs") %>
+        <div class="main-content">
+            <h1>Song Upload Dashboard</h1>
+            <form action="/artist/uploadnewsong" enctype="multipart/form-data" method="post">
+                <label for="audioFile">Upload Your Song</label>
+                <input type="file" id="audioFile" name="audioFile" accept="audio/*">     
+                <label for="thumbNail">Song Thumbnail</label>
+                <input type="file" id="songThumbNail" name="thumbNail">
+                <label for="trackName">Name of the Track</label>
+                <input type="text" id="trackName" name="trackName" required>
+                <button type="submit" id="uploadBtn">Upload Song</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

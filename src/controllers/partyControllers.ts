@@ -27,7 +27,6 @@ export async function requestPlayList(req: Request, res: Response) {
 
 export async function respondToRequest(req: Request, res: Response) {
     const { id } = req.body;
-
     const request = await ReqPlayList.findById(id);
     if (!request) return res.send("Request Not Found");
     request.requestStatus = "Accepted";

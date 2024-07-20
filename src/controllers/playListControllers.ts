@@ -16,8 +16,6 @@ export interface playListBody {
 
 export async function getPlayLists(req: Request, res: Response) {
     const playLists = await PlayList.find({ $or: [{ createdBy: ((req as UserRequest).userToken as userPayload)._id }, { status: "Public" }] })
-    console.log(playLists);
-
     res.render("playList", {
         playLists
     })
@@ -47,16 +45,10 @@ export async function getPlayListNames(req: Request, res: Response) {
     return res.send(playLists)
 }
 export async function updatePlayLists(req: Request, res: Response) {
-    console.log(typeof req.body.playListName);
-
     const songCard = JSON.parse(req.body.SongToBeAdded);
-    console.log(req.body);
-
     const body: playListBody = req.body
     const trackIDb = await Track.findOne({ id: songCard.id })
-
     if (!trackIDb) return res.send("Song Not Found in Db");
-    console.log(body.playListName);
     if ((typeof req.body.playListName) === "string") {
         await PlayList.findByIdAndUpdate(body.playListName, { $push: { trackList: trackIDb._id } });
     }
@@ -81,7 +73,7 @@ export async function getPLayListPage(req: Request, res: Response) {
     const likedSongs = user?.likedSongs;
     const dislikedSongs = user?.dislikedSongs
     let playListToRender: any = [];
-    populatedPlayList.trackList.forEach(async (element: any) => {  // Used ANY RECTIFY IT
+    populatedPlayList.trackList.forEach(async (element: any) => {
         let likedByUser = false;
         let dislikedByUser = false;
         if (likedSongs?.includes(element._id)) likedByUser = true;
@@ -96,6 +88,7 @@ export async function getPLayListPage(req: Request, res: Response) {
         playListToRender.push(obj)
 
     });
+
     res.render("playListPage", {
         populatedPlayList: playListToRender
     })
@@ -175,7 +168,7 @@ export async function partyModePageRedirect(req: Request, res: Response) {
         playListToRender.push(obj)
 
     });
-    await PlayList.deleteOne({_id :req.query.id })
+    await PlayList.deleteOne({ _id: req.query.id })
 
     res.render("playListPage", {
         populatedPlayList: playListToRender

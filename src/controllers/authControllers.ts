@@ -52,17 +52,12 @@ export async function signup(req: Request, res: Response) {
 
 
 export async function signin(req: Request, res: Response) {
-
     const body: signupBody = req.body
-    console.log(body.password);
     const validateBody = validateaAuthBody(body)
     if (!validateBody.success) return res.send(validateBody.error)
     const userInDb = await User.findOne({ emailId: body.email })
     if (!userInDb) return res.send("NO USER FOUND");
-        
     const correctUser = await bcrypt.compare(body.password, userInDb.password)
-    console.log(correctUser);
-
     if (!correctUser) return res.send("Incorrect Password")
     const token = userInDb.getAuthToken();
     res.status(200).cookie("token", token).redirect("/home")

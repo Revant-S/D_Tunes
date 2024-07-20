@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Dashboard</title>
+    <link rel="stylesheet" href="/public/cssFiles/aeristDash.css">
+    
+</head>
+<body>
+    <div class="dashboard">
+      <%- include("./partials/artistNav.ejs") %>
+        <div class="main-content">
+            <div class="profile-summary">
+                <h1>Welcome, <span id="artistName"><%= locals.artistInDb.artistName %></span></h1>
+                <p>Email: <span id="artistEmail"><%= locals.artistInDb.email %></span></p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Songs Published</h3>
+                    <p id="songCount"><%= locals.artistInDb.songsPublished.length %></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Followers</h3>
+                    <p id="followerCount"><%= locals.artistInDb.followers.length %></p>
+                </div>
+            </div>
+            <div class="top-songs">
+                <h2>Songs Uploaded</h2>
+                <ul id="topSongsList">
+                   <% if (locals.artistInDb.songsPublished.length !== 0) { %>
+                    <% locals.artistInDb.songsPublished.forEach(song => { %>
+                        <li><%= song.trackName %></li>
+                    <% }) %>
+                   <% } %>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="/public/jsFunctions/artistDashBoard.js"></script>
+</body>
+
+</html>

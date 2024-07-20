@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+.dashboard {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    height: 100vh;
+}
+.sidebar {
+    background-color: #2c2c2c;
+    padding: 2vh 2vw;
+    max-width:250px ;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profile-image-container {
+    width: 80%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 2vh;
+}
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.main-content {
+    padding: 2vh 2vw;
+    overflow-y: auto;
+}
+.profile-summary {
+    background-color: #333333;
+    padding: 2vh;
+    border-radius: 1vh;
+    margin-bottom: 2vh;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2vh;
+    margin-bottom: 2vh;
+}
+.stat-card {
+    background-color: #333333;
+    padding: 2vh;
+    border-radius: 1vh;
+    text-align: center;
+}
+.recent-activity, .top-songs {
+    background-color: #333333;
+    padding: 2vh;
+    border-radius: 1vh;
+    margin-bottom: 2vh;
+}
+h1, h2, h3 {
+    margin-top: 0;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+li {
+    margin-bottom: 1vh;
+}
+.btn {
+    display: block;
+    width: 100%;
+    padding: 1vh;
+    margin-bottom: 1vh;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 0.5vh;
+    cursor: pointer;
+}
+.btn:hover {
+    background-color: #45a049;
+}
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+}

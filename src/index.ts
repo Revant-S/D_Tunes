@@ -4,14 +4,16 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/authroutes"
 import path from "path";
 import cors from "cors"
+import morgan from "morgan"
 import userRoutes from "./routes/userRoutes"
 import trackRoutes from "./routes/trackRoutes"
 import config from "config"
-import { authorizeUser } from "./Middlewares/authMiddlewares"
+import { authorizeUser, authorizeArtist } from "./Middlewares/authMiddlewares"
 import cookieParser from 'cookie-parser';
 import playListRoutes from "./routes/playListRoutes"
 import { getLatestToken } from './Middlewares/sportifyAcessTokenMiddleware';
 import partyRoutes from "./routes/partyRoutes"
+import artistRoutes from "./routes/artistRoutes"
 const app = express();
 
 app.use(cors({
@@ -22,7 +24,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser("token"))
+app.use(morgan("dev"))
 app.use("/auth", authRoutes)
+app.use("/artist", authorizeArtist)
+app.use("/artist",artistRoutes)
 app.use("/public", express.static(path.resolve('public')));
 app.use("/playlists", authorizeUser)
 app.use("/playlists", playListRoutes)
@@ -43,8 +48,6 @@ async function connectToDb() {
 }
 
 connectToDb()
-
-
 
 app.get("/home", (req, res) => {
     res.render("home")
