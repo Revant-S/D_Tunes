@@ -5,7 +5,7 @@ import bcrypt from "bcrypt"
 import { validateaAuthBody } from "../zodValidationLogic/bodyValidation";
 import { UserDocument } from "./userControllers";
 import PlayList from "../DbModels/playListModel";
-
+import { getUserDetails } from "../externalApiInteraction/dauthAuthentication";
 export function getSignupPage(req: Request, res: Response) {
     return res.render("signup")
 }
@@ -61,4 +61,22 @@ export async function signin(req: Request, res: Response) {
     if (!correctUser) return res.send("Incorrect Password")
     const token = userInDb.getAuthToken();
     res.status(200).cookie("token", token).redirect("/home")
+}
+
+export async function addOrVerifyDauthUser(code : string) {
+    const userDetails = await getUserDetails(code)
+    if(!userDetails) return {success : false};
+    const userInDb = await User.findOne({emailId : userDetails.email});
+    if(!userInDb){
+        const newUser = await User.create({
+            emailId : userDetails.email,
+            userName : userDetails.name,
+            password : "DAUTHUSERPASSWORD",
+
+        })
+        const authToken = newUser.getAuthToken();
+        return {success : true , authToken};
+    }
+    const authToken = userInDb.getAuthToken();
+    return {success : true , authToken};
 }

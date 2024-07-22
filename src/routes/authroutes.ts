@@ -6,6 +6,7 @@ import * as artistController from "../controllers/artistControllers"
 router.get("/signup" ,authController.getSignupPage )
 router.get("/signin" , authController.getSigninPage)
 router.post("/signup", authController.signup)
+// router.post("/loginWithdauth", authController.signUpWithDauth)
 router.post("/signin", authController.signin)
 router.get("/registerArtist", artistController.getRegPage);
 router.get("/artistSignin" , artistController.getSignInPage)

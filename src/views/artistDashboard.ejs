@@ -13,6 +13,7 @@
       <%- include("./partials/artistNav.ejs") %>
         <div class="main-content">
             <div class="profile-summary">
+                <% console.log(locals.artistInDb.songsPublished.length); %>
                 <h1>Welcome, <span id="artistName"><%= locals.artistInDb.artistName %></span></h1>
                 <p>Email: <span id="artistEmail"><%= locals.artistInDb.email %></span></p>
             </div>

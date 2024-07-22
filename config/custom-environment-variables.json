@@ -3,5 +3,7 @@
     "client_secret" : "DTunes_client_secret",
     "DbConnectionString" : "DTunes_DbConnectionString",
     "jwtKey" : "DTunesJWTKey",
-    "PORT" : "DTunes_Dev_Port"
+    "PORT" : "DTunes_Dev_Port",
+    "dauth_client_Id" : "DAuth_Client_Id",
+    "dauth_client_secret" : "DAuth_Client_Secret"
 }

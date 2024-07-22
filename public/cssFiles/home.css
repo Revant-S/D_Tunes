@@ -46,6 +46,7 @@ html {
     font-size: 1em;
 }
 
+
 .recomendations {
     margin-top: 10vh;
     flex-grow: 1;
@@ -54,59 +55,61 @@ html {
 
 .heading h3 {
     margin-bottom: 3vh;
-    font-size: 1.3em;
+    font-size: 1.5em;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .recomendationList {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    flex-wrap: wrap;
-    gap: 3vw;
-    transition: 1s;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2vw;
+    padding: 2vw;
+    transition: 0.3s;
 }
 
 .recomendationElement {
-    width: 18vw;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
     position: relative;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.recomendationElement:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 .recomendationElement img {
-    height: 100%;
     width: 100%;
-    object-fit: contain;
-    transition: 1s;
-}
-
-.recomendationElement img:hover {
-    transform: scale(1.2);
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    transition: 0.3s;
 }
 
 .recomendationElement h3 {
     position: absolute;
-    backdrop-filter: blur(5px);
-    z-index: 3;
-    color: aliceblue;
-    top: 2%;
-    width: 100%;
-    text-align: center;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: #fff;
+    padding: 15px;
+    margin: 0;
+    font-size: 1.1em;
+    text-align: left;
+    transition: 0.3s;
 }
 
-.playerDiv {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    position: fixed;
-    bottom: 1%;
-    width: 78%;
-    height: 10vh;
-    background-color: rgb(114, 229, 229, 0.6);
+.recomendationElement:hover h3 {
+    padding-bottom: 20px;
 }
 
-#rangeIn {
-    width: 100%;
-    margin-bottom: 3vh;
-}
+
 
 .options {
     display: flex;
@@ -132,24 +135,6 @@ html {
 .menuElements img:hover {
     cursor: pointer;
     transform: scale(1.2);
-}
-
-.likeDislikeBtn {
-    display: flex;
-    margin-left: auto;
-}
-
-.likeBtn,
-.disLikeBtn {
-    margin-left: 1.5vw;
-}
-
-.likeBtn img,
-.disLikeBtn img {
-    width: 2vw;
-    height: 2vw;
-    min-width: 20px;
-    min-height: 20px;
 }
 
 @media (max-width: 768px) {

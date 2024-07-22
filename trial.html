@@ -3,12 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artist Registration</title>
-    <style>
+    <title>Document</title>
 
+    <style>
+        .btn{
+            text-decoration: none;
+            display: flex;
+            border: 2px solid black;
+            align-items: center;
+            width: fit-content;
+            color: white;
+            background-color: black;
+            padding-left: 1%;
+            padding-right: 1%;
+            border-radius: 40px;
+            font-size: larger;
+    
+            height: fit-content;
+            transition: 0.4s;
+        }
+        .btn:hover{
+
+            transform: translateY(-4%);
+        }
+        .dauthBtn img{
+            height: 30%;
+            aspect-ratio: 1/1;
+            border-radius: 20px;
+            background: none;
+  
+        }
     </style>
 </head>
+
+
 <body>
-    <audio src="http://localhost:5000/public/uploads/songs/1721470348809-Luis Fonsi - Despacito ft. Daddy Yankee.mp3" controls></audio>
+    <a href="" class="btn dauthBtn">
+       <div> Login With </div><img src="/public/appImages/Screenshot from 2024-07-22 20-54-53.png" alt="">
+    </a>
 </body>
 </html>

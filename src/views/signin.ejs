@@ -4,6 +4,7 @@
 <head>
     <%- include("./partials/headTags.ejs") %>
        <link rel="stylesheet" href="/public/cssFiles/signupPage.css">
+       <link rel="stylesheet" href="/public/cssFiles/dauthBtn.css">
 </head>
 
 <body>
@@ -31,7 +32,12 @@
             </div>
         </form>
         <div class="redirect">Dont Have an Account ?<a href="/auth/signup">signup</a></div>
+        <div class="dauthLogin">
+            <%- include("./partials/dauthLoginBtn.ejs") %>
+        </div>
     </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/public/jsFunctions/authWithDauth.js"></script>
 </body>
 
 </html>

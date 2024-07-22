@@ -10,6 +10,7 @@ import Track from "../DbModels/tracksModel";
 import { uploadSongBody } from "../TsTypes/ArtistTypes";
 import { RequestArtist } from "../Middlewares/authMiddlewares";
 
+
 export interface ArtistPayLoad extends JwtPayload {
     artistId : Types.ObjectId,
     artistName : string,
@@ -55,7 +56,7 @@ export async function registerArtist(req: Request, res: Response) {
         res.cookie("token", token, {
             maxAge: 360000,
             httpOnly: true
-        }).send("REGISTERED SUCESSFULLY").redirect("/home")
+        }).redirect("/artist/dashBoard")
     } catch (error) {
 
         if (error instanceof Error && 'code' in error && error.code === 11000) {
@@ -114,3 +115,5 @@ export async function uploadTheSong(req : Request , res : Response) {
         
     }
 }
+
+

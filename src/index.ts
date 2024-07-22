@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import express from "express"
+import express, { Request, Response } from "express"
 import mongoose from "mongoose";
 import authRoutes from "./routes/authroutes"
 import path from "path";
@@ -14,6 +14,8 @@ import playListRoutes from "./routes/playListRoutes"
 import { getLatestToken } from './Middlewares/sportifyAcessTokenMiddleware';
 import partyRoutes from "./routes/partyRoutes"
 import artistRoutes from "./routes/artistRoutes"
+
+import { addOrVerifyDauthUser } from './controllers/authControllers';
 const app = express();
 
 app.use(cors({
@@ -27,16 +29,16 @@ app.use(cookieParser("token"))
 app.use(morgan("dev"))
 app.use("/auth", authRoutes)
 app.use("/artist", authorizeArtist)
-app.use("/artist",artistRoutes)
+app.use("/artist", artistRoutes)
 app.use("/public", express.static(path.resolve('public')));
 app.use("/playlists", authorizeUser)
 app.use("/playlists", playListRoutes)
-app.use("/getTracks", [authorizeUser , getLatestToken])
+app.use("/getTracks", [authorizeUser, getLatestToken])
 app.use("/getTracks", trackRoutes)
-app.use("/user" ,authorizeUser)
-app.use("/user" ,userRoutes)
-app.use("/party" , authorizeUser)
-app.use("/party" , partyRoutes)
+app.use("/user", authorizeUser)
+app.use("/user", userRoutes)
+app.use("/party", authorizeUser)
+app.use("/party", partyRoutes)
 async function connectToDb() {
     try {
         await mongoose.connect(config.get("DbConnectionString"))
@@ -49,9 +51,24 @@ async function connectToDb() {
 
 connectToDb()
 
-app.get("/home", (req, res) => {
+app.get("/home", async (req, res) => {
+    const params = req.query;
+    if (params.code) {
+        const verificationObj = await addOrVerifyDauthUser(params.code as string);
+        if(!(verificationObj).success) return res.send("Something went wrong");
+        return res.cookie("token" , verificationObj.authToken , {
+            maxAge : 3600000,
+            httpOnly : true
+        }).render("home")
+    }
     res.render("home")
 })
+app.get("/", (req: Request, res: Response) => {
+    res.render("landingPage");
+})
+
+
+
 
 const port = config.get("PORT") || 3000
 app.listen(port, () => console.log(`Server is listening on ${port}`))
