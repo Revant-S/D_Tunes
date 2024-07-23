@@ -8,6 +8,7 @@ import PlayList from "../DbModels/playListModel";
 import ReqPlayList from "../DbModels/partyModeReqModel";
 import { IReqPlayListDocument } from "../TsTypes/MergeRequestsTypes";
 // import { reject } from "lodash";
+// import { FileRequest } from "../Middlewares/uploadService";
 
 export interface UserDocument extends IUserModel {
     _id: Types.ObjectId
@@ -69,24 +70,24 @@ export async function acceptFriendRequest(req: Request, res: Response) {
 export async function getMergeRequests(playListsCreatedByUser: any[]): Promise<IReqPlayListDocument[]> {
     console.log("getting the MergeRequests");
     let requestsForMerges: any[] = [];
-  
+
     for (const playList of playListsCreatedByUser) {
-      const mergeRequests = playList.requestsForMerge;
-      for (const requestId of mergeRequests) {
-        const fullRequest = await ReqPlayList.findById(requestId);
-        if (!fullRequest) continue;
-        await fullRequest.populate([
-          { path: "requestMadeBy", select: "_id , userName ,emailId " },
-          { path: "playListRequestedFor" }
-        ]);
-        requestsForMerges.push(fullRequest);
-        console.log("IN FOR LOOP");
-        console.log(requestsForMerges);
-      }
+        const mergeRequests = playList.requestsForMerge;
+        for (const requestId of mergeRequests) {
+            const fullRequest = await ReqPlayList.findById(requestId);
+            if (!fullRequest) continue;
+            await fullRequest.populate([
+                { path: "requestMadeBy", select: "_id , userName ,emailId " },
+                { path: "playListRequestedFor" }
+            ]);
+            requestsForMerges.push(fullRequest);
+            console.log("IN FOR LOOP");
+            console.log(requestsForMerges);
+        }
     }
-  
+
     return requestsForMerges;
-  }
+}
 
 export async function getUserProfile(req: Request, res: Response) {
     const user = await getUser(req);
@@ -101,10 +102,10 @@ export async function getUserProfile(req: Request, res: Response) {
     const playListsCreatedByUser = await PlayList.find({ createdBy: user._id });
     const privatePlaylists = playListsCreatedByUser.filter(playList => playList.status === "Private");
     const publicPlayLists = playListsCreatedByUser.filter(playList => playList.status === "Public");
-    const requestsForMerges :IReqPlayListDocument[]  = await getMergeRequests(playListsCreatedByUser);
+    const requestsForMerges: IReqPlayListDocument[] = await getMergeRequests(playListsCreatedByUser);
     console.log("Got the Merge Requests");
     console.log(requestsForMerges);
-    
+
     res.render("myProfile", {
         user: populatedUser,
         publicPlayLists,
@@ -216,4 +217,34 @@ export async function rejectFriendRequest(req: Request, res: Response) {
     await rejectedUserInDb.save()
     await currentUser.save()
     return res.send("Reject the request")
+}
+
+
+export async function updateUserProfile(req: Request, res: Response) {
+    const user = await getUser(req);
+    if (!user) return res.status(404).json({ success: false, message: "No such user" });
+
+    try {
+        if (req.file) {
+            const profileImageUrl = `/public/profileImages/${req.file.filename}`;
+            user.profileImageUrl = profileImageUrl;
+            await user.save();
+            return res.status(200).json({
+                success: true,
+                message: "Profile image updated successfully",
+                profileImageUrl: profileImageUrl
+            });
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: "No file was uploaded"
+            });
+        }
+    } catch (error) {
+        console.error("Error updating profile image:", error);
+        return res.status(500).json({
+            success: false,
+            message: "An error occurred while updating the profile image"
+        });
+    }
 }

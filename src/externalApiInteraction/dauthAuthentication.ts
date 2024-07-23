@@ -44,6 +44,6 @@ export async function getUserDetails(code: string) {
         return userResources.data; 
     } catch (error: any) {
         console.error("Error fetching user details:", error.message);
-        throw error; // Rethrow or handle the error as needed
+        throw error;
     }
 }

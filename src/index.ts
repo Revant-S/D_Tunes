@@ -14,7 +14,7 @@ import playListRoutes from "./routes/playListRoutes"
 import { getLatestToken } from './Middlewares/sportifyAcessTokenMiddleware';
 import partyRoutes from "./routes/partyRoutes"
 import artistRoutes from "./routes/artistRoutes"
-
+import categoryRoutes from "./routes/categoryRoutes"
 import { addOrVerifyDauthUser } from './controllers/authControllers';
 const app = express();
 
@@ -39,6 +39,8 @@ app.use("/user", authorizeUser)
 app.use("/user", userRoutes)
 app.use("/party", authorizeUser)
 app.use("/party", partyRoutes)
+app.use("/category", authorizeUser);
+app.use("/category", categoryRoutes)
 async function connectToDb() {
     try {
         await mongoose.connect(config.get("DbConnectionString"))
@@ -51,14 +53,17 @@ async function connectToDb() {
 
 connectToDb()
 
+
+
+// searchTrack("despacito");
 app.get("/home", async (req, res) => {
     const params = req.query;
     if (params.code) {
         const verificationObj = await addOrVerifyDauthUser(params.code as string);
-        if(!(verificationObj).success) return res.send("Something went wrong");
-        return res.cookie("token" , verificationObj.authToken , {
-            maxAge : 3600000,
-            httpOnly : true
+        if (!(verificationObj).success) return res.send("Something went wrong");
+        return res.cookie("token", verificationObj.authToken, {
+            maxAge: 3600000,
+            httpOnly: true
         }).render("home")
     }
     res.render("home")

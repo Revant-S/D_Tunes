@@ -8,10 +8,15 @@ import {
     getProfile,
     rejectFriendRequest,
     removeFriendRequest,
-    removeFromFriendList
+    removeFromFriendList,
+    updateUserProfile
 } from "../controllers/userControllers"
+import { upload } from "../Middlewares/uploadService"
 
 const router = Router()
+
+
+
 
 router.get("/myprofile", getUserProfile)
 router.get("/searchUser", searchInDb)
@@ -22,4 +27,5 @@ router.get("/viewProfile/:emailId" ,getProfile )
 router.put("/removeFriendRequest" ,removeFriendRequest )
 router.put("/rejectFriendRequest",rejectFriendRequest)
 router.put("/removeFromFriend", removeFromFriendList)
+router.put("/updateUserProfile",upload.single("profileImage"),updateUserProfile )
 export default router

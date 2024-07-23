@@ -1,9 +1,21 @@
-// const { default: axios } = require("axios");
 const acceptBtn = document.querySelectorAll(".AcceptFriendRequestBtn");
 const rejectBtn = document.querySelectorAll(".RejectFriendRequestBtn");
 const removeBtn = document.querySelectorAll(".RemoveFriendRequestBtn");
 const RemoveFromFriendBtn = document.querySelectorAll(".RemoveFromFriendBtn");
 const acceptMergeRequest = document.querySelectorAll(".acceptMergeRequest");
+const profileImage = document.getElementById("profile-image");
+const changeProfileImage = document.getElementById("changeProfileImage")
+const url = window.location.href;
+profileImage.addEventListener("click" , (e)=>{
+    changeProfileImage.showModal();
+})
+function reloadWindow() {
+    window.location.href = url
+}
+
+
+
+
 function applyEventListnerToBtns() {
     acceptBtn.forEach(btn =>{
         btn.addEventListener("click" , acceptFriendRequest)
@@ -31,14 +43,14 @@ async function acceptFriendRequest(e) {
         }
     })
     e.target.parentNode.parentNode
-    alert(response.data)
+    reloadWindow()
 }
 async function rejectFriendRequest(e) {
     const toReject = e.target.getAttribute("data-userId");
     const response = await axios.put("http://localhost:5000/user/rejectFriendRequest" , {
         data : { toReject }
     })
-    alert(response.data);
+    reloadWindow()
 }
 async function removeFriendRequest(e) {
     const toRemove = e.target.getAttribute("data-userId");
@@ -46,7 +58,7 @@ async function removeFriendRequest(e) {
         data : { toRemove }
     })
     console.log(response);
-    alert(response.data);
+    reloadWindow()
 }
 async function removeFromFriend(e) {
     const toRemove = e.target.getAttribute("data-userId");
@@ -54,7 +66,7 @@ async function removeFromFriend(e) {
         data : { toRemove }
     })
     console.log(response);
-    alert(response.data);
+    reloadWindow()
 }
 
 async function acceptTheMerge(e) {
@@ -63,5 +75,4 @@ async function acceptTheMerge(e) {
         Accepted : true,
         id : requestId
     })
-    alert(response.data)
 }

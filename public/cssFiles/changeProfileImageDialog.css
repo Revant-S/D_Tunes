@@ -1,0 +1,91 @@
+#changeProfileImage {
+    background-color: #2a2a2a;
+    border: none;
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 90%;
+    margin: 2rem auto;
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.3);
+    color: #e0e0e0;
+    top: 30%;
+    z-index: 5;
+}
+
+#changeProfileImage h1 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.inputDivProfile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.inputDivProfile label {
+    color: #b0b0b0;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+#changeProfile {
+    padding: 0.75rem;
+    border: 0.125rem solid #4a4a4a;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background-color: #3a3a3a;
+    color: #e0e0e0;
+    transition: border-color 0.3s ease;
+}
+
+#changeProfile:hover,
+#changeProfile:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+#changeProfile::file-selector-button {
+    background-color: #007bff;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#changeProfile::file-selector-button:hover {
+    background-color: #0056b3;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.cross{
+    background : none;
+    color:white;
+    margin-left: 100%;
+    margin-top: 0%;
+    aspect-ratio: 1/1;
+
+}
+
+.cross:hover{
+    cursor: pointer;
+}

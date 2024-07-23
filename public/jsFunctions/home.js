@@ -66,6 +66,8 @@ const addPlayListForm = document.getElementById("addPlayListForm");
 let songPlaying = null;
 let cardObjects = {};
 let cardElements = {};
+
+// window.location.href = "/home"
 async function showPlayListPopup() {
   const response = await axios.get(
     "http://localhost:5000/playlists/getPlayListNames"
@@ -279,8 +281,6 @@ async function getdata() {
 }
 async function populaterecommendationList() {
   const List = await getdata();
-  console.log("HERE IS THE LIST");
-  console.log(List);
   List.forEach((element, index) => {
     appendToRecommendationList(element, index);
   });

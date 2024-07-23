@@ -7,6 +7,6 @@ router.get("/getAllTracks" , getTracks)
 router.get("/getTrack/:trackId")
 router.post("/uploadSong")
 router.post("/like/:trackId", updateLike)
-
+router.get("/searchTrack")
 
 export default router

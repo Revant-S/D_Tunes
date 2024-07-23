@@ -14,13 +14,13 @@ export function getSigninPage(req: Request, res: Response) {
     return res.render("signin")
 }
 
-export async function createADefaultLikePlayList(user :UserDocument ) {
+export async function createADefaultLikePlayList(user: UserDocument) {
     const newPlayList = await PlayList.create({
-        playListName : "Liked Songs",
-        createdBy : user._id,
-        trackList : [],
-        status : "Private",
-        genere : "Liked Songs"
+        playListName: "Liked Songs",
+        createdBy: user._id,
+        trackList: [],
+        status: "Private",
+        genere: "Liked Songs"
     })
     return newPlayList
 }
@@ -63,20 +63,21 @@ export async function signin(req: Request, res: Response) {
     res.status(200).cookie("token", token).redirect("/home")
 }
 
-export async function addOrVerifyDauthUser(code : string) {
+export async function addOrVerifyDauthUser(code: string) {
     const userDetails = await getUserDetails(code)
-    if(!userDetails) return {success : false};
-    const userInDb = await User.findOne({emailId : userDetails.email});
-    if(!userInDb){
+    if (!userDetails) return { success: false };
+    const userInDb = await User.findOne({ emailId: userDetails.email });
+    if (!userInDb) {
         const newUser = await User.create({
-            emailId : userDetails.email,
-            userName : userDetails.name,
-            password : "DAUTHUSERPASSWORD",
+            emailId: userDetails.email,
+            userName: userDetails.name,
+            password: "DAUTHUSERPASSWORD",
 
-        })
+        });
+        await createADefaultLikePlayList(newUser);
         const authToken = newUser.getAuthToken();
-        return {success : true , authToken};
+        return { success: true, authToken };
     }
     const authToken = userInDb.getAuthToken();
-    return {success : true , authToken};
+    return { success: true, authToken };
 }

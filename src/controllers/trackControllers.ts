@@ -88,3 +88,10 @@ export async function updateLike(req: Request, res: Response) {
     await findUser?.save()
     res.send({ trackUpdated: findTrackInDb, amt })
 }
+
+
+export async function searchTrack(req: Request , res : Response) {
+    
+}
+
+

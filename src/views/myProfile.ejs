@@ -17,9 +17,11 @@
                 
             }
         </style>
+        <link rel="stylesheet" href="/public/cssFiles/changeProfileImageDialog.css">
 </head>
 
 <body>
+    <%- include("./partials/changeProfileImageDialog.ejs") %>
     <div class="profile-container">
         <div class="profile-header">
             <img id="profile-image" src="<%= locals.user.profileImageUrl %>" alt="Profile Picture">
@@ -216,6 +218,7 @@
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/public/jsFunctions/profilePage.js"></script>
+    <script src="/public/jsFunctions/changeProfilePic.js"></script>
 </body>
 
 </html>
