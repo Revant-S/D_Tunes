@@ -7,8 +7,6 @@ import { IUserModel } from "../TsTypes/userdbtypes";
 import PlayList from "../DbModels/playListModel";
 import ReqPlayList from "../DbModels/partyModeReqModel";
 import { IReqPlayListDocument } from "../TsTypes/MergeRequestsTypes";
-// import { reject } from "lodash";
-// import { FileRequest } from "../Middlewares/uploadService";
 
 export interface UserDocument extends IUserModel {
     _id: Types.ObjectId
@@ -103,9 +101,8 @@ export async function getUserProfile(req: Request, res: Response) {
     const privatePlaylists = playListsCreatedByUser.filter(playList => playList.status === "Private");
     const publicPlayLists = playListsCreatedByUser.filter(playList => playList.status === "Public");
     const requestsForMerges: IReqPlayListDocument[] = await getMergeRequests(playListsCreatedByUser);
-    console.log("Got the Merge Requests");
-    console.log(requestsForMerges);
 
+    
     res.render("myProfile", {
         user: populatedUser,
         publicPlayLists,
@@ -247,4 +244,8 @@ export async function updateUserProfile(req: Request, res: Response) {
             message: "An error occurred while updating the profile image"
         });
     }
+}
+
+export function logout(req : Request , res : Response) {
+    return res.clearCookie("token").send("Logged Out !!!");
 }

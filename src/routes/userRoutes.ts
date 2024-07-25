@@ -9,7 +9,8 @@ import {
     rejectFriendRequest,
     removeFriendRequest,
     removeFromFriendList,
-    updateUserProfile
+    updateUserProfile,
+    logout
 } from "../controllers/userControllers"
 import { upload } from "../Middlewares/uploadService"
 
@@ -18,14 +19,15 @@ const router = Router()
 
 
 
-router.get("/myprofile", getUserProfile)
-router.get("/searchUser", searchInDb)
-router.get("/myfriends", getMyFriends)
-router.post("/sendfriendRequest", makeFriendRequest)
-router.post("/acceptFriendRequest", acceptFriendRequest)
-router.get("/viewProfile/:emailId" ,getProfile )
-router.put("/removeFriendRequest" ,removeFriendRequest )
-router.put("/rejectFriendRequest",rejectFriendRequest)
-router.put("/removeFromFriend", removeFromFriendList)
-router.put("/updateUserProfile",upload.single("profileImage"),updateUserProfile )
+router.get("/myprofile", getUserProfile);
+router.get("/searchUser", searchInDb);
+router.get("/myfriends", getMyFriends);
+router.post("/sendfriendRequest", makeFriendRequest);
+router.post("/acceptFriendRequest", acceptFriendRequest);
+router.get("/viewProfile/:emailId" ,getProfile );
+router.put("/removeFriendRequest" ,removeFriendRequest );
+router.put("/rejectFriendRequest",rejectFriendRequest);
+router.put("/removeFromFriend", removeFromFriendList);
+router.put("/updateUserProfile",upload.single("profileImage"),updateUserProfile);
+router.post("/logout", logout);
 export default router

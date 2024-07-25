@@ -4,7 +4,8 @@ const removeBtn = document.querySelectorAll(".RemoveFriendRequestBtn");
 const RemoveFromFriendBtn = document.querySelectorAll(".RemoveFromFriendBtn");
 const acceptMergeRequest = document.querySelectorAll(".acceptMergeRequest");
 const profileImage = document.getElementById("profile-image");
-const changeProfileImage = document.getElementById("changeProfileImage")
+const changeProfileImage = document.getElementById("changeProfileImage");
+const acceptSyncBtn = document.querySelectorAll(".acceptSyncBtn");
 const url = window.location.href;
 profileImage.addEventListener("click" , (e)=>{
     changeProfileImage.showModal();
@@ -31,7 +32,7 @@ function applyEventListnerToBtns() {
     });
     acceptMergeRequest.forEach(btn =>{
         btn.addEventListener("click" , acceptTheMerge)
-    });    
+    }); 
 }
 applyEventListnerToBtns();
 

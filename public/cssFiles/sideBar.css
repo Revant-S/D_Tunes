@@ -2,7 +2,7 @@ nav {
     width: 25%;
     max-width: 255px;
     min-width: 250px;
-    height: 100%;
+    height: 100vh;
     overflow-y: auto;
     background-color: black;
     padding: 3vh 2vw;

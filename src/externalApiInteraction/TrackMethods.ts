@@ -1,16 +1,17 @@
-// import axios from "axios";
-// import * as sportifyTypes from "../TsTypes/sportifyTypes";
 import { Request, Response } from "express";
 import Track from "../DbModels/tracksModel"
 import { TracksModel } from "../TsTypes/Musicdbtypes";
 import User from "../DbModels/userModel";
-// import { data } from "../testData";
-import { UserRequest } from "../Middlewares/authMiddlewares";
-import { userPayload } from "../controllers/trackControllers";
 import axios from "axios";
-import { getToken } from "./authTokenGeneration";
-import fs from "fs"
-// import { RequestWithToken } from "../Middlewares/sportifyAcessTokenMiddleware";
+import { RequestWithToken } from "../Middlewares/sportifyAcessTokenMiddleware";
+import * as sportifyTypes from "../TsTypes/sportifyTypes"
+import { getUser } from "../controllers/userControllers";
+import { Types } from "mongoose";
+
+interface TrackDocument extends TracksModel {
+    _id: Types.ObjectId
+}
+
 interface IUseFulObject {
     TrackName: string,
     track: string,
@@ -22,53 +23,29 @@ interface SendData extends IUseFulObject {
     dislikedByUser: boolean
 }
 
-// interface sportifyaxiosResponse {
-//     data: { tracks: sportifyTypes.SpotifyResponseForTracks }
-// }
-
-export async function appToTrackCollections(useFullArray: IUseFulObject[]) {
-    useFullArray.forEach(async (element) => {
-        const findTrack = await Track.findOne({ id: element.id })
-        if (findTrack) return
-        const objAdded: TracksModel = {
-            url: element.track,
-            id: element.id,
-            imageUrl: element.images,
-            trackName: element.TrackName
-        }
-        await Track.create(objAdded);
-    })
+interface sportifyaxiosResponse {
+    data: { tracks: sportifyTypes.SpotifyResponseForTracks }
 }
-export async function getTracks(req: Request, res: Response) {
-    // const acess_Token = (req as RequestWithToken).access_token
-    // const response: sportifyaxiosResponse = await axios.get("https://api.spotify.com/v1/search?q=<search_query>&type=track&market=IN&limit=20&offset=0", {
-    //     headers: { 'Authorization': `Bearer ${acess_Token}` }
-    // });
-    // const tracks = response.data.tracks.items
-    // let useFullArray: IUseFulObject[] = []
 
-    // tracks.forEach(track => {
-    //     if (!track.preview_url) {
-    //         return
-    //     }
-    //     let useOIbj: IUseFulObject = {
-    //         TrackName: track.name,
-    //         track: track.preview_url,
-    //         images: track.album.images[0].url,
-    //         id : track.id
-    //     }
-    //     useFullArray.push(useOIbj)
-    // })
-    // await appToTrackCollections(useFullArray)
-
-    const dataToSendArray = await Track.find({})
+export async function getUseFullData(useFullArray: IUseFulObject[], req: Request, getAll: boolean) {
+    const user = await getUser(req);
+    await appToTrackCollections(useFullArray)
+    let dataToSendArray: TrackDocument[];
+    if (getAll) {
+        dataToSendArray = await Track.find({}).limit(30)
+    } else {
+        const { search } = req.query
+   
+        dataToSendArray = await Track.find({ trackName: new RegExp(search as string, 'i') })
+    }
     const dataToSend: SendData[] = [];
-    const userLikedSongs = (await User.findById(((req as UserRequest).userToken as userPayload)._id, { likedSongs: 1, dislikedSongs: 1 }))
+
+
+    
+    const userLikedSongs = (await User.findById(user?._id, { likedSongs: 1, dislikedSongs: 1 }))
     let LikedSongs = userLikedSongs?.likedSongs;
     let dislikedSongs = userLikedSongs?.dislikedSongs
-
-
-    dataToSendArray.forEach(element => {
+    dataToSendArray.forEach((element: TrackDocument) => {
         let likedByUser = false
         let dislikedByUser = false
         if (LikedSongs?.includes(element._id)) likedByUser = true;
@@ -82,27 +59,102 @@ export async function getTracks(req: Request, res: Response) {
             likedByUser, dislikedByUser
         }
         dataToSend.push(useObj)
-    })
-
-    res.send(dataToSend)
-    return
+    }) 
+    return dataToSend
 }
 
 
 
-export async function searchTrack(value: string) {
-    const accessToken = await getToken();
-    const response = await axios.get(`https://api.spotify.com/v1/search?q=${value}&type=track`, {
+export async function appToTrackCollections(useFullArray: IUseFulObject[]) {
+    const createPromises = useFullArray.map(async (element) => {
+        const findTrack = await Track.findOne({ id: element.id });
+        if (findTrack) return;
+        const objAdded: TracksModel = {
+            url: element.track,
+            id: element.id,
+            imageUrl: element.images,
+            trackName: element.TrackName
+        };
+        return Track.create(objAdded);
+    });
+    await Promise.all(createPromises);
+}
+
+
+export async function getTracks(req: Request, res: Response) {
+    try {
+
+        const acess_Token = (req as RequestWithToken).access_token
+        const { search } = req.query
+        const response: sportifyaxiosResponse = await axios.get("https://api.spotify.com/v1/search", {
+            params: {
+                q: search,
+                type: "track",
+                limit: 20,
+            },
+            headers: { 'Authorization': `Bearer ${acess_Token}` }
+        });
+        const tracks = response.data.tracks.items
+        let useFullArray: IUseFulObject[] = []
+
+        tracks.forEach(track => {
+            if (!track.preview_url) {
+                return
+            }
+            let useOIbj: IUseFulObject = {
+                TrackName: track.name,
+                track: track.preview_url,
+                images: track.album.images[0].url,
+                id: track.id
+            }
+            useFullArray.push(useOIbj)
+        })
+
+        const dataToSend = await getUseFullData(useFullArray, req, true)
+        return res.send(dataToSend)
+
+    } catch (error: any) {
+        console.log(error.message);
+        console.log(error.data.error);
+        console.log(error);
+    }
+}
+
+export async function searchTrack(req: Request, res: Response) {
+    const accessToken = (req as RequestWithToken).access_token;
+    const { search } = req.query
+    if(!search || search.length === 0) return res.send([])
+    const response: sportifyaxiosResponse = await axios.get(`https://api.spotify.com/v1/search`, {
+        params: {
+            q: search,
+            type: "track",
+            limit: 15
+        },
         headers: {
             Authorization: `Bearer ${accessToken}`
         }
     })
-    const data = JSON.stringify(response.data.tracks.items, null, 2);
-    fs.writeFile('track_items.json', data, (err) => {
-        if (err) {
-            console.error('Error writing file:', err);
-        } else {
-            console.log('Data has been written to track_items.json');
+    const tracks = response.data.tracks.items
+    let useFullArray: IUseFulObject[] = []
+    tracks.forEach(track => {
+        if (!track.preview_url) {
+            return
         }
-    });
+        let useOIbj: IUseFulObject = {
+            TrackName: track.name,
+            track: track.preview_url,
+            images: track.album.images[0].url,
+            id: track.id
+        }
+        useFullArray.push(useOIbj)
+    })
+
+    const dataToSend = await getUseFullData(useFullArray, req, false)
+    return res.send(dataToSend)
 }
+
+
+
+
+
+

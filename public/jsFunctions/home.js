@@ -255,11 +255,14 @@ function appendToRecommendationList(obj, index) {
     showPlayListPopup
   );
 }
-async function getdata() {
+async function getdata(search = "shape of you") {
   try {
     const response = await axios.get(
       "http://localhost:5000/getTracks/getAllTracks",
       {
+        params: {
+          search
+        } , 
         headers: {
           "Content-Type": "application/json",
         },
@@ -304,41 +307,15 @@ function showFilteredLists() {
 }
 let searchForUser = false;
 //Toggle Switch Controls and switching the search Functionality
-searchBar.addEventListener("input", (e) => {
+searchBar.addEventListener("input",async (e) => {
   showList = [];
   if (!searchForUser) {
-    for (const key in cardObjects) {
-      const cardElement = cardObjects[key];
-      console.log(e.target.value.toLowerCase());
-      if (
-        cardElement.name.toLowerCase().includes(e.target.value.toLowerCase())
-      ) {
-        showList.push(key);
-        showFilteredLists();
-      }
-    }
+    console.log("HERE");
+    const reqArray = updateSearchSongs(e.target.value.toLowerCase());
   } else {
     const reqArray = updateUserSearch(e.target.value.toLowerCase());
   }
 });
-
-// {
-//   "friendRequestToMe": [],
-//   "friendRequestMade": [],
-//   "profileImageUrl": "/public/appImages/headphone.jpeg",
-//   "userName": "testAccount",
-//   "emailId": "revant1234@gmail.com",
-//   "role": "NormalUser",
-//   "likedSongs": [
-//     "668e51c43005732abeaa38da",
-//     "668e332b7233ab3cca5bcd86"
-//   ],
-//   "dislikedSongs": [],
-//   "musicPublished": [],
-//   "friends": [],
-//   "__v": 52
-// }
-
 
 function showThisUserProfile(e) {
   const email = e.target.parentNode.querySelector(".user-email").innerText
@@ -401,6 +378,34 @@ const updateUserSearch = debounce(async (text) => {
 
   showUserCards(cardsToUpdate.data);
 }, 1000);
+
+const updateSearchSongs = debounce(async (text) => {
+  try {
+    const response = await axios.get("http://localhost:5000/getTracks/searchTracks", {
+      params: {
+        search: text
+      },
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+    recomendationList.innerHTML = '';
+    cardObjects = {};
+    cardElements = {};
+    showList = [];
+    response.data.forEach((element, index) => {
+      appendToRecommendationList(element, index);
+      showList.push(`card-${index}`);
+    });
+
+    // Show filtered results
+    showFilteredLists();
+  } catch (error) {
+    console.error("Error fetching search results:", error);
+  }
+}, 1000);
+
+
 
 document.getElementById("checkbox").addEventListener("change", (e) => {
   searchForUser = e.target.checked;

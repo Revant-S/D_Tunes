@@ -5,5 +5,6 @@
     "jwtKey" : "DTunesJWTKey",
     "PORT" : "DTunes_Dev_Port",
     "dauth_client_Id" : "DAuth_Client_Id",
-    "dauth_client_secret" : "DAuth_Client_Secret"
+    "dauth_client_secret" : "DAuth_Client_Secret",
+    "socket_port" : "DTunes_Socket_Port"
 }

@@ -5,16 +5,17 @@
     <%- include("./partials/headTags.ejs") %>
         <link rel="stylesheet" href="/public/cssFiles/myProfile.css">
         <style>
-            .acceptMergeRequest{
+            .acceptMergeRequest {
                 width: 10vw;
                 height: 5vh;
                 border: none;
                 transition: 0.6s;
             }
-            .acceptMergeRequest:hover{
+
+            .acceptMergeRequest:hover {
                 background-color: green;
                 color: white;
-                
+
             }
         </style>
         <link rel="stylesheet" href="/public/cssFiles/changeProfileImageDialog.css">
@@ -22,145 +23,145 @@
 
 <body>
     <%- include("./partials/changeProfileImageDialog.ejs") %>
-    <div class="profile-container">
-        <div class="profile-header">
-            <img id="profile-image" src="<%= locals.user.profileImageUrl %>" alt="Profile Picture">
-            <div class="profile-info">
-                <h1 id="user-name">
-                    <%= locals.user.userName %>
-                </h1>
-                <p id="user-email">
-                    <%= locals.user.emailId %>
-                </p>
-                <p id="user-role">
-                    <%= locals.user.role %>
-                </p>
+        <div class="profile-container">
+            <div class="profile-header">
+                <img id="profile-image" src="<%= locals.user.profileImageUrl %>" alt="Profile Picture">
+                <div class="profile-info">
+                    <h1 id="user-name">
+                        <%= locals.user.userName %>
+                    </h1>
+                    <p id="user-email">
+                        <%= locals.user.emailId %>
+                    </p>
+                    <p id="user-role">
+                        <%= locals.user.role %>
+                    </p>
+                </div>
             </div>
-        </div>
-        <div class="stats">
-            <div class="friends"></div>
-            <div class="playLists"></div>
-        </div>
-        <div class="section">
-            <h2>Friends</h2>
-            <div id="friends-container" class="item-container otherProfile" data-friendState="Friend">
-                <% locals.user.friends.forEach(friend=> { %>
-                    <div class="item">
-                        <h3>
-                            <%= friend.userName %>
-                        </h3>
-                        <p>
-                            <%= friend.emailId %>
-                        </p>
-                        <p>Role: <%= friend.role %>
-                        </p>
-                        <button class="RemoveFromFriendBtn" data-userId="<%=friend._id%>">Remove</button>
-                    </div>
-                    <% }) %>
+            <div class="stats">
+                <div class="friends"></div>
+                <div class="playLists"></div>
             </div>
-        </div>
-
-        <div class="section">
-            <h2>Friend Requests</h2>
-            <div id="friends-container" class="item-container otherProfile" data-friendState="Pending-Friend">
-                <% locals.user.friendRequestToMe.forEach(friend=> { %>
-                    <div class="item">
-                        <h3>
-                            <%= friend.userName %>
-                        </h3>
-                        <p>
-                            <%= friend.emailId %>
-                        </p>
-                        <p>Role: <%= friend.role %>
-                        </p>
-                        <button class="AcceptFriendRequestBtn" data-userId="<%=friend._id%>">Accept</button>
-                        <button class="RejectFriendRequestBtn" data-userId="<%=friend._id%>">Reject</button>
-                    </div>
-                    <% }) %>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Friend Requests Made</h2>
-            <div id="friends-container" class="item-container otherProfile" data-friendState="Request-Made">
-                <% locals.user.friendRequestMade.forEach(friend=> { %>
-                    <div class="item">
-                        <h3>
-                            <%= friend.userName %>
-                        </h3>
-                        <p>
-                            <%= friend.emailId %>
-                        </p>
-                        <p>Role: <%= friend.role %>
-                        </p>
-                        <button class="RemoveFriendRequestBtn" data-userId="<%=friend._id%>">Remove</button>
-                    </div>
-                    <% }) %>
-            </div>
-        </div>
-
-        <% if (locals.user.role==="Artist" ) { %>
             <div class="section">
-                <h2>Published Music</h2>
-                <div id="published-music-container" class="item-container"></div>
-            </div>
-            <% } %>
-
-                <% if (locals.publicPlayLists.length !==0) { %>
-                    <div class="section">
-                        <h2>Public Playlists</h2>
-                        <div id="public-playlists-container" class="item-container">
-                            <% locals.publicPlayLists.forEach(playlist=> { %>
-                                <div class="playlist-item">
-                                    <div class="playlist-thumbnail">
-                                        <img src="<%= playlist.thumbNailPath %>"
-                                            alt="<%= playlist.playListName %> Thumbnail">
-                                    </div>
-                                    <div class="playlist-info">
-                                        <h3 class="playlist-name">
-                                            <%= playlist.playListName %>
-                                        </h3>
-                                        <p class="playlist-genre">Genre: <%= playlist.genere %>
-                                        </p>
-                                        <p class="playlist-tracks">Tracks: <%= playlist.trackList.length %>
-                                        </p>
-                                        <p class="playlist-likes">Likes: <%= playlist.likes %>
-                                        </p>
-                                        <p class="playlist-dislikes">Dislikes: <%= playlist.dislikes %>
-                                        </p>
-                                    </div>
-                                </div>
-                                <% }) %>
+                <h2>Friends</h2>
+                <div id="friends-container" class="item-container otherProfile" data-friendState="Friend">
+                    <% locals.user.friends.forEach(friend=> { %>
+                        <div class="item">
+                            <h3>
+                                <%= friend.userName %>
+                            </h3>
+                            <p>
+                                <%= friend.emailId %>
+                            </p>
+                            <p>Role: <%= friend.role %>
+                            </p>
+                            <button class="RemoveFromFriendBtn" data-userId="<%=friend._id%>">Remove</button>
                         </div>
-                    </div>
-                    <% } %>
+                        <% }) %>
+                </div>
+            </div>
 
-                        <% if (locals.privatePlaylists.length !==0) { %>
+            <div class="section">
+                <h2>Friend Requests</h2>
+                <div id="friends-container" class="item-container otherProfile" data-friendState="Pending-Friend">
+                    <% locals.user.friendRequestToMe.forEach(friend=> { %>
+                        <div class="item">
+                            <h3>
+                                <%= friend.userName %>
+                            </h3>
+                            <p>
+                                <%= friend.emailId %>
+                            </p>
+                            <p>Role: <%= friend.role %>
+                            </p>
+                            <button class="AcceptFriendRequestBtn" data-userId="<%=friend._id%>">Accept</button>
+                            <button class="RejectFriendRequestBtn" data-userId="<%=friend._id%>">Reject</button>
+                        </div>
+                        <% }) %>
+                </div>
+            </div>
 
-                            <div class="section">
-                                <h2>Private Playlists</h2>
-                                <div id="private-playlists-container" class="item-container">
-                                    <% locals.privatePlaylists.forEach(playlist=> { %>
-                                        <div class="playlist-item">
-                                            <div class="playlist-thumbnail">
-                                                <img src="<%= playlist.thumbNailPath %>"
-                                                    alt="<%= playlist.playListName %> Thumbnail">
-                                            </div>
-                                            <div class="playlist-info">
-                                                <h3 class="playlist-name">
-                                                    <%= playlist.playListName %>
-                                                </h3>
-                                                <p class="playlist-genre">Genre: <%= playlist.genere %>
-                                                </p>
-                                                <p class="playlist-tracks">Tracks: <%= playlist.trackList.length %>
-                                                </p>
-                                            </div>
+            <div class="section">
+                <h2>Friend Requests Made</h2>
+                <div id="friends-container" class="item-container otherProfile" data-friendState="Request-Made">
+                    <% locals.user.friendRequestMade.forEach(friend=> { %>
+                        <div class="item">
+                            <h3>
+                                <%= friend.userName %>
+                            </h3>
+                            <p>
+                                <%= friend.emailId %>
+                            </p>
+                            <p>Role: <%= friend.role %>
+                            </p>
+                            <button class="RemoveFriendRequestBtn" data-userId="<%=friend._id%>">Remove</button>
+                        </div>
+                        <% }) %>
+                </div>
+            </div>
+
+            <% if (locals.user.role==="Artist" ) { %>
+                <div class="section">
+                    <h2>Published Music</h2>
+                    <div id="published-music-container" class="item-container"></div>
+                </div>
+                <% } %>
+
+                    <% if (locals.publicPlayLists.length !==0) { %>
+                        <div class="section">
+                            <h2>Public Playlists</h2>
+                            <div id="public-playlists-container" class="item-container">
+                                <% locals.publicPlayLists.forEach(playlist=> { %>
+                                    <div class="playlist-item">
+                                        <div class="playlist-thumbnail">
+                                            <img src="<%= playlist.thumbNailPath %>"
+                                                alt="<%= playlist.playListName %> Thumbnail">
                                         </div>
-                                        <% }) %>
-                                </div>
+                                        <div class="playlist-info">
+                                            <h3 class="playlist-name">
+                                                <%= playlist.playListName %>
+                                            </h3>
+                                            <p class="playlist-genre">Genre: <%= playlist.genere %>
+                                            </p>
+                                            <p class="playlist-tracks">Tracks: <%= playlist.trackList.length %>
+                                            </p>
+                                            <p class="playlist-likes">Likes: <%= playlist.likes %>
+                                            </p>
+                                            <p class="playlist-dislikes">Dislikes: <%= playlist.dislikes %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <% }) %>
                             </div>
-                            <% } %>
-<!--                 
+                        </div>
+                        <% } %>
+
+                            <% if (locals.privatePlaylists.length !==0) { %>
+
+                                <div class="section">
+                                    <h2>Private Playlists</h2>
+                                    <div id="private-playlists-container" class="item-container">
+                                        <% locals.privatePlaylists.forEach(playlist=> { %>
+                                            <div class="playlist-item">
+                                                <div class="playlist-thumbnail">
+                                                    <img src="<%= playlist.thumbNailPath %>"
+                                                        alt="<%= playlist.playListName %> Thumbnail">
+                                                </div>
+                                                <div class="playlist-info">
+                                                    <h3 class="playlist-name">
+                                                        <%= playlist.playListName %>
+                                                    </h3>
+                                                    <p class="playlist-genre">Genre: <%= playlist.genere %>
+                                                    </p>
+                                                    <p class="playlist-tracks">Tracks: <%= playlist.trackList.length %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                    </div>
+                                </div>
+                                <% } %>
+                                    <!--                 
                             {
                                 _id: new ObjectId('66991823c79dc850461e3375'),
                                 requestMadeBy: {
@@ -190,35 +191,38 @@
                                 __v: 0
                               }         
                  -->
-                 <% if (locals.requestsForMerges.length !==0) { %>
-                    <div class="section">
-                        <h2>Merge Requests</h2>
-                        <div id="public-playlists-container" class="item-container">
-                            <% locals.requestsForMerges.forEach(request=> { %>
-                                <div class="playlist-item">
-                                    <div class="playlist-info">
-                                        <h2 class="playlist-name">
-                                            <%= request.playListRequestedFor.playListName %>
-                                        </h1>
-                                        <p class="playlist-genre">Requested By : <a href=""> <%= request.requestMadeBy.userName %></a>
-                                        </p>
-                                    </div>
-                                    <button class="acceptMergeRequest" data-requestId="<%= request._id %>">
-                                        Accept 
-                                    </button>
-                                </div>
-                                <% }) %>
-                        </div>
-                    </div>
-                    <% } %>
+                                    <% if (locals.requestsForMerges.length !==0) { %>
+                                        <div class="section">
+                                            <h2>Merge Requests</h2>
+                                            <div id="public-playlists-container" class="item-container">
+                                                <% locals.requestsForMerges.forEach(request=> { %>
+                                                    <div class="playlist-item">
+                                                        <div class="playlist-info">
+                                                            <h2 class="playlist-name">
+                                                                <%= request.playListRequestedFor.playListName %>
+                                                                    </h1>
+                                                                    <p class="playlist-genre">Requested By : <a href="">
+                                                                            <%= request.requestMadeBy.userName %>
+                                                                        </a>
+                                                                    </p>
+                                                        </div>
+                                                        <button class="acceptMergeRequest"
+                                                            data-requestId="<%= request._id %>">
+                                                            Accept
+                                                        </button>
+                                                    </div>
+                                                    <% }) %>
+                                            </div>
+                                        </div>
+                                        <% } %>
 
 
-    </div>
-    </div>
+        </div>
+        </div>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="/public/jsFunctions/profilePage.js"></script>
-    <script src="/public/jsFunctions/changeProfilePic.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="/public/jsFunctions/profilePage.js"></script>
+        <script src="/public/jsFunctions/changeProfilePic.js"></script>
 </body>
 
 </html>

@@ -16,7 +16,10 @@ import partyRoutes from "./routes/partyRoutes"
 import artistRoutes from "./routes/artistRoutes"
 import categoryRoutes from "./routes/categoryRoutes"
 import { addOrVerifyDauthUser } from './controllers/authControllers';
+import { getUser } from './controllers/userControllers';
+
 const app = express();
+
 
 app.use(cors({
     origin: "*"
@@ -41,6 +44,8 @@ app.use("/party", authorizeUser)
 app.use("/party", partyRoutes)
 app.use("/category", authorizeUser);
 app.use("/category", categoryRoutes)
+
+
 async function connectToDb() {
     try {
         await mongoose.connect(config.get("DbConnectionString"))
@@ -54,8 +59,6 @@ async function connectToDb() {
 connectToDb()
 
 
-
-// searchTrack("despacito");
 app.get("/home", async (req, res) => {
     const params = req.query;
     if (params.code) {
@@ -72,8 +75,15 @@ app.get("/", (req: Request, res: Response) => {
     res.render("landingPage");
 })
 
+app.get("/sync", authorizeUser , async (req : Request, res : Response)=>{
+    const user = await getUser(req);
+    if(!user) return res.send("User Not Found");
+    
+})
 
 
 
-const port = config.get("PORT") || 3000
+
+const port = config.get("PORT") || 3000;
+
 app.listen(port, () => console.log(`Server is listening on ${port}`))

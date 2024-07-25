@@ -11,7 +11,9 @@ export interface IUserModel {
     friends: Types.ObjectId[]
     friendRequestToMe: Types.ObjectId[]
     friendRequestMade: Types.ObjectId[],
-    profileImageUrl: string
+    profileImageUrl: string,
+    socketIds : [string],
+    syncRequests: Types.ObjectId[]
 }
 
 
