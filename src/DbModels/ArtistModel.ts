@@ -23,7 +23,7 @@ const artistSchema = new mongoose.Schema<IArtistModel, ArtistModel, ArtistMethod
     songsPublished: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Tracks"
+            ref: "Track"
         }],
         default: []
     },

@@ -1,4 +1,3 @@
-/* Reset and base styles */
 * {
     margin: 0;
     padding: 0;
@@ -134,14 +133,5 @@ html {
 
 .menuElements img:hover {
     cursor: pointer;
-    transform: scale(1.2);
-}
-
-@media (max-width: 768px) {
-    .wholePage {
-        flex-direction: column;
-    }
-    .workspace {
-        height: auto;
-    }
+    /* transform: scale(1.2); */
 }
