@@ -152,9 +152,3 @@ export async function searchTrack(req: Request, res: Response) {
     const dataToSend = await getUseFullData(useFullArray, req, false)
     return res.send(dataToSend)
 }
-
-
-
-
-
-

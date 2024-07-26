@@ -67,7 +67,7 @@ app.get("/home", async (req, res) => {
         return res.cookie("token", verificationObj.authToken, {
             maxAge: 3600000,
             httpOnly: true
-        }).render("home")
+        }).redirect("/home");
     }
     res.render("home")
 })

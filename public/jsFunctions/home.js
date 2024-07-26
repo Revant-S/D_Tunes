@@ -139,7 +139,7 @@ function updateIcon(to) {
     iconToBeUpdated.src = "/public/appImages/pause.svg";
     return;
   }
-  iconToBeUpdated.src = "/public/appImages/PlayListr.svg";
+  iconToBeUpdated.src = "/public/appImages/play.svg";
 }
 function forwardOrBackward(seconds) {
   if (!songPlaying) {
@@ -397,8 +397,6 @@ const updateSearchSongs = debounce(async (text) => {
       appendToRecommendationList(element, index);
       showList.push(`card-${index}`);
     });
-
-    // Show filtered results
     showFilteredLists();
   } catch (error) {
     console.error("Error fetching search results:", error);

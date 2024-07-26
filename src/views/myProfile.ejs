@@ -85,7 +85,7 @@
                 <h2>Friend Requests Made</h2>
                 <div id="friends-container" class="item-container otherProfile" data-friendState="Request-Made">
                     <% locals.user.friendRequestMade.forEach(friend=> { %>
-                        <div class="item">
+                        <div class="item firend" data-friendEmail="<%= friend.emailId %>">
                             <h3>
                                 <%= friend.userName %>
                             </h3>
@@ -112,7 +112,7 @@
                             <h2>Public Playlists</h2>
                             <div id="public-playlists-container" class="item-container">
                                 <% locals.publicPlayLists.forEach(playlist=> { %>
-                                    <div class="playlist-item">
+                                    <div class="playlist-item playList" data-playListId="<%= playlist._id %>">
                                         <div class="playlist-thumbnail">
                                             <img src="<%= playlist.thumbNailPath %>"
                                                 alt="<%= playlist.playListName %> Thumbnail">
@@ -142,7 +142,7 @@
                                     <h2>Private Playlists</h2>
                                     <div id="private-playlists-container" class="item-container">
                                         <% locals.privatePlaylists.forEach(playlist=> { %>
-                                            <div class="playlist-item">
+                                            <div class="playlist-item playList" data-playListId="<%= playlist._id %>">
                                                 <div class="playlist-thumbnail">
                                                     <img src="<%= playlist.thumbNailPath %>"
                                                         alt="<%= playlist.playListName %> Thumbnail">

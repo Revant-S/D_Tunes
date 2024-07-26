@@ -102,7 +102,7 @@ export async function getUserProfile(req: Request, res: Response) {
     const publicPlayLists = playListsCreatedByUser.filter(playList => playList.status === "Public");
     const requestsForMerges: IReqPlayListDocument[] = await getMergeRequests(playListsCreatedByUser);
 
-    
+
     res.render("myProfile", {
         user: populatedUser,
         publicPlayLists,
@@ -126,10 +126,14 @@ export async function getProfile(req: Request, res: Response) {
     if (!currentUser) return res.send("You Dont exist")
     const emialId: string = req.params.emailId;
     const user = await User.findOne({ emailId: emialId }, {
-        password: 0, friendRequestToMe: 0, friendRequestMade: 0
+        password: 0, friendRequestToMe: 0
     })
     if (!user) return res.send("User is not there with us")
-    const isFriend: boolean = (user.friends.includes(currentUser._id))
+    const isFriend: boolean = (user.friends.includes(currentUser._id));
+console.log(user);
+
+    const alreadySent: boolean = (currentUser.friendRequestMade.includes(user._id))
+    
     if (!user) return res.json({ msg: "User Not Found" });
     const userPopulated = await user.populate([{
         "path": "friends", select: "userName , emailId , role , profileImageUrl, "
@@ -140,11 +144,15 @@ export async function getProfile(req: Request, res: Response) {
             { status: "Public" }
         ]
     })
+console.log(alreadySent);
+console.log(isFriend);
+
 
     return res.render("otherUserProfile", {
         userPopulated,
         playLists,
-        isFriend
+        isFriend,
+        alreadySent
     })
 }
 
@@ -246,6 +254,6 @@ export async function updateUserProfile(req: Request, res: Response) {
     }
 }
 
-export function logout(req : Request , res : Response) {
+export function logout(req: Request, res: Response) {
     return res.clearCookie("token").send("Logged Out !!!");
 }

@@ -2,6 +2,41 @@ const url = window.location.href;
 function reloadWindow() {
   window.location.href = url;
 }
+
+
+document.querySelector(".remove-friend-Request-Btn").addEventListener("click", async (e)=>{
+  let target = e.target;
+  const userId = target.getAttribute("data-userId");
+ try {
+  const response  = await axios.put("http://localhost:5000/user/removeFriendRequest" , {
+    data : {
+      toRemove : userId
+    }
+  })
+  window.location.reload();
+ } catch (error ) {
+  console.log(error.message);
+ }
+  
+
+})
+document.querySelectorAll(".firend").forEach(friend =>{
+  console.log('here');
+  friend.addEventListener("click", (e)=>{
+    let target = e.target;
+    while(target != null && !target.classList.contains('firend')){
+      target= target.parentNode;
+    }
+    const email = target.getAttribute("data-friendEmail");
+    console.log(email);
+    window.location.href = `/user/viewProfile/${email}`
+  })
+})
+
+
+
+
+
 let friendRequestSent = false;
 async function sendFriendRequest(e) {
   const userId = e.target.getAttribute("data-userId");

@@ -7,13 +7,14 @@ const profileImage = document.getElementById("profile-image");
 const changeProfileImage = document.getElementById("changeProfileImage");
 const acceptSyncBtn = document.querySelectorAll(".acceptSyncBtn");
 const url = window.location.href;
+const publibPlayLists = document.querySelectorAll(".playList")
 profileImage.addEventListener("click" , (e)=>{
     changeProfileImage.showModal();
 })
 function reloadWindow() {
     window.location.href = url
 }
-
+console.log(publibPlayLists);
 
 
 
@@ -33,8 +34,27 @@ function applyEventListnerToBtns() {
     acceptMergeRequest.forEach(btn =>{
         btn.addEventListener("click" , acceptTheMerge)
     }); 
+    publibPlayLists.forEach(publibPlayList =>{
+        publibPlayList.addEventListener("click" , openThePlayList)
+    })
 }
 applyEventListnerToBtns();
+
+function openThePlayList(e) {
+    let target = e.target;
+    while (target != null && !target.classList.contains('playList')) {
+        target = target.parentElement;
+    }
+    if (target) {
+        const playListId = target.getAttribute("data-playListId");
+        window.location.href = `/playlists/playListPage/${playListId}`;
+    } else {
+        console.log("No playlist item found");
+    }
+
+}
+
+
 
 async function acceptFriendRequest(e) {
     const UserToAccept = e.target.getAttribute("data-userId");

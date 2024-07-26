@@ -8,9 +8,8 @@ export interface RequestWithToken extends Request {
 
 export async function getLatestToken(req: Request, res: Response, next: NextFunction) {
     const timeNow: number = (new Date()).getTime()
-    const currentToken = await Token.findOne({ status: "current" })
-    if (currentToken && (timeNow - currentToken.time) / 1000 < 3600) {
-
+    const currentToken = await Token.findOne({ status: "current" })    
+    if (currentToken && (timeNow - currentToken.time) < 3600000) {
         (req as RequestWithToken).access_token = currentToken?.access_token
         next();
         return
