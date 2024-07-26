@@ -58,11 +58,8 @@ const authorizeOrFirstLogin = (req: Request, res: Response, next: NextFunction) 
   const token = req.cookies.token;
 
   if (!token && req.query.code) {
-    // First-time login with Dauth code
     return next();
   }
-
-  // Use the existing authorizeUser middleware for subsequent visits
   return authorizeUser(req, res, next);
 };
 
