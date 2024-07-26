@@ -51,12 +51,12 @@ async function createPlayList(event) {
             'Content-Type': 'multipart/form-data'
         }
     });
-    console.log(response.data);
-    createPlayListCard(response.data)
+    window.location.reload();
 }
 async function pageConstructor() {
     const allPlayListCards = document.querySelectorAll(".playListCard")
-    allPlayListCards.forEach((card)=>{
+    allPlayListCards.forEach((card, index)=>{
+        if(index === 0) return;
         const playListDetails = {
             id : card.dataset.playlistid,
             playListName : card.querySelector("h3").innerText,
@@ -66,8 +66,20 @@ async function pageConstructor() {
         playLists[`playList-${PlayListCard.numberOfPlayLists}`] = obj;
         card.id = `playList-${PlayListCard.numberOfPlayLists}`
     })
-    allPlayListCards.forEach(card =>{
+    allPlayListCards.forEach((card, index) =>{
+        if(index === 0) return ;
         card.querySelector("img").addEventListener("click" ,getAllTracks )
+        if (card.querySelector(".deletePlaylistBtn")) {
+            card.querySelector(".deletePlaylistBtn").addEventListener("click",async (e)=>{
+                const response = await axios.delete(`/playlists/deletePlayList/${e.target.getAttribute("data-playListId")}`);
+                if (response.data.success) {
+                    window.location.reload()
+                    return
+                }else{
+                    alert("Some Thing Went Wrong Please Try again After some Time")
+                }
+            })
+        }
     })
     createPlayListDiv.addEventListener("click", showAddPlatListOptions);
     submitButton.addEventListener("click" , createPlayList)

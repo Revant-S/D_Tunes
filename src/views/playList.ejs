@@ -7,37 +7,37 @@
         <link rel="stylesheet" href="/public/cssFiles/playListPage.css">
         <link rel="stylesheet" href="/public/cssFiles/playListDialog.css">
         <link rel="stylesheet" href="/public/cssFiles/sideBar.css">
-        <style>
-            .workspace {
-                display: grid;
-                grid-template-columns: repeat(5, 1fr);
-                grid-gap: 5%;
-            }
-
-        </style>
 </head>
 
 <body>
     <div class="wholePage">
         <%- include("./partials/createPlayListDiaglog.ejs")%>
-
-                <%- include("./partials/sideBar.ejs")%>
-          
-            <div class="workspace">
-                <div class="playListSpace">
-                    <div class="createPlaylist">
-                        CREATE PLAYLIST
+            <%- include("./partials/sideBar.ejs")%>
+                <div class="mainContent">
+                    <h1>My Playlists</h1>
+                    <div class="workspace">
+                        <div class="playListCard createPlaylist">
+                            <div class="createPlaylistContent">
+                                <span class="plus-icon">+</span>
+                                <span>CREATE PLAYLIST</span>
+                            </div>
+                        </div>
+                        <% locals.playLists.forEach(element=> { %>
+                            <div class="playListCard" data-playListId="<%= element._id %>">
+                                <img src="<%= element.thumbNailPath %>" alt="<%= element.playListName %>">
+                                <h3>
+                                    <%= element.playListName %>
+                                </h3>
+                                <% console.log(locals.userId); %>
+                                <% if (element.createdBy.toString()==locals.userId.toString()) { %>
+                                    <button class="deletePlaylistBtn" data-playListId="<%= element._id %>">
+                                        &#x1F5D1;
+                                    </button>
+                                    <% } %>
+                            </div>
+                            <% }) %>
                     </div>
                 </div>
-                <% locals.playLists.forEach(element=> { %>
-                    <div class="playListCard" data-playListId="<%= element._id %>">
-                        <h3 data-="">
-                            <%= element.playListName %>
-                        </h3>
-                        <img src="<%= element.thumbNailPath %>">
-                    </div>
-                    <% }) %>
-            </div>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/public/jsFunctions/playList.js"></script>

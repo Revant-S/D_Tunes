@@ -2,7 +2,12 @@
   <div class="top-section">
     <div class="imagePlace">
       <div class="profileImage">
-        <img id="profile" src="/public/profileImages/defaultProfile.png" alt="D-Tunes">
+       <% if ( locals.user) { %>
+        <img id="profile" src="<%= locals.user.profileImageUrl%>" alt="D-Tunes">
+        <% }else{ %>
+          <img id="profile" src="/public/uploads/1720874475316-deltaLogoGreen.png">
+          
+       <% } %>
       </div>
     </div>
     <div class="upperDiv">
@@ -24,27 +29,13 @@
           </div>
         </li>
 
-        <li>
-          <div class="innerDiv">
-            <div class="imgDiv">
-              <img class="iconSvg" src="/public/appImages/recomendation.svg" class="navImages">
-            </div>
-            <div class="nameDiv">Recommended</div>
-          </div>
-        </li>
+
       </ul>
     </div>
   </div>
   <div class="lowerDiv">
     <ul>
-      <li>
-        <div class="innerDiv">
-          <div class="imgDiv">
-            <img class="iconSvg" src="/public/appImages/settings.svg" class="navImages">
-          </div>
-          <div class="nameDiv">Settings</div>
-        </div>
-      </li>
+
       <li id="party-Mode">
         <div class="innerDiv">
           <div class="imgDiv">
@@ -53,14 +44,14 @@
           <div class="nameDiv">Party Mode</div>
         </div>
       </li>
-        <div class="logout" id="logoutBtn">
-          <div class="innerDiv">
-            <div class="imgDiv" >
-              <img class="iconSvg" src="/public/appImages/logout-svgrepo-com.svg" class="navImages" >
-            </div>
-            <div class="nameDiv" >Logout</div>
+      <div class="logout" id="logoutBtn">
+        <div class="innerDiv">
+          <div class="imgDiv">
+            <img class="iconSvg" src="/public/appImages/logout-svgrepo-com.svg" class="navImages">
           </div>
+          <div class="nameDiv">Logout</div>
         </div>
+      </div>
       </li>
     </ul>
   </div>

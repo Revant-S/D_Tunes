@@ -10,17 +10,52 @@
   <link rel="stylesheet" href="/public/cssFiles/sideBar.css">
   <link rel="stylesheet" href="/public/cssFiles/toggleSwitch.css">
   <link rel="stylesheet" href="/public/cssFiles/player.css">
+  <!-- <link rel="stylesheet" href="/public/cssFiles/playListPage.css"> -->
   <style>
     .CheckBox {
       top: 5%;
     }
+
     #checkbox:checked+#check::before {
       content: "";
     }
+
     #check::before {
-    content: "";
-  }
-  
+      content: "";
+    }
+
+    .deletePlaylistBtn {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.6rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #ffffff;
+      border: none;
+      border-radius: 400px;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 1;
+      transition: opacity 0.3s ease, background-color 0.3s ease;
+      font-size: 1.1rem;
+      z-index: 10;
+    }
+
+    .playListCard:hover .deletePlaylistBtn {
+      opacity: 1;
+    }
+
+    .deletePlaylistBtn:hover {
+      background-color: rgba(255, 0, 0, 0.8);
+    }
+    .autoPlay h4{
+      color: #ffffff;
+      border: 2px solid white;
+      /* margin-bottom: 4%; */
+    }
   </style>
 </head>
 
@@ -29,7 +64,9 @@
     <%- include("./partials/playListNames.ejs") %>
       <%- include("./partials/sideBar.ejs") %>
         <div class="workspace">
+         <div class="autoPlay">
           <%- include("./partials/toggleSwitch.ejs") %>
+         </div>
             <div class="recomendations">
               <div class="heading">
                 <h3></h3>
@@ -39,9 +76,15 @@
                   <div class="recomendationElement" id="<%= `card-${index}`%>"
                     data-completeSongInfo="<%= JSON.stringify(element) %>">
                     <div class="CardnameDiv">
-                      <h3>
-                        <%= element.trackName %>
-                      </h3>
+                      <% if (element.createdBy.toString()==locals.userId) { %>
+                        <button class="deletePlaylistBtn"
+                          data-Ids="<%= JSON.stringify({playListId : element.playListId , trackId : element._id}) %>">
+                          &#x1F5D1;
+                        </button>
+                        <% } %>
+                          <h3>
+                            <%= element.trackName %>
+                          </h3>
                     </div>
                     <img src="<%= element.imageUrl %>">
                     <audio src="<%= element.url%>"></audio>

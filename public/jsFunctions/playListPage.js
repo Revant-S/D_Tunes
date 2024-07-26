@@ -24,11 +24,11 @@ class TrackCard {
         data: 1,
       }
     );
-    if (response.data.amt >0) {
-      this.likedByUser = true
-      this.disLikedByUser = false
-    }else{
-      this.likedByUser = false
+    if (response.data.amt > 0) {
+      this.likedByUser = true;
+      this.disLikedByUser = false;
+    } else {
+      this.likedByUser = false;
     }
     updateLikeIcon(response.data.amt, true);
     return response.data;
@@ -42,17 +42,16 @@ class TrackCard {
         data: -1,
       }
     );
-    if (response.data.amt >0) {
-      this.disLikedByUser = true
-      this.likedByUser = false
-    }else{
-      this.disLikedByUser = false
+    if (response.data.amt > 0) {
+      this.disLikedByUser = true;
+      this.likedByUser = false;
+    } else {
+      this.disLikedByUser = false;
     }
     updateLikeIcon(response.data.amt, false);
     return response.data;
   }
 }
-
 
 let cardObjects = {};
 let cardElements = {};
@@ -64,16 +63,18 @@ const pause = document.querySelector(".pause");
 const likeBtn = document.getElementById("likeBtnId");
 const disLikeBtnId = document.getElementById("disLikeBtnId");
 const addToPlayListOption = document.querySelector(".AddToPlayListOption");
-const allCards = document.querySelectorAll(".recomendationElement")
+const allCards = document.querySelectorAll(".recomendationElement");
 const showPlayListsNames = document.getElementById("showPlayListsNames");
 const addToPlayListsBtn = document.getElementById("addToPlayListsBtn");
 const addPlayListForm = document.getElementById("addPlayListForm");
-let isSequentialPlayOn = false
+let isSequentialPlayOn = false;
 let songPlaying = null;
-const listOfaudioTags = document.querySelectorAll("audio")
+const listOfaudioTags = document.querySelectorAll("audio");
 let playIngAudioIndex = 0;
 async function showPlayListPopup() {
-  const response = await axios.get("http://localhost:5000/playlists/getPlayListNames");
+  const response = await axios.get(
+    "http://localhost:5000/playlists/getPlayListNames"
+  );
   showPlayListsNames.showModal();
   showPlayListsNames.querySelector(".checkBoxSpace").innerHTML = "";
   response.data.forEach((element) => {
@@ -87,7 +88,9 @@ async function showPlayListPopup() {
     input.value = element._id;
     adjustDivInput.appendChild(label);
     adjustDivInput.appendChild(input);
-    showPlayListsNames.querySelector(".checkBoxSpace").appendChild(adjustDivInput);
+    showPlayListsNames
+      .querySelector(".checkBoxSpace")
+      .appendChild(adjustDivInput);
   });
   const newInput = document.createElement("input");
   newInput.name = "SongToBeAdded";
@@ -114,10 +117,8 @@ async function AddToPlayLists(e) {
 function updateLikeIcon(amt, updateLike) {
   if (updateLike) {
     if (amt > 0) {
-      console.log("HEREEEEEEEEEEEE");
       likeBtn.src = "/public/appImages/like-svgrepo-com.svg";
       disLikeBtnId.src = "/public/appImages/dislikeE.svg";
-      console.log(likeBtn.src);
       return;
     }
     likeBtn.src = "/public/appImages/like-svgrepo-com(1).svg";
@@ -133,7 +134,10 @@ function updateLikeIcon(amt, updateLike) {
 }
 
 function updateIcon(to) {
-  pause.querySelector("img").src = to === "pause" ? "/public/appImages/pause.svg" : "/public/appImages/play.svg";
+  pause.querySelector("img").src =
+    to === "pause"
+      ? "/public/appImages/pause.svg"
+      : "/public/appImages/play.svg";
 }
 
 function forwardOrBackward(seconds) {
@@ -148,28 +152,31 @@ function playSongOnCard(e) {
   const cardId = e.target.parentNode.id;
   if (songPlaying) {
     songPlaying.pause();
-    songPlaying.removeEventListener('timeupdate', updateRange);
+    songPlaying.removeEventListener("timeupdate", updateRange);
   }
-  
+
   const cardObj = cardObjects[cardId];
-  likeBtn.src = cardObj.likedByUser ? "/public/appImages/like-svgrepo-com.svg" : "/public/appImages/like-svgrepo-com(1).svg";
-  disLikeBtnId.src = cardObj.disLikedByUser ? "/public/appImages/dislikedF.svg" : "/public/appImages/dislikeE.svg";
+  likeBtn.src = cardObj.likedByUser
+    ? "/public/appImages/like-svgrepo-com.svg"
+    : "/public/appImages/like-svgrepo-com(1).svg";
+  disLikeBtnId.src = cardObj.disLikedByUser
+    ? "/public/appImages/dislikedF.svg"
+    : "/public/appImages/dislikeE.svg";
   songPlaying = clickedAudio;
- 
+
   clickedAudio.play();
-  clickedAudio.addEventListener('timeupdate', updateRange);
+  clickedAudio.addEventListener("timeupdate", updateRange);
   updateIcon("pause");
   rangeIn.value = 0;
   rangeIn.max = clickedAudio.duration;
 }
 
 function updateRange() {
-  console.log("HELLO");
   if (!songPlaying) return;
   rangeIn.value = songPlaying.currentTime;
   if (songPlaying.currentTime >= songPlaying.duration) {
     playIngAudioIndex++;
-    playNextSong()
+    playNextSong();
   }
 }
 
@@ -193,7 +200,6 @@ async function handleLike() {
   if (!songPlaying) return;
   const cardObj = cardObjects[songPlaying.parentNode.id];
   const response = await cardObj.like();
-  // updateLikeIcon(cardObj.likes, true);
 }
 
 async function handleDislike() {
@@ -203,53 +209,77 @@ async function handleDislike() {
 }
 
 function playNextSong() {
-  if (!isSequentialPlayOn)  {songPlaying = null, playIngAudioIndex = 0;  return;}
-  songPlaying = listOfaudioTags[playIngAudioIndex]
-  const cardRequired = cardObjects[`card-${playIngAudioIndex}`]
-  likeBtn.src = cardRequired.likedByUser ? "/public/appImages/like-svgrepo-com.svg" : "/public/appImages/like-svgrepo-com(1).svg";
-  disLikeBtnId.src = cardRequired.disLikedByUser ? "/public/appImages/dislikedF.svg" : "/public/appImages/dislikeE.svg";
-  listOfaudioTags[playIngAudioIndex].addEventListener('timeupdate', ()=>{
-    console.log("here");
-    updateRange()
-  });
-  pausePlayFn()
-}
-document.getElementById("checkbox").addEventListener("change", (e)=>{
-  if (e.target.checked) {
-    isSequentialPlayOn = true
-    songPlaying = listOfaudioTags[0]
-    listOfaudioTags[playIngAudioIndex].addEventListener('timeupdate', ()=>{
-      console.log("here");
-      updateRange()
-    });
-    pausePlayFn()
-    return
+  if (!isSequentialPlayOn) {
+    (songPlaying = null), (playIngAudioIndex = 0);
+    return;
   }
-  isSequentialPlayOn = false
-})
+  songPlaying = listOfaudioTags[playIngAudioIndex];
+  const cardRequired = cardObjects[`card-${playIngAudioIndex}`];
+  likeBtn.src = cardRequired.likedByUser
+    ? "/public/appImages/like-svgrepo-com.svg"
+    : "/public/appImages/like-svgrepo-com(1).svg";
+  disLikeBtnId.src = cardRequired.disLikedByUser
+    ? "/public/appImages/dislikedF.svg"
+    : "/public/appImages/dislikeE.svg";
+  listOfaudioTags[playIngAudioIndex].addEventListener("timeupdate", () => {
+    console.log("here");
+    updateRange();
+  });
+  pausePlayFn();
+}
+document.getElementById("checkbox").addEventListener("change", (e) => {
+  if (e.target.checked) {
+    isSequentialPlayOn = true;
+    songPlaying = listOfaudioTags[0];
+    listOfaudioTags[playIngAudioIndex].addEventListener("timeupdate", () => {
+      console.log("here");
+      updateRange();
+    });
+    pausePlayFn();
+    return;
+  }
+  isSequentialPlayOn = false;
+});
 document.addEventListener("DOMContentLoaded", () => {
   rangeIn.addEventListener("change", updateSongTime);
-  forward.addEventListener('click', () => forwardOrBackward(10));
-  back.addEventListener('click', () => forwardOrBackward(-10));
-  pause.addEventListener('click', pausePlayFn);
-  likeBtn.addEventListener('click', handleLike);
-  disLikeBtnId.addEventListener('click', handleDislike);
-  addToPlayListOption.addEventListener('click', showPlayListPopup);
-  addToPlayListsBtn.addEventListener('click', AddToPlayLists);
-  allCards.forEach((card , index)=>{
+  forward.addEventListener("click", () => forwardOrBackward(10));
+  back.addEventListener("click", () => forwardOrBackward(-10));
+  pause.addEventListener("click", pausePlayFn);
+  likeBtn.addEventListener("click", handleLike);
+  disLikeBtnId.addEventListener("click", handleDislike);
+  addToPlayListOption.addEventListener("click", showPlayListPopup);
+  addToPlayListsBtn.addEventListener("click", AddToPlayLists);
+  allCards.forEach((card, index) => {
     const fullInfo = JSON.parse(card.getAttribute("data-completeSongInfo"));
-    card.addEventListener("click" , (e)=>{
+    card.addEventListener("click", (e) => {
       isSequentialPlayOn = false;
-      document.getElementById("checkbox").checked = false
-      playSongOnCard(e)
-    })
+      document.getElementById("checkbox").checked = false;
+      playSongOnCard(e);
+    });
     const cardObj = new TrackCard({
-      card : `card-${index}`,
-      likedByUser : fullInfo.likedByUser,
-      disLikedByUser : fullInfo.dislikedByUser,
-      id : fullInfo.id,
-
-    })
-    cardObjects[`card-${index}`] =  cardObj
-  })
+      card: `card-${index}`,
+      likedByUser: fullInfo.likedByUser,
+      disLikedByUser: fullInfo.dislikedByUser,
+      id: fullInfo.id,
+    });
+    cardObjects[`card-${index}`] = cardObj;
+  });
+  const nodeList = document.querySelectorAll(".deletePlaylistBtn");
+  if (!nodeList || nodeList.length == 0) return;
+  nodeList.forEach((node) => {
+    node.addEventListener("click", async (e) => {
+      const { playListId, trackId } = JSON.parse(
+        e.target.getAttribute("data-Ids")
+      );
+      const response = await axios.put(
+        "http://localhost:5000/playlists/removeTrack",
+        {
+          trackToRemove: trackId,
+          playList: playListId,
+        }
+      );
+      alert(response.data.message);
+      window.location.reload();
+    });
+  });
 });

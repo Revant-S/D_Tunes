@@ -9,6 +9,7 @@ import { Types } from "mongoose";
 import { UserDocument, getUser } from "./userControllers";
 import ReqPlayList from "../DbModels/partyModeReqModel";
 
+
 export interface playListBody {
     playListName: Types.ObjectId[],
     SongToBeAdded: string
@@ -16,8 +17,11 @@ export interface playListBody {
 
 export async function getPlayLists(req: Request, res: Response) {
     const playLists = await PlayList.find({ $or: [{ createdBy: ((req as UserRequest).userToken as userPayload)._id }, { status: "Public" }] })
+    const user = await getUser(req);
     res.render("playList", {
-        playLists
+        playLists,
+        userId: user?._id,
+        user
     })
 }
 export async function createPlayList(req: Request, res: Response) {
@@ -43,10 +47,10 @@ export async function getTracksOfPlayList(req: Request, res: Response) {
 export async function getPlayListNames(req: Request, res: Response) {
     const playLists = await PlayList.find({ $and: [{ createdBy: (((req as UserRequest).userToken as userPayload))._id }, { genere: { $ne: "Liked Songs" } }] }, { playListName: 1 }).populate([
         {
-            path: "trackList" , select : "id"
+            path: "trackList", select: "id"
         }])
-        console.log(playLists);
-        
+    console.log(playLists);
+
     return res.send(playLists)
 }
 export async function updatePlayLists(req: Request, res: Response) {
@@ -74,28 +78,37 @@ export async function getPLayListPage(req: Request, res: Response) {
         path: "trackList",
         select: "imageUrl , likes , dislikes , url , id , trackName"
     })
-    const user = await User.findById(((req as UserRequest).userToken as userPayload)._id);
+    const user = await getUser(req)
     const likedSongs = user?.likedSongs;
     const dislikedSongs = user?.dislikedSongs
     let playListToRender: any = [];
+
     populatedPlayList.trackList.forEach(async (element: any) => {
         let likedByUser = false;
         let dislikedByUser = false;
         if (likedSongs?.includes(element._id)) likedByUser = true;
         if (dislikedSongs?.includes(element._id)) dislikedByUser = true;
         const obj = {
+            playListId: populatedPlayList._id,
+            _id: element._id,
             id: element.id,
             url: element.url,
             imageUrl: element.imageUrl,
             trackName: element.trackName,
-            likedByUser, dislikedByUser
+            likedByUser, dislikedByUser,
+            createdBy: populatedPlayList.createdBy
         }
         playListToRender.push(obj)
 
     });
 
+
+
+
     res.render("playListPage", {
-        populatedPlayList: playListToRender
+        populatedPlayList: playListToRender,
+        userId: user?._id,
+        user
     })
 }
 export async function getOtherAllowedPlayLists(user: UserDocument) {
@@ -123,7 +136,8 @@ export async function partyModePage(req: Request, res: Response) {
         })
     }
     res.render("partyMode", {
-        playListsOfUser
+        playListsOfUser,
+        user
     })
 }
 
@@ -159,7 +173,7 @@ export async function partyModePageRedirect(req: Request, res: Response) {
     const likedSongs = user?.likedSongs;
     const dislikedSongs = user?.dislikedSongs
     let playListToRender: any = [];
-    populatedPlayList?.trackList.forEach(async (element: any) => {  // Used ANY RECTIFY IT
+    populatedPlayList?.trackList.forEach(async (element: any) => {
         let likedByUser = false;
         let dislikedByUser = false;
         if (likedSongs?.includes(element._id)) likedByUser = true;
@@ -176,6 +190,30 @@ export async function partyModePageRedirect(req: Request, res: Response) {
     await PlayList.deleteOne({ _id: req.query.id })
 
     res.render("playListPage", {
-        populatedPlayList: playListToRender
+        populatedPlayList: playListToRender,
+        user
     })
+}
+export async function deletePlayList(req: Request, res: Response) {
+    const user = await getUser(req);
+    if (!user) return res.send("SomeThing Went wrong");
+    const { playListId } = req.params;
+    const deleted = await PlayList.findByIdAndDelete(playListId);
+    if (!deleted) return res.send({ success: false });
+    return res.json({
+        success: true,
+    })
+}
+
+export async function removePlayList(req: Request, res: Response) {
+    const user = await getUser(req);
+    if (!user) return res.send("!!No User Found");
+    const { trackToRemove, playList } = req.body;
+    const playListInDb = await PlayList.findById(playList);
+    const removalId = playListInDb?.trackList.indexOf(trackToRemove);
+
+    if (!removalId || removalId == -1) return res.json({ message: "Track Already Removed" });
+    playListInDb?.trackList.splice(removalId, 1);
+    await playListInDb?.save()
+    return res.json({ message: "Successfully removed!!" });
 }

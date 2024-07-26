@@ -31,19 +31,13 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser("token"))
 app.use(morgan("dev"))
 app.use("/auth", authRoutes)
-app.use("/artist", authorizeArtist)
-app.use("/artist", artistRoutes)
+app.use("/artist", authorizeArtist, artistRoutes)
 app.use("/public", express.static(path.resolve('public')));
-app.use("/playlists", authorizeUser)
-app.use("/playlists", playListRoutes)
-app.use("/getTracks", [authorizeUser, getLatestToken])
-app.use("/getTracks", trackRoutes)
-app.use("/user", authorizeUser)
-app.use("/user", userRoutes)
-app.use("/party", authorizeUser)
-app.use("/party", partyRoutes)
-app.use("/category", authorizeUser);
-app.use("/category", categoryRoutes)
+app.use("/playlists", authorizeUser,playListRoutes)
+app.use("/getTracks", authorizeUser, getLatestToken, trackRoutes)
+app.use("/user", authorizeUser, userRoutes)
+app.use("/party", authorizeUser, partyRoutes)
+app.use("/category", authorizeUser, categoryRoutes);
 
 
 async function connectToDb() {
@@ -59,17 +53,27 @@ async function connectToDb() {
 connectToDb()
 
 
-app.get("/home", async (req, res) => {
+app.get("/home", authorizeUser,async (req, res) => {
     const params = req.query;
     if (params.code) {
         const verificationObj = await addOrVerifyDauthUser(params.code as string);
         if (!(verificationObj).success) return res.send("Something went wrong");
+        console.log("Cookie Sent");
+        
         return res.cookie("token", verificationObj.authToken, {
             maxAge: 3600000,
             httpOnly: true
         }).redirect("/home");
     }
-    res.render("home")
+
+    const user = await getUser(req);
+
+    console.log(user);
+    
+    
+    res.render("home", {
+        user
+    })
 })
 app.get("/", (req: Request, res: Response) => {
     res.render("landingPage");

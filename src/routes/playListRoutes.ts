@@ -8,7 +8,10 @@ import {
     updatePlayLists,
     partyModePage,
     getTempPage,
-    partyModePageRedirect
+    partyModePageRedirect,
+    deletePlayList,
+    removePlayList
+    
 } from "../controllers/playListControllers";
 import { upload } from "../Middlewares/uploadService"
 
@@ -23,7 +26,8 @@ router.get("/playListPage/:id", getPLayListPage)
 router.get("/partyMode", partyModePage)
 router.post("/tempPlayList", getTempPage)
 router.get("/playPartyMode", partyModePageRedirect)
-
+router.delete("/deletePlayList/:playListId",deletePlayList)
+router.put("/removeTrack",removePlayList )
 
 
 export default router

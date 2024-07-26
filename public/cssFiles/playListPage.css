@@ -1,58 +1,49 @@
-.createPlaylist {
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+.wholePage {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px dashed white;
-    width: 12vw;
-    height: 30vh;
-    color: white;
-    transition: 0.5s;
 }
 
-.createPlaylist:hover {
-    transform: scale(1.1);
-    cursor: pointer;
-    box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.7);
+.mainContent {
+    flex-grow: 1;
+    padding: 2%;
 }
 
-.playListSpace {
-    display: grid;
-    position: relative;
-    grid-template-columns: repeat(5, 1fr);
-    width: 100%;
-    height: fit-content;
-    grid-gap: 3%;
+h1 {
+    margin-bottom: 2%;
 }
 
 .workspace {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 2vw;
-    padding: 2vw;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 2%;
 }
 
 .playListCard {
     position: relative;
     aspect-ratio: 1 / 1;
-    color: white;
-    transition: 0.3s;
-    border-radius: 10px;
+    background-color: #181818;
+    border-radius: 0.5rem;
     overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .playListCard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: #282828;
+    transform: translateY(-0.3rem);
 }
 
 .playListCard img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: 0.3s;
 }
 
 .playListCard h3 {
@@ -60,34 +51,74 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-    color: #fff;
-    padding: 15px;
     margin: 0;
-    font-size: 1.1em;
-    text-align: left;
-    transition: 0.3s;
+    padding: 0.6rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0.1em 0.1em 0.2em rgba(0, 0, 0, 0.8);
 }
 
-.playListCard:hover h3 {
-    padding-bottom: 20px;
+.deletePlaylistBtn {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.playListCard:hover .deletePlaylistBtn {
+    opacity: 1;
+}
+
+.deletePlaylistBtn:hover {
+    background-color: rgba(255, 0, 0, 0.8);
 }
 
 .createPlaylist {
     display: flex;
-    text-align: center;
     justify-content: center;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    transition: 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 .createPlaylist:hover {
     background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-5px);
+}
+
+.createPlaylistContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #b3b3b3;
+}
+
+.createPlaylistContent span:first-child {
+    font-size: 2.5rem;
+    margin-bottom: 0.6rem;
+}
+
+.createPlaylistContent span:last-child {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+@media (max-width: 48rem) {
+    .workspace {
+        grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    }
 }
