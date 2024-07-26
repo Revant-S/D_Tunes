@@ -41,7 +41,12 @@ export async function getTracksOfPlayList(req: Request, res: Response) {
     res.redirect(`/playlists/playListPage/${req.params.playListId}`)
 }
 export async function getPlayListNames(req: Request, res: Response) {
-    const playLists = await PlayList.find({ createdBy: (((req as UserRequest).userToken as userPayload))._id }, { playListName: 1 })
+    const playLists = await PlayList.find({ $and: [{ createdBy: (((req as UserRequest).userToken as userPayload))._id }, { genere: { $ne: "Liked Songs" } }] }, { playListName: 1 }).populate([
+        {
+            path: "trackList" , select : "id"
+        }])
+        console.log(playLists);
+        
     return res.send(playLists)
 }
 export async function updatePlayLists(req: Request, res: Response) {

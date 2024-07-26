@@ -72,7 +72,7 @@ async function showPlayListPopup() {
   const response = await axios.get(
     "http://localhost:5000/playlists/getPlayListNames"
   );
-
+  console.log(response.data);
   showPlayListsNames.showModal();
   response.data.forEach((element) => {
     const label = document.createElement("label");
@@ -81,6 +81,17 @@ async function showPlayListPopup() {
     const input = document.createElement("input");
     input.type = "checkbox";
     input.name = "playListName";
+    const songInPlayList = element.trackList.filter(track =>{
+      console.log( track.id );
+      console.log(songPlaying);
+      return  track.id == cardObjects[songPlaying.parentNode.id].id
+    })
+    console.log(songPlaying.parentNode.id);
+
+    console.log();
+    if(songInPlayList.length){
+      input.checked = true;
+    }
     const adjustDivINput = document.createElement("div");
     input.value = element._id;
     adjustDivINput.appendChild(label);

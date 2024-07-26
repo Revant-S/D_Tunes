@@ -58,13 +58,6 @@ const confirmationDiaglog = document.getElementById("confirmationDiaglog")
 const PartyPlayBtn = document.querySelector(".PartyPlayBtn");
 PartyPlayBtn.addEventListener("click" , partyPlaySong)
 
-
-
-
-
-document.getElementById("saveConfirm").addEventListener("change" , (e)=>{
-    wantToSave = e.target.checked
-})
 async function createPlayList() {
     const playListToSupply = [];
     playListArray.forEach((playList)=> playListToSupply.push(playList.id));
