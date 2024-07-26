@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import express, { Request, Response } from "express"
+import express, { Request, Response, NextFunction } from "express"
 import mongoose from "mongoose";
 import authRoutes from "./routes/authroutes"
 import path from "path";
@@ -53,7 +53,22 @@ async function connectToDb() {
 connectToDb()
 
 
-app.get("/home", authorizeUser,async (req, res) => {
+
+const authorizeOrFirstLogin = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.cookies.token;
+
+  if (!token && req.query.code) {
+    // First-time login with Dauth code
+    return next();
+  }
+
+  // Use the existing authorizeUser middleware for subsequent visits
+  return authorizeUser(req, res, next);
+};
+
+
+
+app.get("/home", authorizeOrFirstLogin,async (req, res) => {
     const params = req.query;
     if (params.code) {
         const verificationObj = await addOrVerifyDauthUser(params.code as string);
@@ -78,14 +93,6 @@ app.get("/home", authorizeUser,async (req, res) => {
 app.get("/", (req: Request, res: Response) => {
     res.render("landingPage");
 })
-
-app.get("/sync", authorizeUser , async (req : Request, res : Response)=>{
-    const user = await getUser(req);
-    if(!user) return res.send("User Not Found");
-    
-})
-
-
 
 
 const port = config.get("PORT") || 3000;
