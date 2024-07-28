@@ -45,9 +45,13 @@ export async function updateLike(req: Request, res: Response) {
     if (!trackId) return res.send("No Id Found");
     if (!findUser) return res.send("You Dont exit !!!!");
 
+    console.log("HERE");
+    console.log(trackId);
+    
     
     const findTrackInDb = await Track.findOne({ id: trackId })
 
+    console.log(findTrackInDb);
     
     if (!findTrackInDb) return res.send("Track Not in db");
     if (amt > 0) {

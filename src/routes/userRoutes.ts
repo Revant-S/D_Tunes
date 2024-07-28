@@ -10,7 +10,6 @@ import {
     removeFriendRequest,
     removeFromFriendList,
     updateUserProfile,
-    logout
 } from "../controllers/userControllers"
 import { upload } from "../Middlewares/uploadService"
 
@@ -29,5 +28,5 @@ router.put("/removeFriendRequest" ,removeFriendRequest );
 router.put("/rejectFriendRequest",rejectFriendRequest);
 router.put("/removeFromFriend", removeFromFriendList);
 router.put("/updateUserProfile",upload.single("profileImage"),updateUserProfile);
-router.post("/logout", logout);
+
 export default router

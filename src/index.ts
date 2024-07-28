@@ -70,8 +70,7 @@ app.get("/home", authorizeOrFirstLogin,async (req, res) => {
     if (params.code) {
         const verificationObj = await addOrVerifyDauthUser(params.code as string);
         if (!(verificationObj).success) return res.send("Something went wrong");
-        console.log("Cookie Sent");
-        
+  
         return res.cookie("token", verificationObj.authToken, {
             maxAge: 3600000,
             httpOnly: true

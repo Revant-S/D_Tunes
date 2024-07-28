@@ -58,14 +58,28 @@
                     <p id="user-email">
                         <%= locals.userPopulated.emailId %>
                     </p>
-                    <% if ((locals.isFriend && locals.alreadySent)) { %>
+                    <% if (locals.isFriend) { %>
                         <div class="friendRequestBtn">
-                            <button id="friend-request-btn" class="friend-request-btn"
+                            <button id="friend-remove-btn" class="friend-request-btn"
                                 data-userId="<%= locals.userPopulated._id %>">
-                                Send Friend Request
+                                Remove From Friends
                             </button>
                         </div>
-                        <% } %>
+                        <% }else if(locals.alreadySent){ %>
+                            <div class="friendRequestBtn">
+                                <button id="friend-request-remove-btn" class="friend-request-btn"
+                                    data-userId="<%= locals.userPopulated._id %>">
+                                    Remove Request
+                                </button>
+                            </div>
+                            <% } else{%>
+                                <div class="friendRequestBtn">
+                                    <button id="friend-request-btn" class="friend-request-btn"
+                                        data-userId="<%= locals.userPopulated._id %>">
+                                        Send a Friend Request
+                                    </button>
+                                </div>
+                                <% } %>
                 </div>
             </div>
         </div>

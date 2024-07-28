@@ -101,14 +101,16 @@ export async function getPLayListPage(req: Request, res: Response) {
         playListToRender.push(obj)
 
     });
-
-
-
+    console.log(populatedPlayList);
+    console.log(user?._id);
+    
+    
 
     res.render("playListPage", {
         populatedPlayList: playListToRender,
         userId: user?._id,
-        user
+        user,
+        deleteBtn : true
     })
 }
 export async function getOtherAllowedPlayLists(user: UserDocument) {
@@ -178,20 +180,28 @@ export async function partyModePageRedirect(req: Request, res: Response) {
         let dislikedByUser = false;
         if (likedSongs?.includes(element._id)) likedByUser = true;
         if (dislikedSongs?.includes(element._id)) dislikedByUser = true;
+        console.log(populatedPlayList);
+        
         const obj = {
             url: element.url,
             imageUrl: element.imageUrl,
             trackName: element.trackName,
-            likedByUser, dislikedByUser
+            likedByUser, dislikedByUser,
+            createdBy : populatedPlayList.createdBy
         }
         playListToRender.push(obj)
 
     });
     await PlayList.deleteOne({ _id: req.query.id })
+    console.log(playListToRender);
 
+    console.log(user?._id.toString());
+    
     res.render("playListPage", {
         populatedPlayList: playListToRender,
-        user
+        user,
+        userId : user?._id,
+        deleteBtn : false
     })
 }
 export async function deletePlayList(req: Request, res: Response) {

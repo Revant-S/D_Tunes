@@ -17,8 +17,6 @@ document.getElementById("party-Mode").addEventListener("click", (e) => {
 });
 
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
-  console.log("HELLO!!!!!!!!!!");
-  await axios.post("/user/logout");
-  console.log("YO HELLO");
-  location.reload();
+  await axios.post("/auth/logout");
+  window.location.href = "/"
 });

@@ -4,22 +4,22 @@ function reloadWindow() {
 }
 
 
-document.querySelector(".remove-friend-Request-Btn").addEventListener("click", async (e)=>{
-  let target = e.target;
-  const userId = target.getAttribute("data-userId");
- try {
-  const response  = await axios.put("http://localhost:5000/user/removeFriendRequest" , {
-    data : {
-      toRemove : userId
-    }
-  })
-  window.location.reload();
- } catch (error ) {
-  console.log(error.message);
- }
+// document.querySelector(".remove-friend-Request-Btn").addEventListener("click", async (e)=>{
+//   let target = e.target;
+//   const userId = target.getAttribute("data-userId");
+//  try {
+//   const response  = await axios.put("http://localhost:5000/user/removeFriendRequest" , {
+//     data : {
+//       toRemove : userId
+//     }
+//   })
+//   window.location.reload();
+//  } catch (error ) {
+//   console.log(error.message);
+//  }
   
 
-})
+// })
 document.querySelectorAll(".firend").forEach(friend =>{
   console.log('here');
   friend.addEventListener("click", (e)=>{
@@ -52,6 +52,7 @@ async function sendFriendRequest(e) {
     .getElementById("friend-request-btn")
     .parentNode.removeChild(document.getElementById("friend-request-btn"));
   alert(response.data.msg);
+  window.location.reload()
 }
 if (document.getElementById("friend-request-btn")) {
   document

@@ -254,6 +254,3 @@ export async function updateUserProfile(req: Request, res: Response) {
     }
 }
 
-export function logout(req: Request, res: Response) {
-    return res.clearCookie("token").send("Logged Out !!!");
-}

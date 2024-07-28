@@ -81,3 +81,8 @@ export async function addOrVerifyDauthUser(code: string) {
     const authToken = userInDb.getAuthToken();
     return { success: true, authToken };
 }
+
+
+export function logout(req: Request, res: Response) {
+    return res.clearCookie("token").redirect("/auth/signin");
+}

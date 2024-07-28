@@ -92,8 +92,14 @@ async function removeFromFriend(e) {
 
 async function acceptTheMerge(e) {
     const requestId = e.target.getAttribute("data-requestId");
+   try {
     const response = await axios.put("http://localhost:5000/party/respondToRequest",{
         Accepted : true,
         id : requestId
     })
+    e.target.parentNode.parentNode.removeChild(e.target.parentNode)
+   } catch (error) {
+    console.log(error);
+    alert("Couldnt accept the request")
+   }
 }

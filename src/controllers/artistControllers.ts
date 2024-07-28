@@ -83,8 +83,8 @@ export async function artistSignin(req: Request, res: Response) {
 export async function getArtistDashBoard(req: Request, res: Response) {
     const decodedObj = getArtistFromJWT(req.cookies.token)
     const artistInDb = await Artist.findById(decodedObj?.artistId).populate([{ path: "songsPublished" }])
-    console.log(artistInDb);
-
+    console.log(artistInDb?.songsPublished);
+    
     res.render("artistDashboard", {
         artistInDb
     })
@@ -103,7 +103,7 @@ export async function uploadTheSong(req: Request, res: Response) {
             trackName: (req.body as uploadSongBody).trackName,
             imageUrl: `/public/uploads/${(req as FileRequest).savedFileName}`,
             url: `/public/uploads/songs/${(req as FileRequest).uploadedSongName}`,
-            id: "TESTIDARTIST"
+            id: `${Date.now()}${artist._id}`
         })
 
         const updateArtist = await Artist.findByIdAndUpdate(artist.id, {
@@ -111,7 +111,7 @@ export async function uploadTheSong(req: Request, res: Response) {
         })
         if (!updateArtist) return res.send("Please Try Again");
 
-        res.send(newTrack._id)
+        res.redirect("/artist/dashBoard")
     } catch (error: any) {
         console.log(error.message);
 

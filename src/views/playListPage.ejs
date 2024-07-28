@@ -76,7 +76,7 @@
                   <div class="recomendationElement" id="<%= `card-${index}`%>"
                     data-completeSongInfo="<%= JSON.stringify(element) %>">
                     <div class="CardnameDiv">
-                      <% if (element.createdBy.toString()==locals.userId) { %>
+                      <% if (locals.deleteBtn) { %>
                         <button class="deletePlaylistBtn"
                           data-Ids="<%= JSON.stringify({playListId : element.playListId , trackId : element._id}) %>">
                           &#x1F5D1;
