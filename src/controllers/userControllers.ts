@@ -7,6 +7,7 @@ import { IUserModel } from "../TsTypes/userdbtypes";
 import PlayList from "../DbModels/playListModel";
 import ReqPlayList from "../DbModels/partyModeReqModel";
 import { IReqPlayListDocument } from "../TsTypes/MergeRequestsTypes";
+// import { boolean } from "zod";
 
 export interface UserDocument extends IUserModel {
     _id: Types.ObjectId
@@ -133,7 +134,7 @@ export async function getProfile(req: Request, res: Response) {
 console.log(user);
 
     const alreadySent: boolean = (currentUser.friendRequestMade.includes(user._id))
-    
+    const gotFromUser : boolean= currentUser.friendRequestToMe.includes(user._id)
     if (!user) return res.json({ msg: "User Not Found" });
     const userPopulated = await user.populate([{
         "path": "friends", select: "userName , emailId , role , profileImageUrl, "
@@ -152,7 +153,8 @@ console.log(isFriend);
         userPopulated,
         playLists,
         isFriend,
-        alreadySent
+        alreadySent,
+        gotFromUser
     })
 }
 
@@ -161,6 +163,8 @@ console.log(isFriend);
 
 export async function searchInDb(req: Request, res: Response) {
     const currentUser = await getUser(req);
+    console.log(req.query.search);
+    
     const allUsers = await User.find({ _id: { $ne: currentUser?._id } }, { password: 0, _id: 0 });
     let usersToSend: any[] = [] // Used any type
     const toCompare = <string>req.query.search

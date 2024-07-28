@@ -3,39 +3,18 @@ function reloadWindow() {
   window.location.href = url;
 }
 
-
-// document.querySelector(".remove-friend-Request-Btn").addEventListener("click", async (e)=>{
-//   let target = e.target;
-//   const userId = target.getAttribute("data-userId");
-//  try {
-//   const response  = await axios.put("http://localhost:5000/user/removeFriendRequest" , {
-//     data : {
-//       toRemove : userId
-//     }
-//   })
-//   window.location.reload();
-//  } catch (error ) {
-//   console.log(error.message);
-//  }
-  
-
-// })
-document.querySelectorAll(".firend").forEach(friend =>{
-  console.log('here');
-  friend.addEventListener("click", (e)=>{
+document.querySelectorAll(".firend").forEach((friend) => {
+  console.log("here");
+  friend.addEventListener("click", (e) => {
     let target = e.target;
-    while(target != null && !target.classList.contains('firend')){
-      target= target.parentNode;
+    while (target != null && !target.classList.contains("firend")) {
+      target = target.parentNode;
     }
     const email = target.getAttribute("data-friendEmail");
     console.log(email);
-    window.location.href = `/user/viewProfile/${email}`
-  })
-})
-
-
-
-
+    window.location.href = `/user/viewProfile/${email}`;
+  });
+});
 
 let friendRequestSent = false;
 async function sendFriendRequest(e) {
@@ -52,12 +31,59 @@ async function sendFriendRequest(e) {
     .getElementById("friend-request-btn")
     .parentNode.removeChild(document.getElementById("friend-request-btn"));
   alert(response.data.msg);
-  window.location.reload()
+  window.location.reload();
 }
 if (document.getElementById("friend-request-btn")) {
   document
     .getElementById("friend-request-btn")
     .addEventListener("click", sendFriendRequest);
+} else if (document.getElementById("friend-request-remove-btn")) {
+  document
+    .getElementById("friend-request-remove-btn")
+    .addEventListener("click", async (e) => {
+      const response = await axios.put(
+        "http://localhost:5000/user/removeFriendRequest",
+        {
+          data: {
+            toRemove: e.target.getAttribute("data-userId"),
+          },
+        }
+      );
+      window.location.reload();
+    });
+} else if (document.getElementById("friend-request-accept-btn")) {
+  document.getElementById("friend-request-accept-btn").addEventListener("click", async (e)=>{
+    const UserToAccept = e.target.getAttribute("data-userId");
+    const response = await axios.post("http://localhost:5000/user/acceptFriendRequest" , {
+        data : {
+            acceptedOf : UserToAccept
+        }
+    })
+    window.location.reload();
+  
+  })
+  document.getElementById("friend-request-reject-btn").addEventListener("click", async (e)=>{
+    const toReject = e.target.getAttribute("data-userId");
+    const response = await axios.put("http://localhost:5000/user/rejectFriendRequest" , {
+        data : { toReject }
+    })
+    window.location.reload();
+  })
+}
+else {
+  document
+    .getElementById("friend-remove-btn")
+    .addEventListener("click", async (e) => {
+      const response = await axios.put(
+        "http://localhost:5000/user/removeFromFriend",
+        {
+          data: {
+            toRemove: e.target.getAttribute("data-userId"),
+          },
+        }
+      );
+      window.location.reload();
+    });
 }
 const requestMergeBtn = document.querySelector(".requestBtn");
 async function requestMerge(e) {

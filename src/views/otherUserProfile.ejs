@@ -72,14 +72,27 @@
                                     Remove Request
                                 </button>
                             </div>
-                            <% } else{%>
+                            <% } else if(locals.gotFromUser){%>
                                 <div class="friendRequestBtn">
-                                    <button id="friend-request-btn" class="friend-request-btn"
+                                    <button id="friend-request-accept-btn" class="friend-request-btn"
                                         data-userId="<%= locals.userPopulated._id %>">
-                                        Send a Friend Request
+                                        Accept Request
                                     </button>
                                 </div>
-                                <% } %>
+                                <div class="friendRequestBtn">
+                                    <button id="friend-request-reject-btn" class="friend-request-btn"
+                                        data-userId="<%= locals.userPopulated._id %>">
+                                        Reject Request
+                                    </button>
+                                </div>
+                                <% } else{%>
+                                    <div class="friendRequestBtn">
+                                        <button id="friend-request-btn" class="friend-request-btn"
+                                            data-userId="<%= locals.userPopulated._id %>">
+                                            send a Friend Request
+                                        </button>
+                                    </div>
+                                    <% } %>
                 </div>
             </div>
         </div>
